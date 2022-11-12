@@ -1,0 +1,25 @@
+{
+    // Editor
+    "editor.rulers": [
+        120
+    ],
+    "editor.formatOnSave": true,
+    // CMake
+    "cmake.configureOnEdit": false,
+    "cmake.configureArgs": [
+        "-DCMAKE_BUILD_TYPE=Debug",
+        "-DBUILD_TESTS=ON"
+    ],
+    //"cmake.generator": "Unix Makefiles",
+    // Code analysis
+    "C_Cpp.codeAnalysis.clangTidy.enabled": false,
+    "C_Cpp.codeAnalysis.exclude": {
+        "**/build*": true
+    },
+    // Code spell checker
+    "cSpell.enabled": true,
+    "cSpell.enableFiletypes": [
+        "cmake",
+        "shellscript"
+    ],
+}

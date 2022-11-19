@@ -5,15 +5,9 @@ project(AdderTest)
 enable_testing()
 
 # ----------------------------------------------------------------------------
-# Source files
-set(SOURCES
-    AdderTest.cpp
-)
-
-# ----------------------------------------------------------------------------
-# Executables
+# Executable
 add_executable(${PROJECT_NAME}
-    ${SOURCES}
+    AdderTest.cpp
 )
 
 # ----------------------------------------------------------------------------

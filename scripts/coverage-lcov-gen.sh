@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 # Generate GCOV reports for code coverage, using LCOV tool.
 # This scripts considers that the project was already compiled for coverage.

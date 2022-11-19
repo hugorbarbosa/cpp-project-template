@@ -169,9 +169,9 @@ Future work:
 
 - Add `cppcheck` tool for code static analysis.
 - Add sanitizers (address, memory and thread).
-- Add memory checker (valgrind).
+- Add memory checker (`valgrind`).
 - Add CI pipelines.
-- Improve scripts to use in CI pipelines.
+- Improve scripts to use them in CI pipelines.
 
 ## License
 

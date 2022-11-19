@@ -6,15 +6,9 @@ project(ProjectTemplate)
 add_subdirectory(adder)
 
 # ----------------------------------------------------------------------------
-# Source files
-set(SOURCES
-    main.cpp
-)
-
-# ----------------------------------------------------------------------------
-# Executables
+# Executable
 add_executable(${PROJECT_NAME}
-    ${SOURCES}
+    main.cpp
 )
 
 # ----------------------------------------------------------------------------

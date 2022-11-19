@@ -3,15 +3,9 @@
 project(MockExample)
 
 # ----------------------------------------------------------------------------
-# Source files
-set(SOURCES
-    MockExample.h
-)
-
-# ----------------------------------------------------------------------------
 # Library
-add_library(${PROJECT_NAME}
-    STATIC ${SOURCES}
+add_library(${PROJECT_NAME} STATIC
+    MockExample.h
 )
 add_library(ProjectTemplate::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 

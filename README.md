@@ -16,7 +16,7 @@ This project consists of a simple template that can be used for C++ development,
 - [Doxygen documentation](#doxygen-documentation)
 - [Code formatting](#code-formatting)
 - [Code static analysis](#code-static-analysis)
-- [ToDo list](#todo-list)
+- [Future work](#future-work)
 - [License](#license)
 
 ## Project structure
@@ -33,7 +33,7 @@ This project is structured in the following directories:
 
 ## Documentation
 
-In this section, it could be described the documentation available in the `docs` directory, and eventually some links with information related to the project. In the case of this template, it has only a `README` file.
+This section could describe the documentation available in the `docs` directory, and eventually some links with information related to the project. In the case of this template, the `docs` directory has only a `README` file.
 
 ## Requirements
 
@@ -148,9 +148,10 @@ The format of the code can be checked with [clang-format](https://clang.llvm.org
 
 ```sh
 $ cd <project-directory>
-$ # To check the src directory
-$ ./scripts/clang-format-check.sh ./src
+$ ./scripts/clang-format-check.sh
 ```
+
+A report file is created in the `build-clang-format` directory.
 
 ## Code static analysis
 
@@ -163,7 +164,7 @@ $ ./scripts/clang-tidy-check.sh
 
 A report file is created in the `build-clang-tidy` directory.
 
-## ToDo list
+## Future work
 
 Future work:
 

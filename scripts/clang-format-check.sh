@@ -1,33 +1,113 @@
 #!/usr/bin/env bash
 
-# Check code format using clang-format.
+# Check code formatting using the clang-format tool.
 #
 # Usage:
-# $ ./<script>.sh <directory>
+# $ ./<script>.sh [OPTIONS]
 #
 # Example:
-# - Check "src" directory:
-# $ ./<script>.sh src
-# - Check "tests" directory:
-# $ ./<script>.sh tests
+# - Check without specifying a directory (project files will be used):
+# $ ./<script>.sh
+# - Check specifying a directory (e.g., "src"):
+# $ ./<script>.sh -d src
 
-# Check script usage
-if [ "$#" -ne 1 ]; then
-    echo "Usage:"
-    echo "$0 <directory>"
+# Log help message.
+help() {
+    echo "Check code formatting using the clang-format tool"
     echo
-    exit -1
+    echo "Usage: $0 [OPTIONS]"
+    echo
+    echo "Options:"
+    echo -e "\t-d, --dir     directory to check (project files will be used if this option is not provided)"
+    echo -e "\t-m, --max     maximum errors accepted (default is 0)"
+    echo -e "\t-h, --help    display this help and exit"
+}
+
+# Log message.
+# $1: message to log.
+log() {
+    echo -e "$1"
+}
+
+# Log error message.
+# $1: message to log.
+logError() {
+    # Red color
+    readonly RED='\033[0;31m'
+    # No color
+    readonly NC='\033[0m'
+    echo -e "$RED$1$NC"
+}
+
+# Project directory
+readonly project_dir=$(git rev-parse --show-toplevel)
+# Build directory
+readonly build_dir=$project_dir/build-clang-format
+# Report file
+readonly report_file=$build_dir/report.txt
+# Maximum errors
+errors_max=0
+
+# Parse arguments (space-separated, e.g., --option argument)
+while [ "$#" -gt 0 ]; do
+    case $1 in
+        -d|--dir)
+            dir_check="$2"
+            shift # past option
+            shift # past argument
+            ;;
+        -m|--max)
+            errors_max="$2"
+            shift # past option
+            shift # past argument
+            ;;
+        -h|--help)
+            help
+            shift # past option
+            exit 0
+            ;;
+        *)
+            logError "Unknown option $1"
+            help
+            exit 1
+    esac
+done
+
+# Create build directory
+log "Creating build directory: ${build_dir}"
+mkdir -p $build_dir
+
+# Get files to check
+if [ -z ${dir_check+x} ]; then
+    # Directory not provided
+    log "Directory not provided, getting project files *.h and *.cpp using git"
+    files=$(git ls-files | grep -i -e "\.h$" -e "\.cpp$")
+else
+    # Directory provided
+    log "Getting files *.h and *.cpp in the directory: ${dir_check}"
+    files=$(find $dir_check -type f -iname "*.h" -o -iname "*.cpp")
 fi
 
-# Directory to check
-src_dir=$1
+if [[ -z "$files" ]]; then
+    logError "No files to be checked"
+    exit 1
+fi
 
-echo "Clang-format checking..."
+# Iterate through all files and check formatting errors
+log "Checking files recursively with clang-format"
+clang-format $files --dry-run -Werror --style=file 2>&1 | tee $report_file
 
-# Find files and run clang-format
-find $src_dir -type f -iname "*.h" -o -iname "*.cpp" | xargs clang-format --dry-run -Werror --style=file
+# Number of errors
+readonly errors_found=$(grep -o -i ".*error.*" $report_file | wc -l)
+log "--------"
+log "Number of errors found: $errors_found"
+log "Maximum number of errors accepted: $errors_max"
+log "For more details, check file: ${report_file}"
 
-# Command to reformat a file:
-# clang-format -i --style=file <file>
+if [ "$errors_found" -gt "$errors_max" ]; then
+    logError "Code formatting check done with errors"
+    exit 1
+fi
 
-echo "Clang-format check end"
+log "Code formatting check done with success"
+exit 0

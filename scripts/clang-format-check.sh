@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-
-# Check code formatting using the clang-format tool.
+#
+# Check code formatting using clang-format.
 #
 # Usage:
 # $ ./<script>.sh [OPTIONS]
 #
-# Example:
+# Examples:
 # - Check without specifying a directory (project files will be used):
 # $ ./<script>.sh
 # - Check specifying a directory (e.g., "src"):
@@ -13,10 +13,9 @@
 
 # Log help message.
 help() {
-    echo "Check code formatting using the clang-format tool"
+    echo "Check code formatting using clang-format"
     echo
     echo "Usage: $0 [OPTIONS]"
-    echo
     echo "Options:"
     echo -e "\t-d, --dir     directory to check (project files will be used if this option is not provided)"
     echo -e "\t-m, --max     maximum errors accepted (default is 0)"
@@ -24,19 +23,21 @@ help() {
 }
 
 # Log message.
+#
+# Parameters:
 # $1: message to log.
 log() {
     echo -e "$1"
 }
 
 # Log error message.
+#
+# Parameters:
 # $1: message to log.
-logError() {
-    # Red color
-    readonly RED='\033[0;31m'
-    # No color
-    readonly NC='\033[0m'
-    echo -e "$RED$1$NC"
+log_error() {
+    readonly red_color='\033[0;31m'
+    readonly no_color='\033[0m'
+    echo -e "$red_color$1$no_color"
 }
 
 # Project directory
@@ -48,7 +49,7 @@ readonly report_file=$build_dir/report.txt
 # Maximum errors
 errors_max=0
 
-# Parse arguments (space-separated, e.g., --option argument)
+# Parse arguments (separated with spaces, e.g., --option argument)
 while [ "$#" -gt 0 ]; do
     case $1 in
         -d|--dir)
@@ -67,7 +68,7 @@ while [ "$#" -gt 0 ]; do
             exit 0
             ;;
         *)
-            logError "Unknown option $1"
+            log_error "Unknown option $1"
             help
             exit 1
     esac
@@ -75,6 +76,7 @@ done
 
 # Create build directory
 log "Creating build directory: ${build_dir}"
+cd $project_dir
 mkdir -p $build_dir
 
 # Get files to check
@@ -89,7 +91,7 @@ else
 fi
 
 if [[ -z "$files" ]]; then
-    logError "No files to be checked"
+    log_error "No files to be checked"
     exit 1
 fi
 
@@ -98,14 +100,14 @@ log "Checking files recursively with clang-format"
 clang-format $files --dry-run -Werror --style=file 2>&1 | tee $report_file
 
 # Number of errors
-readonly errors_found=$(grep -o -i ".*error.*" $report_file | wc -l)
+readonly errors_found=$(grep -o -i ".*error: .*$" $report_file | wc -l)
 log "--------"
 log "Number of errors found: $errors_found"
 log "Maximum number of errors accepted: $errors_max"
 log "For more details, check file: ${report_file}"
 
 if [ "$errors_found" -gt "$errors_max" ]; then
-    logError "Code formatting check done with errors"
+    log_error "Code formatting check done with errors"
     exit 1
 fi
 

@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 #
 # Check code formatting using clang-format.
+# A report file is created in the "build-clang-format" directory.
 #
 # Usage:
 # $ ./<script>.sh [OPTIONS]
 #
 # Examples:
-# - Check without specifying a directory (project files will be used):
+# - Run without specifying a directory (project files will be used):
 # $ ./<script>.sh
-# - Check specifying a directory (e.g., "src"):
+# - Run specifying a directory (e.g., "src"):
 # $ ./<script>.sh -d src
 
 # Log help message.
@@ -17,9 +18,9 @@ help() {
     echo
     echo "Usage: $0 [OPTIONS]"
     echo "Options:"
-    echo -e "\t-d, --dir     directory to check (project files will be used if this option is not provided)"
-    echo -e "\t-m, --max     maximum errors accepted (default is 0)"
-    echo -e "\t-h, --help    display this help and exit"
+    echo -e "\t-d, --dir <directory>    directory to check (default is the project directory)"
+    echo -e "\t-m, --max <errors>       maximum errors accepted (default is 0)"
+    echo -e "\t-h, --help               display this help and exit"
 }
 
 # Log message.
@@ -107,9 +108,9 @@ log "Maximum number of errors accepted: $errors_max"
 log "For more details, check file: ${report_file}"
 
 if [ "$errors_found" -gt "$errors_max" ]; then
-    log_error "Code formatting check done with errors"
+    log_error "Code formatting checked with errors"
     exit 1
 fi
 
-log "Code formatting check done with success"
+log "Code formatting checked with success"
 exit 0

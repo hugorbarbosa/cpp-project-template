@@ -1,14 +1,17 @@
 #!/usr/bin/env bash
 #
 # Generate documentation from source code using doxygen.
+# The documentation is created and can be accessed in "<OUTPUT_DIRECTORY>/html/index.html", where "OUTPUT_DIRECTORY" is
+# a parameter in the doxygen configuration file.
+# A report file is created in the "build-doxygen" directory.
 #
 # Usage:
 # $ ./<script>.sh [OPTIONS]
 #
-# Example:
-# - Generate without specifying a configuration file ("Doxyfile" name will be used to find it):
+# Examples:
+# - Run without specifying a configuration file ("Doxyfile" name will be used to find it):
 # $ ./<script>.sh
-# - Generate specifying that the configuration file is in the path "./doxygen/Doxyfile":
+# - Run specifying that the configuration file is in the path "./doxygen/Doxyfile":
 # $ ./<script>.sh -f ./doxygen/Doxyfile
 
 # Log help message.
@@ -17,9 +20,9 @@ help() {
     echo
     echo "Usage: $0 [OPTIONS]"
     echo "Options:"
-    echo -e "\t-f, --file    doxygen configuration file ('Doxyfile' name will be used if this option is not provided)"
-    echo -e "\t-m, --max     maximum errors accepted (default is 0)"
-    echo -e "\t-h, --help    display this help and exit"
+    echo -e "\t-f, --file <file>     doxygen configuration file (default is 'Doxyfile')"
+    echo -e "\t-m, --max <errors>    maximum errors accepted (default is 0)"
+    echo -e "\t-h, --help            display this help and exit"
 }
 
 # Log message.
@@ -106,9 +109,9 @@ log "Maximum number of errors accepted: $errors_max"
 log "For more details, check file: ${report_file}"
 
 if [ "$errors_found" -gt "$errors_max" ]; then
-    log_error "Documentation generation done with errors"
+    log_error "Documentation generated with errors"
     exit 1
 fi
 
-log "Documentation generation done with success"
+log "Documentation generated with success"
 exit 0

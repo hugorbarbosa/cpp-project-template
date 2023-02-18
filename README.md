@@ -118,18 +118,18 @@ The project can be compiled for code coverage analysis, using the following comm
 $ cd <project-directory>
 $ mkdir build-coverage
 $ cd build-coverage
-$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTS=ON -DBUILD_COVERAGE=ON
+$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DBUILD_COVERAGE=ON
 $ cmake --build . -j 4
 ```
 
-[LCOV](https://github.com/linux-test-project/lcov) is used to generate the report with the code coverage analysis. For that purpose, use the correspondent script available in the `scripts` directory as follows:
+[LCOV](https://github.com/linux-test-project/lcov) is used to generate the report with the code coverage analysis. For that purpose, use the correspondent script available in the `scripts` directory as follows (note that this script already configures CMake and builds the project, so it is not needed to run the commands described previously):
 
 ```sh
 $ cd <project-directory>
-$ ./scripts/coverage-lcov-gen.sh build-coverage
+$ ./scripts/coverage-lcov-gen.sh
 ```
 
-The report file named `index.html` is created in the `build-coverage/coverage` directory.
+The code coverage analysis results are created and can be accessed in `build-coverage/coverage/index.html`.
 
 ## Doxygen documentation
 
@@ -137,10 +137,10 @@ The [doxygen](https://doxygen.nl/) tool is used to generate documentation from s
 
 ```sh
 $ cd <project-directory>
-$ ./scripts/doxygen-doc-gen.sh ./doxygen/Doxyfile
+$ ./scripts/doxygen-doc-gen.sh
 ```
 
-The documentation is created and can be accessed in `build-doxygen/html/index.html`.
+The documentation is created and can be accessed in `build-doxygen/html/index.html`. Also, a report file is created in the `build-doxygen` directory.
 
 ## Code formatting
 

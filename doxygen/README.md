@@ -7,6 +7,7 @@ Doxygen configuration is in the [Doxyfile](Doxyfile). Adjust the following optio
 - `PROJECT_BRIEF`
 - `PROJECT_LOGO`
 - `INPUT`
+- `OUTPUT_DIRECTORY`
 
 The `doxywizard` tool can help to configure doxygen using a graphical interface:
 

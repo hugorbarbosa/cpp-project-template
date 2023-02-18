@@ -16,6 +16,11 @@ option(BUILD_TESTS "Build unit tests" OFF)
 # Option to build with code coverage
 option(BUILD_COVERAGE "Build with code coverage" OFF)
 
+if(BUILD_COVERAGE)
+    # Set BUILD_TESTS to ON when building with coverage
+    set(BUILD_TESTS ON)
+endif()
+
 # ----------------------------------------------------------------------------
 # CMake options
 

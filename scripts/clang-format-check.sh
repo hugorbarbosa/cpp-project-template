@@ -12,6 +12,8 @@
 # - Run specifying a directory (e.g., "src"):
 # $ ./<script>.sh -d src
 
+set -o pipefail
+
 # Log help message.
 help() {
     echo "Check code formatting using clang-format"

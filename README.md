@@ -166,13 +166,13 @@ A report file is created in the `build-clang-tidy` directory.
 
 ## Future work
 
-Future work:
+List of tasks to be done in the future:
 
+- Create CMake targets for code coverage, documentation generation, code formatting and code static analysis.
+- Add CI pipelines.
 - Add `cppcheck` tool for code static analysis.
 - Add sanitizers (address, memory and thread).
-- Add memory checker (`valgrind`).
-- Add CI pipelines.
-- Improve scripts to use them in CI pipelines.
+- Add memory checker `valgrind`.
 
 ## License
 

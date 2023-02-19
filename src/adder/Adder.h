@@ -18,7 +18,7 @@ namespace adder {
  *
  * @return Result of the addition between @p a and @p b.
  */
-[[nodiscard]] const int16_t add(const int8_t a, const int8_t b);
+[[nodiscard]] int16_t add(const int8_t a, const int8_t b);
 
 } // namespace adder
 } // namespace projectTemplate

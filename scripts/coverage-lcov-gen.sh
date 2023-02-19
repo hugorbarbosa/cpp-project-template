@@ -8,11 +8,13 @@
 # Usage:
 # $ ./<script>.sh [OPTIONS]
 #
-# Example:
+# Examples:
 # - Run without specifying a build directory name ("build-coverage" name will be used):
 # $ ./<script>.sh
 # - Run specifying the build directory name as "build":
 # $ ./<script>.sh -b build
+
+set -o pipefail
 
 # Log help message.
 help() {

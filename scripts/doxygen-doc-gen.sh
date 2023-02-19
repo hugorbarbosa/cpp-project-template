@@ -14,6 +14,8 @@
 # - Run specifying that the configuration file is in the path "./doxygen/Doxyfile":
 # $ ./<script>.sh -f ./doxygen/Doxyfile
 
+set -o pipefail
+
 # Log help message.
 help() {
     echo "Generate documentation from source code using doxygen"

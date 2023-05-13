@@ -22,5 +22,5 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char const* argv[])
     constexpr auto num2{2};
     std::cout << "Addition: " << num1 << " + " << num2 << " = " << projectTemplate::adder::add(num1, num2) << std::endl;
 
-    return 0;
+    return EXIT_SUCCESS;
 }

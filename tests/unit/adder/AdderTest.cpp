@@ -3,7 +3,7 @@
  * @copyright Copyright (c) 2022.
  */
 
-#include <adder/Adder.h>
+#include <Adder.h>
 #include <gtest/gtest.h>
 
 using namespace testing;
@@ -14,10 +14,10 @@ using namespace projectTemplate;
  */
 TEST(AdderTest, AdditionSuccess)
 {
-    constexpr auto num1{1};
-    constexpr auto num2{2};
+    constexpr auto num1 = 1;
+    constexpr auto num2 = 2;
 
     // Expectations
-    constexpr auto expectedRes{num1 + num2};
+    constexpr auto expectedRes = num1 + num2;
     EXPECT_EQ(adder::add(num1, num2), expectedRes);
 }

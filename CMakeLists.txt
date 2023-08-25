@@ -61,10 +61,7 @@ endif()
 # Test
 
 if (BUILD_TESTS)
-    include(CTest)
-    include(GoogleTest)
-    enable_testing()
-endif()
+ endif()
 
 # ----------------------------------------------------------------------------
 # Build
@@ -72,32 +69,28 @@ endif()
 # C++ standard
 set(CMAKE_CXX_STANDARD 20)
 
-# Set compile options for GCC
+# Compiler options
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set(CMAKE_CXX_FLAGS
-        "${CMAKE_CXX_FLAGS} -Wall -Werror"
-    )
-endif()
-
-# Set compile options for MSVC
-if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    set(CMAKE_CXX_FLAGS
-        "${CMAKE_CXX_FLAGS} /W4 /WX"
-    )
+    # GCC compiler options
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror")
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    # MSVC compiler options
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /WX")
 endif()
 
 # Code coverage
 if(BUILD_COVERAGE)
     if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        set(CMAKE_CXX_FLAGS
-            "${CMAKE_CXX_FLAGS} --coverage -g -O0"
-        )
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -g -O0")
     endif()
 endif()
 
 # Subdirectories
 add_subdirectory(src)
 if (BUILD_TESTS)
+    include(CTest)
+    include(GoogleTest)
+    enable_testing()
     add_subdirectory(tests)
 endif()
 
@@ -106,10 +99,8 @@ endif()
 message(STATUS)
 message(STATUS "${PROJECT_NAME} configuration:")
 message(STATUS "- CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
-# message(STATUS "- CMAKE_CONFIGURATION_TYPES = ${CMAKE_CONFIGURATION_TYPES}")
 message(STATUS "- CMAKE_CXX_COMPILER_ID = ${CMAKE_CXX_COMPILER_ID}")
 message(STATUS "- CMAKE_CXX_STANDARD = ${CMAKE_CXX_STANDARD}")
-# message(STATUS "- CMAKE_CXX_FLAGS = ${CMAKE_CXX_FLAGS}")
 message(STATUS "- BUILD_TESTS = ${BUILD_TESTS}")
 message(STATUS "- BUILD_COVERAGE = ${BUILD_COVERAGE}")
 message(STATUS)

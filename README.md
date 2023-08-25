@@ -122,7 +122,7 @@ $ cmake .. -DCMAKE_BUILD_TYPE=Debug -DBUILD_COVERAGE=ON
 $ cmake --build . -j 4
 ```
 
-[LCOV](https://github.com/linux-test-project/lcov) is used to generate the report with the code coverage analysis. For that purpose, use the correspondent script available in the `scripts` directory as follows (note that this script already configures CMake and builds the project, so it is not needed to run the commands described previously):
+LCOV is used to generate the report with the code coverage analysis. For that purpose, use the correspondent script available in the `scripts` directory as follows (note that this script already configures CMake and builds the project, so it is not needed to run the commands described previously):
 
 ```sh
 $ cd <project-directory>
@@ -133,7 +133,7 @@ The code coverage analysis results are created and can be accessed in `build-cov
 
 ## Doxygen documentation
 
-The [doxygen](https://doxygen.nl/) tool is used to generate documentation from source code. The correspondent script generates the doxygen documentation, using the following commands:
+The doxygen tool is used to generate documentation from source code. The correspondent script generates the doxygen documentation, using the following commands:
 
 ```sh
 $ cd <project-directory>
@@ -144,7 +144,7 @@ The documentation is created and can be accessed in `build-doxygen/html/index.ht
 
 ## Code formatting
 
-The format of the code can be checked with [clang-format](https://clang.llvm.org/docs/ClangFormat.html), using the correspondent script:
+The format of the code can be checked with clang-format, using the correspondent script:
 
 ```sh
 $ cd <project-directory>
@@ -155,7 +155,7 @@ A report file is created in the `build-clang-format` directory.
 
 ## Code static analysis
 
-For code static analysis, it is used the [clang-tidy](https://clang.llvm.org/extra/clang-tidy/) tool. The correspondent script can be utilized to analyze the code:
+For code static analysis, it is used the clang-tidy tool. The correspondent script can be utilized to analyze the code:
 
 ```sh
 $ cd <project-directory>
@@ -170,9 +170,9 @@ List of tasks to be done in the future:
 
 - Create CMake targets for code coverage, documentation generation, code formatting and code static analysis.
 - Add CI pipelines.
-- Add `cppcheck` tool for code static analysis.
-- Add sanitizers (address, memory and thread).
-- Add memory checker `valgrind`.
+- Add cppcheck tool for code static analysis.
+- Add sanitizers of address, memory and thread.
+- Add valgrind (memory checker).
 
 ## License
 

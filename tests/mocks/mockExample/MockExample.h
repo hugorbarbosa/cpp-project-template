@@ -13,7 +13,7 @@ namespace mocks {
 namespace mockExample {
 
 /**
- * @brief Mock of the Example class.
+ * @brief Mock of the Example.
  *
  * This mock is not used. It just serves as an example of how to use GMock.
  */

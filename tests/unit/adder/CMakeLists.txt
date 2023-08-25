@@ -2,8 +2,6 @@
 # Project setup
 project(AdderTest)
 
-enable_testing()
-
 # ----------------------------------------------------------------------------
 # Executable
 add_executable(${PROJECT_NAME}
@@ -17,12 +15,9 @@ gtest_discover_tests(${PROJECT_NAME})
 # ----------------------------------------------------------------------------
 # Build
 
-target_include_directories(${PROJECT_NAME}
-    PRIVATE ${CMAKE_SOURCE_DIR}/src
-)
-
 target_link_libraries(${PROJECT_NAME}
     PRIVATE GTest::gtest_main
+    # Uncomment gmock library if a GMock is used in the test suite
     # PRIVATE GTest::gmock
     PRIVATE ProjectTemplate::Adder
 )

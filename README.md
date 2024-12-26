@@ -48,7 +48,7 @@ These tools need to be installed on the system:
 
 ### Using Docker
 
-There is a docker image available for this project that contains all the dependencies to compile and run this software. The instructions to use it can be found [here](./docker/README.md). For this approach, the only tool that needs to be installed on the system is:
+There is a Docker image available for this project that contains all the dependencies to compile and run this software. The instructions to use it can be found [here](./docker/README.md). For this approach, the only tool that needs to be installed on the system is:
 
 - [Docker](https://docs.docker.com/get-docker/): platform for developing, shipping, and running applications.
 

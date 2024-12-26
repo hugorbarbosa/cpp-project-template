@@ -1,8 +1,8 @@
-# Docker guide
+# Docker image
 
-This guide contains instructions for building and running the docker image of this project.
+This guide contains instructions for building and running the Docker image of this project.
 
-For more information about the used docker commands, see [this file](./docker-commands.md).
+For more information about the Docker tool and used commands, see this [Docker guide](https://github.com/hugorbarbosa/tutorials/blob/main/docker-guide/docker-guide.md).
 
 ## Table of contents
 
@@ -11,7 +11,7 @@ For more information about the used docker commands, see [this file](./docker-co
 
 ## Build image
 
-Build docker image using the following commands:
+Build Docker image using the following commands:
 
 ```sh
 $ cd <project-directory>

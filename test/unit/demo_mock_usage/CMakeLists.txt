@@ -1,0 +1,12 @@
+project(ut_demo_mock_usage)
+
+add_executable(${PROJECT_NAME}
+    ut_demo_mock_usage.cpp
+)
+
+gtest_discover_tests(${PROJECT_NAME})
+
+target_link_libraries(${PROJECT_NAME}
+    PRIVATE GTest::gtest_main
+    PRIVATE ${CPP_PROJECT_TEMPLATE_NAME}::mock_my_class
+)

@@ -1,4 +1,7 @@
-# Clang-tidy documentation and available checks detailed here: https://clang.llvm.org/extra/clang-tidy/
+# For more details regarding clang-tidy checks, please
+# consult https://clang.llvm.org/extra/clang-tidy/.
+
+---
 Checks: '-*,
         bugprone-use-after-move,
         concurrency-mt-unsafe,
@@ -19,8 +22,10 @@ Checks: '-*,
         readability-magic-numbers,
         readability-simplify-boolean-expr,
         readability-uppercase-literal-suffix'
-CheckOptions:
 WarningsAsErrors: '*'
 HeaderFilterRegex: ''
 FormatStyle: none
+InheritParentConfig: true
 User: user
+CheckOptions:
+...

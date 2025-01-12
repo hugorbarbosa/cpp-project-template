@@ -1,25 +1,24 @@
 {
-    // Editor
     "editor.rulers": [
-        120
+        100
     ],
     "editor.formatOnSave": true,
-    // CMake
     "cmake.configureOnEdit": false,
     "cmake.configureArgs": [
         "-DCMAKE_BUILD_TYPE=Debug",
-        "-DBUILD_TESTS=ON"
+        "-DCPP_PROJECT_TEMPLATE_BUILD_TESTS=ON"
     ],
-    //"cmake.generator": "Unix Makefiles",
-    // Code analysis
+    "cmake.buildDirectory": "${workspaceFolder}/build-${buildKitVendor}-${buildType}",
     "C_Cpp.codeAnalysis.clangTidy.enabled": false,
     "C_Cpp.codeAnalysis.exclude": {
         "**/build*": true
     },
-    // Code spell checker
     "cSpell.enabled": true,
-    "cSpell.enableFiletypes": [
-        "cmake",
-        "shellscript"
-    ],
+    "cSpell.enabledFileTypes": {
+        "*": true,
+        "cmake": true,
+        "shellscript": true,
+        "markdown": true
+    },
+    "files.insertFinalNewline": true
 }

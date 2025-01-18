@@ -14,7 +14,6 @@ function(fetch_googletest)
     FetchContent_MakeAvailable(googletest)
 endfunction()
 
-# GoogleTest
-if (BUILD_TESTS)
+if (CPP_PROJECT_TEMPLATE_BUILD_TESTS)
     fetch_googletest()
 endif()

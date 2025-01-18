@@ -1,24 +1,15 @@
-# ----------------------------------------------------------------------------
-# Project setup
-project(ProjectTemplate)
+project(cpp-project-template)
 
-# Subdirectories
-add_subdirectory(adder)
+add_subdirectory(my_class)
 
-# ----------------------------------------------------------------------------
-# Executable
 add_executable(${PROJECT_NAME}
     main.cpp
 )
 
-# ----------------------------------------------------------------------------
-# Build
-
 target_link_libraries(${PROJECT_NAME}
-    PRIVATE ProjectTemplate::Adder
+    PRIVATE ${CPP_PROJECT_TEMPLATE_NAME}::my_class
 )
 
-# Generate executable in a specific directory
 set_target_properties(${PROJECT_NAME} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )

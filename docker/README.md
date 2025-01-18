@@ -21,10 +21,10 @@ $ docker build . -t cppprojtempl
 
 ## Run image
 
-Run image with creation of a container and mount the project (`<project-directory>` must have the absolute path, for example, c:\Projects\cpp-project-template):
+Run image creating a container and mounting the project (`<project-directory>` must have the absolute path, e.g., c:\Projects\cpp-project-template on Windows or /home/user/projects/cpp-project-template on Linux):
 
 ```sh
 $ docker run -it --name mycontainer -v <project-directory>:/src cppprojtempl
 ```
 
-The project can now be compiled and run inside the container (project available in the `/src` directory), using the commands described [here](../README.md).
+The project will be available in the `/src` directory of the container, and can be compiled and run inside of the container using the commands described [here](../README.md).

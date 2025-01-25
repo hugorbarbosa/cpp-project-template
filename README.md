@@ -102,7 +102,7 @@ To run the unit tests, use the commands below:
 $ cd <project-directory>
 $ mkdir build-debug
 $ cd build-debug
-$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCPP_PROJECT_TEMPLATE_BUILD_TESTS=ON
+$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCXXPROJT_BUILD_TESTS=ON
 $ cmake --build . -j 4
 $ ctest
 ```
@@ -115,7 +115,7 @@ The project can be compiled for code coverage analysis (for GCC only), using the
 $ cd <project-directory>
 $ mkdir build-coverage
 $ cd build-coverage
-$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCPP_PROJECT_TEMPLATE_BUILD_COVERAGE=ON
+$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCXXPROJT_BUILD_COVERAGE=ON
 $ cmake --build . -j 4
 ```
 

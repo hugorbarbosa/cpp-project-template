@@ -22,7 +22,7 @@ public:
      *
      * @param value Initial value.
      */
-    MyConcreteClass(std::string value) noexcept;
+    explicit MyConcreteClass(std::string value) noexcept;
 
     /**
      * @copydoc MyClass#set_value

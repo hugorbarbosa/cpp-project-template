@@ -8,7 +8,7 @@
         "-DCMAKE_BUILD_TYPE=Debug",
         "-DCPP_PROJECT_TEMPLATE_BUILD_TESTS=ON"
     ],
-    "cmake.buildDirectory": "${workspaceFolder}/build-${buildKitVendor}-${buildType}",
+    "cmake.buildDirectory": "${workspaceFolder}/build-${buildType}-${buildKitVendor}",
     "C_Cpp.codeAnalysis.clangTidy.enabled": false,
     "C_Cpp.codeAnalysis.exclude": {
         "**/build*": true

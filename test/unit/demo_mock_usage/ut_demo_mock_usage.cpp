@@ -20,7 +20,7 @@ public:
      *
      * @param my_class My class.
      */
-    DemoMockUsage(std::shared_ptr<MyClass> my_class)
+    explicit DemoMockUsage(std::shared_ptr<MyClass> my_class)
         : my_class{std::move(my_class)}
     {
     }

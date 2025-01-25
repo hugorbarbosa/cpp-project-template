@@ -87,7 +87,7 @@ cd $project_dir
 mkdir -p $build_dir
 cd $build_dir
 log "Configuring CMake"
-cmake .. -DCMAKE_BUILD_TYPE=Debug -DCPP_PROJECT_TEMPLATE_BUILD_COVERAGE=ON
+cmake .. -DCMAKE_BUILD_TYPE=Debug -DCXXPROJT_BUILD_COVERAGE=ON
 log "Building project using $jobs jobs"
 cmake --build . -j $jobs
 

@@ -86,7 +86,7 @@ log "Configuring CMake"
 # Note: for MSVC with Ninja, it is necessary to have the appropriate environment variables configured so that CMake will
 # locate the MSVC compiler for the Ninja generator (simplest thing is running from the developer command prompt, see
 # https://clang.llvm.org/docs/HowToSetupToolingForLLVM.html#setup-clang-tooling-using-cmake-on-windows)
-cmake -S $project_dir -B $build_dir -DCMAKE_BUILD_TYPE=Debug -DCPP_PROJECT_TEMPLATE_BUILD_TESTS=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -GNinja
+cmake -S $project_dir -B $build_dir -DCMAKE_BUILD_TYPE=Debug -DCXXPROJT_BUILD_TESTS=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -GNinja
 
 # Get files to analyze
 log "Getting project files *.h and *.cpp"

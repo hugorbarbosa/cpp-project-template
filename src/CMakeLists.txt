@@ -7,7 +7,7 @@ add_executable(${PROJECT_NAME}
 )
 
 target_link_libraries(${PROJECT_NAME}
-    PRIVATE ${CPP_PROJECT_TEMPLATE_NAME}::my_class
+    PRIVATE ${CXXPROJT_PROJECT_NAME}::my_class
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES

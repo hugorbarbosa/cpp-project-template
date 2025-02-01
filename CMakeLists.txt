@@ -54,18 +54,11 @@ include(FetchDependencies)
 # ----------------------------------------------------------------------------
 set(CMAKE_CXX_STANDARD 20)
 
-# TODO: Use target_compile_options instead of setting directly the CMake flags.
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror")
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /WX")
-endif()
+include(CompilerOptions)
+set_compiler_options()
 
 if(CXXPROJT_BUILD_COVERAGE)
-    # Code coverage available only for GCC.
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -g -O0")
-    endif()
+    set_coverage_compiler_options()
 endif()
 
 add_subdirectory(src)

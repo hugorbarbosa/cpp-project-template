@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 3.16)
 
 # Set the compiler options.
 function(set_compiler_options)
+    # TODO: Add more compiler options.
     if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         add_compile_options(
             /W4 # Displays level 1 to level 4 (informational) warnings.

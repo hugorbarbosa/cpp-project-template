@@ -14,6 +14,12 @@ function(fetch_googletest)
     FetchContent_MakeAvailable(googletest)
 endfunction()
 
-if (CXXPROJT_BUILD_TESTS)
-    fetch_googletest()
-endif()
+# Fetch project dependencies.
+# Parameters:
+# - build_tests: Flag to indicate if the build includes tests.
+function(fetch_project_dependencies build_tests)
+    message(STATUS "Fetching project dependencies")
+    if (build_tests)
+        fetch_googletest()
+    endif()
+endfunction()

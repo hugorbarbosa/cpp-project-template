@@ -47,12 +47,15 @@ endif()
 # Dependencies
 # ----------------------------------------------------------------------------
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
-include(FetchDependencies)
+include(ProjectDependencies)
+fetch_project_dependencies(${CXXPROJT_BUILD_TESTS})
 
 # ----------------------------------------------------------------------------
 # Build
 # ----------------------------------------------------------------------------
-set(CMAKE_CXX_STANDARD 20)
+if(NOT CMAKE_CXX_STANDARD)
+    set(CMAKE_CXX_STANDARD 17)
+endif()
 
 include(CompilerOptions)
 set_compiler_options()

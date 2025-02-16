@@ -175,6 +175,7 @@ List of tasks to be done in the future:
 
 - Improvements:
     - Use `target_compile_options` instead of `add_compile_options`.
+    - Add more compiler options.
     - Create CMake targets for code coverage, documentation generation, code formatting and code static analysis.
     - Avoid manual settings adjustment of the Doxyfile for a given project (name, version, etc), using CMake to automatically configure those settings.
 - CI:

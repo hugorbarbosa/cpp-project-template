@@ -3,9 +3,9 @@
  * @copyright Copyright (C) 2022-2025 Hugo Barbosa.
  */
 
-#include <my_concrete_class.h>
 #include <iostream>
 #include <memory>
+#include <my_concrete_class.hpp>
 
 /**
  * @brief Main function.

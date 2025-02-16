@@ -3,7 +3,7 @@
  * @copyright Copyright (C) 2025 Hugo Barbosa.
  */
 
-#include "my_concrete_class.h"
+#include "my_concrete_class.hpp"
 
 namespace cpp_project_template {
 

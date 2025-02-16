@@ -4,8 +4,8 @@
  */
 
 #include <gtest/gtest.h>
-#include <mock_my_class.h>
-#include <my_class.h>
+#include <mock_my_class.hpp>
+#include <my_class.hpp>
 
 using namespace testing;
 using namespace cpp_project_template;

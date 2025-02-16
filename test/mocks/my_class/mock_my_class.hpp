@@ -3,11 +3,11 @@
  * @copyright Copyright (C) 2025 Hugo Barbosa.
  */
 
-#ifndef CPP_PROJECT_TEMPLATE_MOCK_MY_CLASS_H
-#define CPP_PROJECT_TEMPLATE_MOCK_MY_CLASS_H
+#ifndef CPP_PROJECT_TEMPLATE_MOCK_MY_CLASS_HPP
+#define CPP_PROJECT_TEMPLATE_MOCK_MY_CLASS_HPP
 
 #include <gmock/gmock.h>
-#include <my_class.h>
+#include <my_class.hpp>
 
 namespace cpp_project_template {
 namespace test {
@@ -27,4 +27,4 @@ public:
 } // namespace test
 } // namespace cpp_project_template
 
-#endif // CPP_PROJECT_TEMPLATE_MOCK_MY_CLASS_H
+#endif // CPP_PROJECT_TEMPLATE_MOCK_MY_CLASS_HPP

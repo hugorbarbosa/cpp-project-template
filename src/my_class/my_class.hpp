@@ -3,8 +3,8 @@
  * @copyright Copyright (C) 2025 Hugo Barbosa.
  */
 
-#ifndef CPP_PROJECT_TEMPLATE_MY_CLASS_H
-#define CPP_PROJECT_TEMPLATE_MY_CLASS_H
+#ifndef CPP_PROJECT_TEMPLATE_MY_CLASS_HPP
+#define CPP_PROJECT_TEMPLATE_MY_CLASS_HPP
 
 #include <string>
 
@@ -39,4 +39,4 @@ public:
 
 } // namespace cpp_project_template
 
-#endif // CPP_PROJECT_TEMPLATE_MY_CLASS_H
+#endif // CPP_PROJECT_TEMPLATE_MY_CLASS_HPP

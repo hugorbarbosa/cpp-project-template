@@ -4,7 +4,7 @@
  */
 
 #include <gtest/gtest.h>
-#include <my_concrete_class.h>
+#include <my_concrete_class.hpp>
 
 using namespace testing;
 using namespace cpp_project_template;

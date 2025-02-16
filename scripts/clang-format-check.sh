@@ -85,12 +85,12 @@ mkdir -p $build_dir
 # Get files to check
 if [ -z ${dir_check+x} ]; then
     # Directory not provided
-    log "Directory not provided, getting project files *.h and *.cpp using git"
-    files=$(git ls-files | grep -i -e "\.h$" -e "\.cpp$")
+    log "Directory not provided, getting project files *.h, *.hpp and *.cpp using git"
+    files=$(git ls-files | grep -i -e "\.h$" -e "\.hpp$" -e "\.cpp$")
 else
     # Directory provided
-    log "Getting files *.h and *.cpp in the directory: ${dir_check}"
-    files=$(find $dir_check -type f -iname "*.h" -o -iname "*.cpp")
+    log "Getting files *.h, *.hpp and *.cpp in the directory: ${dir_check}"
+    files=$(find $dir_check -type f -iname "*.h" -o -iname "*.hpp" -o -iname "*.cpp")
 fi
 
 if [[ -z "$files" ]]; then

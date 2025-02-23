@@ -28,6 +28,7 @@ This project template is structured in the following directories:
 - `doc`: project documentation.
 - `docker`: Dockerfile example and a guide.
 - `doxygen`: configuration used to build documentation from the source code using Doxygen.
+- `examples`: examples of how to use the library.
 - `external`: external dependencies of the project.
 - `include`: public header files.
 - `scripts`: useful scripts.
@@ -58,7 +59,7 @@ The instructions to use the docker image can be found [here](./docker/README.md)
 
 ## Supported compilers
 
-This project can be successfully compiled using the following compilers (it might also compile using other):
+This project can be successfully compiled using the following compilers (it might also succeed using another compiler):
 
 - GCC 9.4.0
 - Microsoft Visual C++ 2022 / Build Tools 19.32.31332

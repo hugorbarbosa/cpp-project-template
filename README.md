@@ -61,7 +61,8 @@ The instructions to use the docker image can be found [here](./docker/README.md)
 
 This project can be successfully compiled using the following compilers (it might also succeed using another compiler):
 
-- GCC 9.4.0
+- Clang 18.1.3
+- GCC 13.3.0
 - Microsoft Visual C++ 2022 / Build Tools 19.32.31332
 
 ## Compilation
@@ -175,8 +176,6 @@ This project contains this [CONTRIBUTING](./CONTRIBUTING.md) file, just for demo
 List of tasks to be done in the future:
 
 - Improvements:
-    - Use `target_compile_options` instead of `add_compile_options`.
-    - Add more compiler options.
     - Create CMake targets for code coverage, documentation generation, code formatting and code static analysis.
     - Avoid manual settings adjustment of the Doxyfile for a given project (name, version, etc), using CMake to automatically configure those settings.
 - CI:

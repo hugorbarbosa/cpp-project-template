@@ -14,7 +14,7 @@
 # - Run specifying that the configuration file is in the path "./doxygen/Doxyfile":
 # $ ./<script>.sh -f ./doxygen/Doxyfile
 
-set -o pipefail
+set -eo pipefail
 
 # Log help message.
 help() {

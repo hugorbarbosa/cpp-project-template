@@ -105,8 +105,7 @@ TEST_F(UtMyConcreteClass, ValueCanBeUpdated)
  */
 class ParamTestMyConcreteClass
     : public UtMyConcreteClass
-    , public WithParamInterface<std::string> {
-};
+    , public WithParamInterface<std::string> {};
 
 /**
  * @brief Test that the value can be correctly updated.

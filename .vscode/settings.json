@@ -3,6 +3,7 @@
         100
     ],
     "editor.formatOnSave": true,
+    "files.insertFinalNewline": true,
     "cmake.configureOnEdit": false,
     "cmake.configureArgs": [
         "-DCMAKE_BUILD_TYPE=Debug",
@@ -20,5 +21,7 @@
         "shellscript": true,
         "markdown": true
     },
-    "files.insertFinalNewline": true
+    "cSpell.words": [
+        "MSVC"
+    ]
 }

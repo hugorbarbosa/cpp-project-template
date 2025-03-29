@@ -54,13 +54,14 @@ fetch_project_dependencies(${CXXPROJT_BUILD_TESTS})
 # Build
 # ----------------------------------------------------------------------------
 if(NOT CMAKE_CXX_STANDARD)
-    set(CMAKE_CXX_STANDARD 17)
+    set(CMAKE_CXX_STANDARD 20)
 endif()
 
 include(CompilerOptions)
 set_compiler_options()
 
 if(CXXPROJT_BUILD_COVERAGE)
+    include(CodeCoverage)
     set_coverage_compiler_options()
 endif()
 
@@ -74,12 +75,13 @@ if(CXXPROJT_BUILD_TESTS)
 endif()
 
 # ----------------------------------------------------------------------------
-# Status
+# Configuration report
 # ----------------------------------------------------------------------------
 message(STATUS)
 message(STATUS "${CXXPROJT_PROJECT_NAME} ${CXXPROJT_PROJECT_VERSION} configuration:")
 message(STATUS "- CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
 message(STATUS "- CMAKE_CXX_COMPILER_ID = ${CMAKE_CXX_COMPILER_ID}")
+message(STATUS "- CMAKE_CXX_COMPILER_VERSION = ${CMAKE_CXX_COMPILER_VERSION}")
 message(STATUS "- CMAKE_CXX_STANDARD = ${CMAKE_CXX_STANDARD}")
 message(STATUS "- CXXPROJT_BUILD_TESTS = ${CXXPROJT_BUILD_TESTS}")
 message(STATUS "- CXXPROJT_BUILD_COVERAGE = ${CXXPROJT_BUILD_COVERAGE}")

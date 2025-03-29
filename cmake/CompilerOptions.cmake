@@ -1,31 +1,72 @@
-cmake_minimum_required(VERSION 3.16)
-
-# TODO: Use "target_compile_options" instead of "add_compile_options".
-
 # Set the compiler options.
 function(set_compiler_options)
-    # TODO: Add more compiler options.
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        add_compile_options(
-            /W4 # Displays level 1 to level 4 (informational) warnings.
-            /WX # Treat warnings as errors.
-        )
-    else()
-        add_compile_options(
-            -Wall # Enable most warning messages.
-            -Werror # Make all warnings into errors.
-        )
-    endif()
-endfunction()
+    set(MSVC_OPTIONS
+        # Displays level 1 to level 4 (informational) warnings.
+        /W4
+        # Treat warnings as errors.
+        /WX
+    )
 
-# Set the compiler options for code coverage.
-function(set_coverage_compiler_options)
-    # Code coverage available only for GCC.
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        add_compile_options(
-            --coverage # Compile and link code instrumented for coverage analysis.
-            -g # Produce debugging information.
-            -O0 # Reduce compilation time and make debugging produce the expected results.
-        )
+    set(CLANG_OPTIONS
+        # Enable most warning messages.
+        -Wall
+        # Make all warnings into errors.
+        -Werror
+        # Enable some extra warnings.
+        -Wextra
+        # Issue all the warnings demanded by strict ISO C and ISO C++.
+        -Wpedantic
+        # Warn if something being unused.
+        -Wunused
+        # Warn if an old-style (C-style) cast to a non-void type is used within a C++ program.
+        -Wold-style-cast
+        # Warn if a pointer is cast such that the required alignment of the target is increased.
+        -Wcast-align
+        # Warn whenever a variable or type declaration shadows another one.
+        -Wshadow
+        # Warn if a class with virtual functions has a non-virtual destructor.
+        -Wnon-virtual-dtor
+        # Warn when a function declaration hides virtual functions from a base class.
+        -Woverloaded-virtual
+        # Warn for implicit conversions that may alter a value.
+        -Wconversion
+        # Warn for implicit conversions that may change the sign of an integer value.
+        -Wsign-conversion
+        # Warn when a value of type float is implicitly promoted to double.
+        -Wdouble-promotion
+        # Warn if the compiler detects a null pointer dereference.
+        -Wnull-dereference
+        # Enable -Wformat plus additional format checks (calls to printf and scanf, etc).
+        -Wformat=2
+        # Warn on statements that fallthrough without an explicit annotation.
+        -Wimplicit-fallthrough
+    )
+
+    set(GCC_OPTIONS
+        ${CLANG_OPTIONS}
+        # Warn when the indentation of the code does not reflect the block structure.
+        -Wmisleading-indentation
+        # Warn about duplicated conditions in an if-else-if chain.
+        -Wduplicated-cond
+        # Warn when an if-else has identical branches.
+        -Wduplicated-branches
+        # Warn about suspicious uses of logical operators in expressions.
+        -Wlogical-op
+        # Warn when an expression is cast to its own type.
+        -Wuseless-cast
+        # Warn about overriding virtual functions that are not marked with the override keyword.
+        -Wsuggest-override
+    )
+
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        set(COMPILER_OPTIONS ${MSVC_OPTIONS})
+    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        set(COMPILER_OPTIONS ${CLANG_OPTIONS})
+    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        set(COMPILER_OPTIONS ${GCC_OPTIONS})
+    else()
+        message(AUTHOR_WARNING "No compiler options set for ${CMAKE_CXX_COMPILER_ID}")
     endif()
+
+    add_compile_options(${COMPILER_OPTIONS})
 endfunction()

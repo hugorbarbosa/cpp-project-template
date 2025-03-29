@@ -18,10 +18,10 @@ public:
     /**
      * @brief Constructor.
      *
-     * @param my_class My class.
+     * @param my_cl My class.
      */
-    explicit DemoMockUsage(std::shared_ptr<MyClass> my_class)
-        : my_class{std::move(my_class)}
+    explicit DemoMockUsage(std::shared_ptr<MyClass> my_cl)
+        : my_class{std::move(my_cl)}
     {
     }
 

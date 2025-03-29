@@ -12,7 +12,7 @@
 # - Run specifying a directory (e.g., "src"):
 # $ ./<script>.sh -d src
 
-set -o pipefail
+set -eo pipefail
 
 # Log help message.
 help() {

@@ -26,6 +26,11 @@ function(set_coverage_compiler_options)
             --coverage # Compile and link code instrumented for coverage analysis.
             -g # Produce debugging information.
             -O0 # Reduce compilation time and make debugging produce the expected results.
+            -fprofile-arcs # Add code so that program flow arcs are instrumented.
+            -ftest-coverage # Produce a notes file that the gcov utility can use.
+            -fprofile-abs-path # Convert file names to absolute path names in the .gcno files.
         )
+
+        link_libraries(gcov)
     endif()
 endfunction()

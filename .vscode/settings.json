@@ -9,6 +9,7 @@
         "-DCXXPROJT_BUILD_TESTS=ON"
     ],
     "cmake.buildDirectory": "${workspaceFolder}/build-${buildType}-${buildKitVendor}",
+    "C_Cpp.clang_format_path": "/usr/bin/clang-format",
     "C_Cpp.codeAnalysis.clangTidy.enabled": false,
     "C_Cpp.codeAnalysis.exclude": {
         "**/build*": true

@@ -13,7 +13,7 @@
 # - Run specifying the build directory name as "build":
 # $ ./<script>.sh -b build
 
-set -o pipefail
+set -eo pipefail
 
 # Log help message.
 help() {

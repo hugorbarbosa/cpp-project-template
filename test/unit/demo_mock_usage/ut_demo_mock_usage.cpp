@@ -21,7 +21,7 @@ public:
      * @param my_class My class.
      */
     explicit DemoMockUsage(std::shared_ptr<MyClass> my_class)
-        : my_class{std::move(my_class)}
+        : my_class_to_use{std::move(my_class)}
     {
     }
 
@@ -32,7 +32,7 @@ public:
      */
     void set_my_class_value(std::string value) noexcept
     {
-        my_class->set_value(std::move(value));
+        my_class_to_use->set_value(std::move(value));
     }
 
     /**
@@ -42,12 +42,12 @@ public:
      */
     std::string get_my_class_value() const noexcept
     {
-        return my_class->get_value();
+        return my_class_to_use->get_value();
     }
 
 private:
     /// My class.
-    std::shared_ptr<MyClass> my_class;
+    std::shared_ptr<MyClass> my_class_to_use;
 };
 
 /**

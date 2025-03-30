@@ -132,14 +132,17 @@ The code coverage analysis results are created and can be accessed in `build-cov
 
 ## Coding style
 
-This projects follows my [C++ coding style guide](https://github.com/hugorbarbosa/cpp-coding-style-guide). To ensure consistency, the format of the code can be checked with clang-format, using the correspondent script:
+This projects follows my [C++ coding style guide](https://github.com/hugorbarbosa/cpp-coding-style-guide). To ensure consistency, the format of the code can be checked with clang-format, using the commands below:
 
 ```sh
 $ cd <project-directory>
-$ ./scripts/clang-format-check.sh
+$ mkdir build-clang-format
+$ cd build-clang-format
+$ cmake .. -DCXXPROJT_ENABLE_FORMAT_CHECKER=ON
+$ cmake --build . --target format
 ```
 
-A report file is created in the `build-clang-format` directory.
+A report file is created in the `build-clang-format` directory (used build directory in this example).
 
 ## Code static analysis
 
@@ -176,7 +179,7 @@ This project contains this [CONTRIBUTING](./CONTRIBUTING.md) file, just for demo
 List of tasks to be done in the future:
 
 - Improvements:
-    - Create CMake targets for code coverage, documentation generation, code formatting and code static analysis.
+    - Create CMake targets for code coverage, documentation generation, and code static analysis.
     - Avoid manual settings adjustment of the Doxyfile for a given project (name, version, etc), using CMake to automatically configure those settings.
 - CI:
     - Add CI pipelines to build the project, run the tests, check the code coverage, check the code format, and run static analysis and sanitizers.

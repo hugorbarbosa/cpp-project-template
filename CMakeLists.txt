@@ -22,6 +22,7 @@ endif()
 # ----------------------------------------------------------------------------
 option(CXXPROJT_BUILD_TESTS "Build tests" ${MAIN_PROJECT})
 option(CXXPROJT_BUILD_COVERAGE "Build with code coverage" OFF)
+option(CXXPROJT_ENABLE_FORMAT_CHECKER "Enable code formatting checker" OFF)
 
 if(CXXPROJT_BUILD_COVERAGE)
     set(CXXPROJT_BUILD_TESTS ON)
@@ -74,6 +75,12 @@ if(CXXPROJT_BUILD_TESTS)
     add_subdirectory(test)
 endif()
 
+set(SCRIPTS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/scripts)
+if(CXXPROJT_ENABLE_FORMAT_CHECKER)
+    include(ClangFormat)
+    add_clang_format_target(${SCRIPTS_DIR}/clang-format-checker.sh)
+endif()
+
 # ----------------------------------------------------------------------------
 # Configuration report
 # ----------------------------------------------------------------------------
@@ -85,4 +92,5 @@ message(STATUS "- CMAKE_CXX_COMPILER_VERSION = ${CMAKE_CXX_COMPILER_VERSION}")
 message(STATUS "- CMAKE_CXX_STANDARD = ${CMAKE_CXX_STANDARD}")
 message(STATUS "- CXXPROJT_BUILD_TESTS = ${CXXPROJT_BUILD_TESTS}")
 message(STATUS "- CXXPROJT_BUILD_COVERAGE = ${CXXPROJT_BUILD_COVERAGE}")
+message(STATUS "- CXXPROJT_ENABLE_FORMAT_CHECKER = ${CXXPROJT_ENABLE_FORMAT_CHECKER}")
 message(STATUS)

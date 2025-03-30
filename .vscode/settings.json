@@ -7,7 +7,9 @@
     "cmake.configureOnEdit": false,
     "cmake.configureArgs": [
         "-DCMAKE_BUILD_TYPE=Debug",
-        "-DCXXPROJT_BUILD_TESTS=ON"
+        "-DCXXPROJT_BUILD_TESTS=ON",
+        "-DCXXPROJT_BUILD_COVERAGE=OFF",
+        "-DCXXPROJT_ENABLE_FORMAT_CHECKER=OFF"
     ],
     "cmake.buildDirectory": "${workspaceFolder}/build-${buildType}-${buildKitVendor}",
     "C_Cpp.codeAnalysis.clangTidy.enabled": false,

@@ -89,8 +89,8 @@ log "Configuring CMake"
 cmake -S $project_dir -B $build_dir -DCMAKE_BUILD_TYPE=Debug -DCXXPROJT_BUILD_TESTS=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -GNinja
 
 # Get files to analyze
-log "Getting project files *.h, *.hpp and *.cpp"
-files=$(git ls-files | grep -i -e "\.h$" -e "\.hpp$" -e "\.cpp$")
+log "Getting project files *.h, *.hpp, *.c, *.cpp and *.ipp"
+files=$(git ls-files | grep -i -e "\.h$" -e "\.hpp$" -e "\.c$" -e "\.cpp$" -e "\.ipp$")
 
 if [[ -z "$files" ]]; then
     log_error "No files to be analyzed"

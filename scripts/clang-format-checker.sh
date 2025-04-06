@@ -6,7 +6,7 @@ set -eo pipefail
 
 # Log help message.
 help() {
-    echo "Check code formatting using clang-format"
+    echo "Check code formatting using clang-format."
     echo
     echo "Usage: $0 [OPTIONS]"
     echo "Options:"
@@ -29,8 +29,8 @@ log() {
 # Parameters:
 #   $1: Message to log.
 log_error() {
-    readonly red_color='\033[0;31m'
-    readonly no_color='\033[0m'
+    red_color='\033[0;31m'
+    no_color='\033[0m'
     echo -e "$red_color$1$no_color"
 }
 
@@ -76,8 +76,9 @@ if [ -z ${dir_check+x} ]; then
     log "Directory not provided, getting files using git"
     files=$(git ls-files | grep -i -e "\.h$" -e "\.hpp$" -e "\.ipp$" -e "\.cpp$" -e "\.c$")
 else
-    log "Getting files *.h, *.hpp and *.cpp in the directory: ${dir_check}"
-    files=$(find $dir_check -type f -iname "*.h" -o -iname "*.hpp" -o -iname "*.cpp")
+    log "Getting files in the directory: ${dir_check}"
+    files=$(find $dir_check -type f -iname "*.h" -o -iname "*.hpp" -o -iname "*.ipp" \
+        -o -iname "*.cpp" -o -iname "*.c")
 fi
 
 if [[ -z "$files" ]]; then

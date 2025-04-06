@@ -117,18 +117,12 @@ The project can be compiled for code coverage analysis (for GCC only), using the
 $ cd <project-directory>
 $ mkdir build-coverage
 $ cd build-coverage
-$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCXXPROJT_BUILD_COVERAGE=ON
-$ cmake --build . -j 4
+$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCXXPROJT_ENABLE_COVERAGE=ON
+$ cmake --build . --target coverage
 ```
 
-LCOV is used to generate the report with the code coverage analysis. For that purpose, use the correspondent script available in the `scripts` directory as follows (note that this script already configures CMake and builds the project, so it is not necessary to run the commands described previously):
-
-```sh
-$ cd <project-directory>
-$ ./scripts/coverage-lcov-gen.sh
-```
-
-The code coverage analysis results are created and can be accessed in `build-coverage/coverage/index.html`.
+LCOV is used to generate the report with the code coverage analysis, which can be accessed in `build-coverage/coverage/index.html`.
+This target also checks the code coverage percentage and succeeds or fails if the coverage is sufficient or not, respectively. The accepted coverage percentage value can be configured by the user (see [CMakeLists](./CMakeLists.txt) of the project for more details).
 
 ## Coding style
 
@@ -138,7 +132,7 @@ This projects follows my [C++ coding style guide](https://github.com/hugorbarbos
 $ cd <project-directory>
 $ mkdir build-clang-format
 $ cd build-clang-format
-$ cmake .. -DCXXPROJT_ENABLE_FORMAT_CHECKER=ON
+$ cmake .. -DCXXPROJT_ENABLE_FORMAT=ON
 $ cmake --build . --target format
 ```
 
@@ -180,12 +174,13 @@ List of tasks to be done in the future:
 
 - Improvements:
     - Create CMake targets for code coverage, documentation generation, and code static analysis.
+    - Use `target_compile_options` instead of `add_compile_options`.
     - Avoid manual settings adjustment of the Doxyfile for a given project (name, version, etc), using CMake to automatically configure those settings.
 - CI:
     - Add CI pipelines to build the project, run the tests, check the code coverage, check the code format, and run static analysis and sanitizers.
 - Quality:
-    - Add cppcheck tool for code static analysis.
     - Add address, memory and thread sanitizers.
+    - Add cppcheck tool for code static analysis.
     - Add valgrind (memory checker).
 
 ## License

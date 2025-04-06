@@ -1,8 +1,9 @@
 # Add clang-format target.
 #
 # Parameters:
-#   script_path: Script path.
-function(add_clang_format_target script_path)
+#   SCRIPT_PATH: Format checker path.
+function(add_clang_format_target SCRIPT_PATH)
+    # Requirements.
     find_program(CLANG_FORMAT_PATH clang-format REQUIRED)
     execute_process(
         COMMAND ${CLANG_FORMAT_PATH} --version
@@ -11,8 +12,9 @@ function(add_clang_format_target script_path)
     )
     message(STATUS "Clang-format: ${CLANG_FORMAT_VERSION}")
 
+    # Target.
     add_custom_target(format
-        COMMAND ${script_path} -b ${CMAKE_BINARY_DIR}
-        COMMENT "Run clang-format checker"
+        COMMAND ${SCRIPT_PATH} -b ${CMAKE_BINARY_DIR}
+        COMMENT "Run clang-format checker."
     )
 endfunction()

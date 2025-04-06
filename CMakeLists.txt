@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # Project setup
 # ----------------------------------------------------------------------------
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.17)
 
 project(cpp_project_template
     VERSION 1.0.0
@@ -21,17 +21,17 @@ endif()
 # Configuration options
 # ----------------------------------------------------------------------------
 option(CXXPROJT_BUILD_TESTS "Build tests" ${MAIN_PROJECT})
-option(CXXPROJT_BUILD_COVERAGE "Build with code coverage" OFF)
-option(CXXPROJT_ENABLE_FORMAT_CHECKER "Enable code formatting checker" OFF)
+option(CXXPROJT_ENABLE_COVERAGE "Enable code coverage analysis" OFF)
+option(CXXPROJT_ENABLE_FORMAT "Enable code formatting check" OFF)
 
-if(CXXPROJT_BUILD_COVERAGE)
+if(CXXPROJT_ENABLE_COVERAGE)
     set(CXXPROJT_BUILD_TESTS ON)
 endif()
 
 # ----------------------------------------------------------------------------
 # CMake options
 # ----------------------------------------------------------------------------
-# Build type on single-configuration generators (e.g. Makefile generators or Ninja).
+# Build type on single-configuration generators (e.g. Makefile or Ninja).
 # Set default build type if build type not set.
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
@@ -61,9 +61,28 @@ endif()
 include(CompilerOptions)
 set_compiler_options()
 
-if(CXXPROJT_BUILD_COVERAGE)
+set(SCRIPTS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/scripts)
+
+if(CXXPROJT_ENABLE_COVERAGE)
     include(CodeCoverage)
-    set_coverage_compiler_options()
+    set(EXCLUDE_PATTERNS
+        "/usr/include/*"
+        "/usr/local/*"
+        "*/_deps/*"
+        "${CMAKE_CURRENT_SOURCE_DIR}/test/*"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp"
+    )
+    set(MIN_LINE_COVERAGE 90)
+    set(MIN_FUNCTION_COVERAGE 80)
+    set(JOBS 4)
+    set(SCRIPT_PATH ${SCRIPTS_DIR}/coverage-report-checker.sh)
+    enable_coverage(
+        "${EXCLUDE_PATTERNS}"
+        ${MIN_LINE_COVERAGE}
+        ${MIN_FUNCTION_COVERAGE}
+        ${JOBS}
+        ${SCRIPT_PATH}
+    )
 endif()
 
 add_subdirectory(src)
@@ -75,8 +94,7 @@ if(CXXPROJT_BUILD_TESTS)
     add_subdirectory(test)
 endif()
 
-set(SCRIPTS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/scripts)
-if(CXXPROJT_ENABLE_FORMAT_CHECKER)
+if(CXXPROJT_ENABLE_FORMAT)
     include(ClangFormat)
     add_clang_format_target(${SCRIPTS_DIR}/clang-format-checker.sh)
 endif()
@@ -91,6 +109,6 @@ message(STATUS "- CMAKE_CXX_COMPILER_ID = ${CMAKE_CXX_COMPILER_ID}")
 message(STATUS "- CMAKE_CXX_COMPILER_VERSION = ${CMAKE_CXX_COMPILER_VERSION}")
 message(STATUS "- CMAKE_CXX_STANDARD = ${CMAKE_CXX_STANDARD}")
 message(STATUS "- CXXPROJT_BUILD_TESTS = ${CXXPROJT_BUILD_TESTS}")
-message(STATUS "- CXXPROJT_BUILD_COVERAGE = ${CXXPROJT_BUILD_COVERAGE}")
-message(STATUS "- CXXPROJT_ENABLE_FORMAT_CHECKER = ${CXXPROJT_ENABLE_FORMAT_CHECKER}")
+message(STATUS "- CXXPROJT_ENABLE_COVERAGE = ${CXXPROJT_ENABLE_COVERAGE}")
+message(STATUS "- CXXPROJT_ENABLE_FORMAT = ${CXXPROJT_ENABLE_FORMAT}")
 message(STATUS)

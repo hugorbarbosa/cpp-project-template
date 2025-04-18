@@ -75,13 +75,13 @@ if(CXXPROJT_ENABLE_COVERAGE)
     set(MIN_LINE_COVERAGE 90)
     set(MIN_FUNCTION_COVERAGE 80)
     set(JOBS 4)
-    set(SCRIPT_PATH ${SCRIPTS_DIR}/coverage-report-checker.sh)
+    set(COV_CHECK_SCRIPT ${SCRIPTS_DIR}/coverage-report-checker.sh)
     enable_coverage(
         "${EXCLUDE_PATTERNS}"
         ${MIN_LINE_COVERAGE}
         ${MIN_FUNCTION_COVERAGE}
         ${JOBS}
-        ${SCRIPT_PATH}
+        ${COV_CHECK_SCRIPT}
     )
 endif()
 
@@ -96,7 +96,17 @@ endif()
 
 if(CXXPROJT_ENABLE_FORMAT)
     include(ClangFormat)
-    add_clang_format_target(${SCRIPTS_DIR}/clang-format-checker.sh)
+    set(DIRECTORIES
+        "${CMAKE_CURRENT_SOURCE_DIR}/examples"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src"
+        "${CMAKE_CURRENT_SOURCE_DIR}/test"
+    )
+    set(LOG_FILE format-report.log)
+    enable_format_check(
+        "${DIRECTORIES}"
+        ${LOG_FILE}
+    )
 endif()
 
 # ----------------------------------------------------------------------------

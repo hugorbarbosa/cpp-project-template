@@ -23,15 +23,15 @@ function(add_coverage_compiler_options)
    endif()
 endfunction()
 
-# Enable code coverage and create respective starget.
+# Enable code coverage and create respective target.
 #
 # Parameters:
 #   EXCLUDE_PATTERNS: Patterns to be excluded from the coverage analysis.
-#   MIN_LINE_COVERAGE: Minimum lines coverage value accepted.
-#   MIN_FUNCTION_COVERAGE: Minimum functions coverage value accepted.
+#   MIN_LINE_COVERAGE: Minimum lines coverage value to succeed.
+#   MIN_FUNCTION_COVERAGE: Minimum functions coverage value to succeed.
 #   JOBS: Number of jobs for compilation.
-#   SCRIPT_PATH: Report checker script path.
-function(enable_coverage EXCLUDE_PATTERNS MIN_LINE_COVERAGE MIN_FUNCTION_COVERAGE JOBS SCRIPT_PATH)
+#   COV_CHECK_SCRIPT: Coverage report checker script path.
+function(enable_coverage EXCLUDE_PATTERNS MIN_LINE_COVERAGE MIN_FUNCTION_COVERAGE JOBS COV_CHECK_SCRIPT)
     message(CHECK_START "Enabling code coverage")
 
     if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -110,8 +110,8 @@ function(enable_coverage EXCLUDE_PATTERNS MIN_LINE_COVERAGE MIN_FUNCTION_COVERAG
             --legend --show-details
     )
     # Coverage report checker.
-    set(SCRIPT_CMD 
-        ${SCRIPT_PATH} -b ${LCOV_PATH} -r ${COVERAGE_FILTERED_FILE} -l ${MIN_LINE_COVERAGE}
+    set(COV_CHECK_SCRIPT_CMD 
+        ${COV_CHECK_SCRIPT} -b ${LCOV_PATH} -r ${COVERAGE_FILTERED_FILE} -l ${MIN_LINE_COVERAGE}
             -f ${MIN_FUNCTION_COVERAGE}
     )
 
@@ -136,7 +136,7 @@ function(enable_coverage EXCLUDE_PATTERNS MIN_LINE_COVERAGE MIN_FUNCTION_COVERAG
         COMMAND ${CMAKE_COMMAND} -E echo "Checking code coverage report:"
         COMMAND ${CMAKE_COMMAND} -E echo "- Minimum line coverage: ${MIN_LINE_COVERAGE}"
         COMMAND ${CMAKE_COMMAND} -E echo "- Minimum function coverage: ${MIN_FUNCTION_COVERAGE}"
-        COMMAND ${SCRIPT_CMD}
+        COMMAND ${COV_CHECK_SCRIPT_CMD}
         BYPRODUCTS
             ${COVERAGE_BASE_FILE}
             ${COVERAGE_CAPTURE_FILE}

@@ -13,9 +13,9 @@ This project consists of a C++ project template that can be used as a starting p
 - [Running](#running)
 - [Tests](#tests)
 - [Code coverage](#code-coverage)
-- [Coding style](#coding-style)
+- [Coding style and format](#coding-style-and-format)
 - [Code static analysis](#code-static-analysis)
-- [Doxygen documentation](#doxygen-documentation)
+- [Source code documentation](#source-code-documentation)
 - [Contributing to the project](#contributing-to-the-project)
 - [Future work](#future-work)
 - [License](#license)
@@ -40,26 +40,35 @@ This project template is structured in the following directories:
 
 This section could describe the documentation available in the [`doc`](./doc/) directory, and eventually some links with information related to the project.
 
+Using this project as example, the following is what this section could have:
+
+"This C++ project template provides documentation that can be consulted by the user. It is available in [`doc`](./doc/), and includes the following:
+
+- Description of some examples of what can be inserted as documentation of a project (architecture diagrams, user guides, etc).
+- Details about some tools used by this project."
+
 ## Requirements
 
 The following tools are used by this project:
 
 - CMake: system to manage the build process.
 - C++ compiler: for software compilation (examples: Microsoft Visual C++, GCC and Clang).
-- LCOV: to obtain the code coverage.
+- LCOV: to obtain the code coverage report.
 - Doxygen: for generation of documentation from source code.
 - Clang-format: for code formatting.
 - Clang-tidy: for code static analysis.
 
+Please consult the [tools documentation](./doc/tools.md) to know more details about some of those tools.
+
 ### Using Docker
 
-There is a Docker image available for this project that contains all the dependencies to compile and run this software, as well as the tools used by this project. This allows to quickly use this project without being necessary the installation of any tool in the local system.
+There is a Docker image available in this project that contains all the dependencies to compile and run this software, as well as the required tools. This allows to quickly use this project without installing any tool in the local machine.
 
 The instructions to use the docker image can be found [here](./docker/README.md).
 
 ## Supported compilers
 
-This project can be successfully compiled using the following compilers (it might also succeed using another compiler):
+This project can be successfully built using the following compilers (it might also succeed using another one):
 
 - Clang 18.1.3
 - GCC 13.3.0
@@ -121,26 +130,29 @@ $ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCXXPROJT_ENABLE_COVERAGE=ON
 $ cmake --build . --target coverage
 ```
 
-LCOV is used to generate the report with the code coverage analysis, which can be accessed in `build-coverage/coverage/index.html`.
-This target also checks the code coverage percentage and succeeds or fails if the coverage is sufficient or not, respectively. The accepted coverage percentage value can be configured by the user (see [CMakeLists](./CMakeLists.txt) of the project for more details).
+This target compiles and generates a report with the code coverage analysis, using the LCOV tool. This report is placed inside of the build directory (`build-coverage` in this example), being available in `coverage/index.html`.
 
-## Coding style
+Additionally, this target also verifies the code coverage percentage and succeeds or fails if the coverage is sufficient or not, respectively. The accepted coverage percentage value can be configured by the user (see [CMakeLists](./CMakeLists.txt) of the project for more details).
 
-This projects follows my [C++ coding style guide](https://github.com/hugorbarbosa/cpp-coding-style-guide). To ensure consistency, the format of the code can be checked with clang-format, using the commands below:
+## Coding style and format
+
+This projects follows my [C++ coding style guide](https://github.com/hugorbarbosa/cpp-coding-style-guide). To ensure consistency, the format of the code can be checked using the commands below:
 
 ```sh
 $ cd <project-directory>
-$ mkdir build-clang-format
-$ cd build-clang-format
+$ mkdir build-format
+$ cd build-format
 $ cmake .. -DCXXPROJT_ENABLE_FORMAT=ON
 $ cmake --build . --target format
 ```
 
-A report file is created in the `build-clang-format` directory (used build directory in this example).
+This target uses clang-format to verify the format of the code, and creates a report file in the `build-format` directory (used build directory in this example), named as `format-report.log`. The build succeeds only if the source files are formatted accordingly to the [configuration](.clang-format) file. The project source files to be verified can be configured by the user (see [CMakeLists](./CMakeLists.txt) of the project for more details).
+
+Please consult the [tools documentation](./doc/tools.md) to know more details about clang-format.
 
 ## Code static analysis
 
-For code static analysis, it is used the clang-tidy tool. The correspondent script can be utilized to analyze the code:
+For code static analysis, the tool used is clang-tidy. The correspondent script can be utilized to analyze the code:
 
 ```sh
 $ cd <project-directory>
@@ -149,9 +161,11 @@ $ ./scripts/clang-tidy-check.sh
 
 A report file is created in the `build-clang-tidy` directory.
 
-## Doxygen documentation
+Please consult the [tools documentation](./doc/tools.md) to know more details about clang-tidy.
 
-The Doxygen tool is used to generate documentation from source code. The correspondent script generates the doxygen documentation, using the following commands:
+## Source code documentation
+
+Doxygen is used to check and generate documentation from source code. The correspondent script generates the doxygen documentation, using the following commands:
 
 ```sh
 $ cd <project-directory>
@@ -159,6 +173,8 @@ $ ./scripts/doxygen-doc-gen.sh
 ```
 
 The documentation is created and can be accessed in `build-doxygen/html/index.html`. Furthermore, a report file is created in the `build-doxygen` directory.
+
+Please consult the [tools documentation](./doc/tools.md) to know more details about doxygen.
 
 ## Contributing to the project
 
@@ -173,7 +189,7 @@ This project contains this [CONTRIBUTING](./CONTRIBUTING.md) file, just for demo
 List of tasks to be done in the future:
 
 - Improvements:
-    - Create CMake targets for code coverage, documentation generation, and code static analysis.
+    - Create CMake targets for documentation generation and code static analysis.
     - Use `target_compile_options` instead of `add_compile_options`.
     - Avoid manual settings adjustment of the Doxyfile for a given project (name, version, etc), using CMake to automatically configure those settings.
 - CI:

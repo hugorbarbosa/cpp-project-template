@@ -23,6 +23,7 @@ endif()
 option(CXXPROJT_BUILD_TESTS "Build tests" ${MAIN_PROJECT})
 option(CXXPROJT_ENABLE_COVERAGE "Enable code coverage analysis" OFF)
 option(CXXPROJT_ENABLE_FORMAT "Enable code formatting check" OFF)
+option(CXXPROJT_ENABLE_DOXYGEN "Enable doxygen documentation generation" OFF)
 
 if(CXXPROJT_ENABLE_COVERAGE)
     set(CXXPROJT_BUILD_TESTS ON)
@@ -65,7 +66,7 @@ set(SCRIPTS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/scripts)
 
 if(CXXPROJT_ENABLE_COVERAGE)
     include(CodeCoverage)
-    set(EXCLUDE_PATTERNS
+    set(COVERAGE_EXCLUDE_PATTERNS
         "/usr/include/*"
         "/usr/local/*"
         "*/_deps/*"
@@ -74,14 +75,14 @@ if(CXXPROJT_ENABLE_COVERAGE)
     )
     set(MIN_LINE_COVERAGE 90)
     set(MIN_FUNCTION_COVERAGE 80)
-    set(JOBS 4)
-    set(COV_CHECK_SCRIPT ${SCRIPTS_DIR}/coverage-report-checker.sh)
+    set(COVERAGE_JOBS 4)
+    set(COVERAGE_CHECK_SCRIPT ${SCRIPTS_DIR}/coverage-report-checker.sh)
     enable_coverage(
-        "${EXCLUDE_PATTERNS}"
+        "${COVERAGE_EXCLUDE_PATTERNS}"
         ${MIN_LINE_COVERAGE}
         ${MIN_FUNCTION_COVERAGE}
-        ${JOBS}
-        ${COV_CHECK_SCRIPT}
+        ${COVERAGE_JOBS}
+        ${COVERAGE_CHECK_SCRIPT}
     )
 endif()
 
@@ -96,16 +97,39 @@ endif()
 
 if(CXXPROJT_ENABLE_FORMAT)
     include(ClangFormat)
-    set(DIRECTORIES
+    set(FORMAT_DIRECTORIES
         "${CMAKE_CURRENT_SOURCE_DIR}/examples"
         "${CMAKE_CURRENT_SOURCE_DIR}/include"
         "${CMAKE_CURRENT_SOURCE_DIR}/src"
         "${CMAKE_CURRENT_SOURCE_DIR}/test"
     )
-    set(LOG_FILE format-report.log)
-    enable_format_check(
-        "${DIRECTORIES}"
-        ${LOG_FILE}
+    set(FORMAT_LOG_FILE format-report.log)
+    enable_format_check("${FORMAT_DIRECTORIES}" ${FORMAT_LOG_FILE})
+endif()
+
+if(CXXPROJT_ENABLE_DOXYGEN)
+    include(DoxygenDoc)
+    set(DOXYGEN_CONFIG_FILE ${CMAKE_CURRENT_SOURCE_DIR}/doxygen/Doxyfile.in)
+    set(DOXYGEN_PROJECT "C++ Project Template")
+    set(DOXYGEN_VERSION ${CXXPROJT_PROJECT_VERSION})
+    set(DOXYGEN_BRIEF "A C++ project template using CMake")
+    set(DOXYGEN_INPUT_LIST
+        "${CMAKE_CURRENT_SOURCE_DIR}/examples"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src"
+        "${CMAKE_CURRENT_SOURCE_DIR}/test"
+    )
+    string(REPLACE ";" " " DOXYGEN_INPUT "${DOXYGEN_INPUT_LIST}")
+    set(DOXYGEN_OUT_DIR ${CMAKE_BINARY_DIR}/doxygen)
+    set(DOXYGEN_LOG_FILE doxygen-report.log)
+    enable_doxygen_doc(
+        ${DOXYGEN_CONFIG_FILE}
+        ${DOXYGEN_PROJECT}
+        ${DOXYGEN_VERSION}
+        ${DOXYGEN_BRIEF}
+        ${DOXYGEN_INPUT}
+        ${DOXYGEN_OUT_DIR}
+        ${DOXYGEN_LOG_FILE}
     )
 endif()
 
@@ -121,4 +145,5 @@ message(STATUS "- CMAKE_CXX_STANDARD = ${CMAKE_CXX_STANDARD}")
 message(STATUS "- CXXPROJT_BUILD_TESTS = ${CXXPROJT_BUILD_TESTS}")
 message(STATUS "- CXXPROJT_ENABLE_COVERAGE = ${CXXPROJT_ENABLE_COVERAGE}")
 message(STATUS "- CXXPROJT_ENABLE_FORMAT = ${CXXPROJT_ENABLE_FORMAT}")
+message(STATUS "- CXXPROJT_ENABLE_DOXYGEN = ${CXXPROJT_ENABLE_DOXYGEN}")
 message(STATUS)

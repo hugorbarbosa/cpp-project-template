@@ -46,7 +46,8 @@ function(enable_format_check DIRECTORIES LOG_FILE)
         set(FORMAT_TARGET_NAME "format")
         add_custom_target(${FORMAT_TARGET_NAME}
             COMMENT "Check code formatting using clang-format."
-            COMMAND ${CMAKE_COMMAND} -E echo "Running clang-format, report: ${FORMAT_REPORT_FILE}"
+            COMMAND ${CMAKE_COMMAND} -E echo "Running clang-format"
+            COMMAND ${CMAKE_COMMAND} -E echo "Report: ${FORMAT_REPORT_FILE}"
             COMMAND ${CLANG_FORMAT_CMD} > ${FORMAT_REPORT_FILE} 2>&1
             BYPRODUCTS
                 ${FORMAT_REPORT_FILE}

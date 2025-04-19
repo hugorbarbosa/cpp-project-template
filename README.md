@@ -146,7 +146,9 @@ $ cmake .. -DCXXPROJT_ENABLE_FORMAT=ON
 $ cmake --build . --target format
 ```
 
-This target uses clang-format to verify the format of the code, and creates a report file in the `build-format` directory (used build directory in this example), named as `format-report.log`. The build succeeds only if the source files are formatted accordingly to the [configuration](.clang-format) file. The project source files to be verified can be configured by the user (see [CMakeLists](./CMakeLists.txt) of the project for more details).
+This target uses clang-format to verify the format of the code, and creates a report file in the `build-format` directory (used build directory in this example), named as `format-report.log`.
+
+The build succeeds only if the source files are formatted accordingly to the [configuration](.clang-format) file. The project source files to be verified can be configured by the user (see [CMakeLists](./CMakeLists.txt) of the project for more details).
 
 Please consult the [tools documentation](./doc/tools.md) to know more details about clang-format.
 
@@ -165,14 +167,19 @@ Please consult the [tools documentation](./doc/tools.md) to know more details ab
 
 ## Source code documentation
 
-Doxygen is used to check and generate documentation from source code. The correspondent script generates the doxygen documentation, using the following commands:
+Doxygen is used to generate documentation from source code, and the following commands can be used for that purpose:
 
 ```sh
 $ cd <project-directory>
-$ ./scripts/doxygen-doc-gen.sh
+$ mkdir build-doxygen
+$ cd build-doxygen
+$ cmake .. -DCXXPROJT_ENABLE_DOXYGEN=ON
+$ cmake --build . --target doxygen
 ```
 
-The documentation is created and can be accessed in `build-doxygen/html/index.html`. Furthermore, a report file is created in the `build-doxygen` directory.
+This target generates documentation from the source files using doxygen, in the `build-doxygen` directory (used build directory in this example), which can be accessed from `html/index.html`. Furthermore, a report file named as `doxygen-report.log` is also created in this build directory.
+
+This target only succeeds if the source files are correctly documented. The doxygen [configuration](./doxygen/Doxyfile.in) file in this project is prepared to be automatically configured through CMake by the user, namely the source files from which documentation should be generated, as well as other parameters related to the project (see [CMakeLists](./CMakeLists.txt) of the project for more details).
 
 Please consult the [tools documentation](./doc/tools.md) to know more details about doxygen.
 
@@ -189,9 +196,8 @@ This project contains this [CONTRIBUTING](./CONTRIBUTING.md) file, just for demo
 List of tasks to be done in the future:
 
 - Improvements:
-    - Create CMake targets for documentation generation and code static analysis.
+    - Create CMake target for code static analysis.
     - Use `target_compile_options` instead of `add_compile_options`.
-    - Avoid manual settings adjustment of the Doxyfile for a given project (name, version, etc), using CMake to automatically configure those settings.
 - CI:
     - Add CI pipelines to build the project, run the tests, check the code coverage, check the code format, and run static analysis and sanitizers.
 - Quality:

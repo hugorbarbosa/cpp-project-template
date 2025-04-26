@@ -32,7 +32,7 @@ function(enable_doxygen_doc CONFIG_FILE PROJECT VERSION BRIEF INPUT OUT_DIR LOG_
     set(CONFIG_FILE_OUT ${CMAKE_BINARY_DIR}/Doxyfile)
     configure_file(${CONFIG_FILE} ${CONFIG_FILE_OUT} @ONLY)
 
-    set(DOXYGEN_REPORT_FILE "${CMAKE_BINARY_DIR}/${LOG_FILE}")
+    set(REPORT_FILE "${CMAKE_BINARY_DIR}/${LOG_FILE}")
     set(DOXYGEN_INDEX_FILE "${OUT_DIR}/index.html")
 
     # List of commands.
@@ -45,11 +45,11 @@ function(enable_doxygen_doc CONFIG_FILE PROJECT VERSION BRIEF INPUT OUT_DIR LOG_
     add_custom_target(${DOXYGEN_TARGET_NAME}
         COMMENT "Generate doxygen documentation for project ${PROJECT}."
         COMMAND ${CMAKE_COMMAND} -E echo "Running doxygen"
-        COMMAND ${CMAKE_COMMAND} -E echo "Report: ${DOXYGEN_REPORT_FILE}"
+        COMMAND ${CMAKE_COMMAND} -E echo "Report: ${REPORT_FILE}"
         COMMAND ${CMAKE_COMMAND} -E echo "Generated doc index: ${DOXYGEN_INDEX_FILE}"
-        COMMAND ${DOXYGEN_CMD} > ${DOXYGEN_REPORT_FILE} 2>&1
+        COMMAND ${DOXYGEN_CMD} > ${REPORT_FILE} 2>&1
         BYPRODUCTS
-            ${DOXYGEN_REPORT_FILE}
+            ${REPORT_FILE}
             ${DOXYGEN_INDEX_FILE}
             ${CONFIG_FILE_OUT}
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}

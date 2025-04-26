@@ -85,9 +85,17 @@ $ cd build-debug
 $ cmake .. -DCMAKE_BUILD_TYPE=Debug
 ```
 
+Alternatively to creating the build directory manually, the following CMake command can be used to create it automatically, but the result will be exactly the same:
+
+```sh
+$ cd <project-directory>
+$ cmake -S . -B ./build-debug -DCMAKE_BUILD_TYPE=Debug
+```
+
 To compile the software, use the CMake build command (universal command for building, that abstracts a native build tool's command-line interface):
 
 ```sh
+$ cd build-debug
 $ cmake --build . -j 4
 ```
 
@@ -154,20 +162,25 @@ Please consult the [code quality tools](./doc/code-quality-tools.md) documentati
 
 ## Code static analysis
 
-For code static analysis, the tool used is clang-tidy. The correspondent script can be utilized to analyze the code:
+Clang-tidy is a tool that can be used to perform code static analysis. The project is prepared to execute this type of analysis using this tool, applying the following commands:
 
 ```sh
 $ cd <project-directory>
-$ ./scripts/clang-tidy-check.sh
+$ mkdir build-clang-tidy
+$ cd build-clang-tidy
+$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCXXPROJT_ENABLE_CLANG_TIDY=ON -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+$ cmake --build . --target clang_tidy
 ```
 
-A report file is created in the `build-clang-tidy` directory.
+This target runs clang-tidy and generates a report with the results of the code static analysis, named as `clang-tidy-report.log`, and placed inside of the build directory (`build-clang-tidy` in this example).
+
+The build succeeds only if no issues are found during the code static analysis, which utilizes the rules provided in the respective [configuration](.clang-tidy) file. The project source files to be analyzed can be configured by the user (see [CMakeLists](./CMakeLists.txt) of the project for more details).
 
 Please consult the [code quality tools](./doc/code-quality-tools.md) documentation to know more details about clang-tidy.
 
 ## Source code documentation
 
-Doxygen is used to generate documentation from source code, and the following commands can be used for that purpose:
+Doxygen is used to generate documentation from source code, and the commands below can be used for that purpose:
 
 ```sh
 $ cd <project-directory>
@@ -196,14 +209,14 @@ This project contains this [CONTRIBUTING](./CONTRIBUTING.md) file, just for demo
 List of tasks to be done in the future:
 
 - Improvements:
-    - Create CMake target for code static analysis.
+    - Fix code issues reported by clang-tidy.
     - Use `target_compile_options` instead of `add_compile_options`.
-- CI:
-    - Add CI pipelines to build the project, run the tests, check the code coverage, check the code format, and run static analysis and sanitizers.
-- Quality:
-    - Add address, memory and thread sanitizers.
+- Code quality tools:
+    - Add address, memory, thread and undefined behavior sanitizers.
     - Add cppcheck tool for code static analysis.
     - Add valgrind (memory checker).
+- CI:
+    - Add CI pipelines to build the project, to run the tests, and to use all the code quality tools and sanitizers.
 
 ## License
 

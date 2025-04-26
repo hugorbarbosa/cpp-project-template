@@ -34,7 +34,7 @@ function(enable_format_check DIRECTORIES LOG_FILE)
     endforeach()
 
     # Generated files.
-    set(FORMAT_REPORT_FILE "${CMAKE_BINARY_DIR}/${LOG_FILE}")
+    set(REPORT_FILE "${CMAKE_BINARY_DIR}/${LOG_FILE}")
 
     if(FILES)
         # List of commands.
@@ -47,10 +47,10 @@ function(enable_format_check DIRECTORIES LOG_FILE)
         add_custom_target(${FORMAT_TARGET_NAME}
             COMMENT "Check code formatting using clang-format."
             COMMAND ${CMAKE_COMMAND} -E echo "Running clang-format"
-            COMMAND ${CMAKE_COMMAND} -E echo "Report: ${FORMAT_REPORT_FILE}"
-            COMMAND ${CLANG_FORMAT_CMD} > ${FORMAT_REPORT_FILE} 2>&1
+            COMMAND ${CMAKE_COMMAND} -E echo "Report: ${REPORT_FILE}"
+            COMMAND ${CLANG_FORMAT_CMD} > ${REPORT_FILE} 2>&1
             BYPRODUCTS
-                ${FORMAT_REPORT_FILE}
+                ${REPORT_FILE}
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
             VERBATIM
         )

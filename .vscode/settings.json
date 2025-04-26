@@ -10,6 +10,7 @@
         "-DCXXPROJT_BUILD_TESTS=ON",
         "-DCXXPROJT_ENABLE_COVERAGE=OFF",
         "-DCXXPROJT_ENABLE_FORMAT=OFF",
+        "-DCXXPROJT_ENABLE_CLANG_TIDY=OFF",
         "-DCXXPROJT_ENABLE_DOXYGEN=OFF"
     ],
     "cmake.buildDirectory": "${workspaceFolder}/build-${buildType}-${buildKitVendor}",

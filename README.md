@@ -42,10 +42,10 @@ This section could describe the documentation available in the [`doc`](./doc/) d
 
 Using this project as example, the following is what this section could have:
 
-"This C++ project template provides documentation that can be consulted by the user. It is available in [`doc`](./doc/), and includes the following:
+"Documentation of this project is available in [`doc`](./doc/), and includes the following:
 
 - Description of some examples of what can be inserted as documentation of a project (architecture diagrams, user guides, etc).
-- Details about some tools used by this project."
+- Details about some code quality tools used by this project."
 
 ## Requirements
 
@@ -58,7 +58,7 @@ The following tools are used by this project:
 - Clang-format: for code formatting.
 - Clang-tidy: for code static analysis.
 
-Please consult the [tools documentation](./doc/tools.md) to know more details about some of those tools.
+Please consult the [code quality tools](./doc/code-quality-tools.md) documentation to know more details about some of those tools.
 
 ### Using Docker
 
@@ -150,7 +150,7 @@ This target uses clang-format to verify the format of the code, and creates a re
 
 The build succeeds only if the source files are formatted accordingly to the [configuration](.clang-format) file. The project source files to be verified can be configured by the user (see [CMakeLists](./CMakeLists.txt) of the project for more details).
 
-Please consult the [tools documentation](./doc/tools.md) to know more details about clang-format.
+Please consult the [code quality tools](./doc/code-quality-tools.md) documentation to know more details about clang-format.
 
 ## Code static analysis
 
@@ -163,7 +163,7 @@ $ ./scripts/clang-tidy-check.sh
 
 A report file is created in the `build-clang-tidy` directory.
 
-Please consult the [tools documentation](./doc/tools.md) to know more details about clang-tidy.
+Please consult the [code quality tools](./doc/code-quality-tools.md) documentation to know more details about clang-tidy.
 
 ## Source code documentation
 
@@ -181,7 +181,7 @@ This target generates documentation from the source files using doxygen, in the 
 
 This target only succeeds if the source files are correctly documented. The doxygen [configuration](./doxygen/Doxyfile.in) file in this project is prepared to be automatically configured through CMake by the user, namely the source files from which documentation should be generated, as well as other parameters related to the project (see [CMakeLists](./CMakeLists.txt) of the project for more details).
 
-Please consult the [tools documentation](./doc/tools.md) to know more details about doxygen.
+Please consult the [code quality tools](./doc/code-quality-tools.md) documentation to know more details about doxygen.
 
 ## Contributing to the project
 

@@ -1,6 +1,6 @@
-# Tools
+# Code quality tools
 
-This project uses many tools commonly utilized in a C++ project. This document describes in more detail some of those tools.
+This project uses many code quality tools commonly utilized in a C++ project. This document describes in more detail some of those tools.
 
 ## Table of contents
 

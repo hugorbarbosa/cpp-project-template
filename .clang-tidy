@@ -3,29 +3,31 @@
 
 ---
 Checks: '-*,
-        bugprone-use-after-move,
-        concurrency-mt-unsafe,
+        bugprone-*,
+        concurrency-*,
         cppcoreguidelines-*,
+        google-build-explicit-make-pair,
+        google-build-namespaces,
+        google-default-arguments,
         google-explicit-constructor,
-        modernize-avoid-c-arrays,
-        modernize-deprecated-headers,
-        modernize-macro-to-enum,
-        modernize-use-emplace,
-        modernize-use-using,
-        performance-implicit-conversion-in-loop,
-        performance-inefficient-algorithm,
-        readability-braces-around-statements,
-        readability-const-return-type,
-        readability-else-after-return,
-        readability-implicit-bool-conversion,
-        readability-inconsistent-declaration-parameter-name,
-        readability-magic-numbers,
-        readability-simplify-boolean-expr,
-        readability-uppercase-literal-suffix'
+        google-global-names-in-headers,
+        google-readability-avoid-underscore-in-googletest-name,
+        google-readability-casting,
+        google-upgrade-googletest-case,
+        hicpp-*,
+        misc-const-correctness,
+        misc-header-include-cycle,
+        misc-no-recursion,
+        misc-redundant-expression,
+        misc-static-assert,
+        modernize-*,
+        -modernize-concat-nested-namespaces,
+        -modernize-use-nodiscard,
+        -modernize-use-trailing-return-type,
+        performance-*,
+        readability-*'
 WarningsAsErrors: '*'
 HeaderFilterRegex: ''
 FormatStyle: none
 InheritParentConfig: true
 User: user
-CheckOptions:
-...

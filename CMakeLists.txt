@@ -23,10 +23,15 @@ endif()
 option(CXXPROJT_BUILD_TESTS "Build tests" ${MAIN_PROJECT})
 option(CXXPROJT_ENABLE_COVERAGE "Enable code coverage analysis" OFF)
 option(CXXPROJT_ENABLE_FORMAT "Enable code formatting check" OFF)
+option(CXXPROJT_ENABLE_CLANG_TIDY "Enable code static analysis with clang-tidy" OFF)
 option(CXXPROJT_ENABLE_DOXYGEN "Enable doxygen documentation generation" OFF)
 
 if(CXXPROJT_ENABLE_COVERAGE)
     set(CXXPROJT_BUILD_TESTS ON)
+endif()
+
+if(CXXPROJT_ENABLE_CLANG_TIDY)
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 endif()
 
 # ----------------------------------------------------------------------------
@@ -60,7 +65,8 @@ if(NOT CMAKE_CXX_STANDARD)
 endif()
 
 include(CompilerOptions)
-set_compiler_options()
+set(COMPILATION_WARNINGS_AS_ERRORS ON)
+set_compiler_options(${COMPILATION_WARNINGS_AS_ERRORS})
 
 set(SCRIPTS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/scripts)
 
@@ -107,6 +113,18 @@ if(CXXPROJT_ENABLE_FORMAT)
     enable_format_check("${FORMAT_DIRECTORIES}" ${FORMAT_LOG_FILE})
 endif()
 
+if(CXXPROJT_ENABLE_CLANG_TIDY)
+    include(ClangTidy)
+    set(CLANG_TIDY_DIRECTORIES
+        "${CMAKE_CURRENT_SOURCE_DIR}/examples"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src"
+        "${CMAKE_CURRENT_SOURCE_DIR}/test"
+    )
+    set(CLANG_TIDY_LOG_FILE clang-tidy-report.log)
+    enable_clang_tidy("${CLANG_TIDY_DIRECTORIES}" ${CLANG_TIDY_LOG_FILE})
+endif()
+
 if(CXXPROJT_ENABLE_DOXYGEN)
     include(DoxygenDoc)
     set(DOXYGEN_CONFIG_FILE ${CMAKE_CURRENT_SOURCE_DIR}/doxygen/Doxyfile.in)
@@ -142,8 +160,10 @@ message(STATUS "- CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
 message(STATUS "- CMAKE_CXX_COMPILER_ID = ${CMAKE_CXX_COMPILER_ID}")
 message(STATUS "- CMAKE_CXX_COMPILER_VERSION = ${CMAKE_CXX_COMPILER_VERSION}")
 message(STATUS "- CMAKE_CXX_STANDARD = ${CMAKE_CXX_STANDARD}")
+message(STATUS "- CMAKE_EXPORT_COMPILE_COMMANDS = ${CMAKE_EXPORT_COMPILE_COMMANDS}")
 message(STATUS "- CXXPROJT_BUILD_TESTS = ${CXXPROJT_BUILD_TESTS}")
 message(STATUS "- CXXPROJT_ENABLE_COVERAGE = ${CXXPROJT_ENABLE_COVERAGE}")
 message(STATUS "- CXXPROJT_ENABLE_FORMAT = ${CXXPROJT_ENABLE_FORMAT}")
+message(STATUS "- CXXPROJT_ENABLE_CLANG_TIDY = ${CXXPROJT_ENABLE_CLANG_TIDY}")
 message(STATUS "- CXXPROJT_ENABLE_DOXYGEN = ${CXXPROJT_ENABLE_DOXYGEN}")
 message(STATUS)

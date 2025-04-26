@@ -1,17 +1,16 @@
 # Set the compiler options.
-function(set_compiler_options)
+#
+# Parameters:
+#   WARNINGS_AS_ERRORS: Option to set warnings as errors.
+function(set_compiler_options WARNINGS_AS_ERRORS)
     set(MSVC_OPTIONS
         # Displays level 1 to level 4 (informational) warnings.
         /W4
-        # Treat warnings as errors.
-        /WX
     )
 
     set(CLANG_OPTIONS
         # Enable most warning messages.
         -Wall
-        # Make all warnings into errors.
-        -Werror
         # Enable some extra warnings.
         -Wextra
         # Issue all the warnings demanded by strict ISO C and ISO C++.
@@ -57,6 +56,13 @@ function(set_compiler_options)
         # Warn about overriding virtual functions that are not marked with the override keyword.
         -Wsuggest-override
     )
+
+    if(WARNINGS_AS_ERRORS)
+        message(STATUS "Compilation warnings will be treated as errors")
+        list(APPEND MSVC_OPTIONS /WX)
+        list(APPEND CLANG_OPTIONS -Werror)
+        list(APPEND GCC_OPTIONS -Werror)
+    endif()
 
     if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         set(COMPILER_OPTIONS ${MSVC_OPTIONS})

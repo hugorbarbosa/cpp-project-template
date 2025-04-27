@@ -24,7 +24,7 @@ function(enable_clang_tidy DIRECTORIES LOG_FILE)
             if(EXISTS ${DIR})
                 # Search recursively the files.
                 file(GLOB_RECURSE DIR_FILES
-                    "${DIR}/*.h" "${DIR}/*.hpp" "${DIR}/*.ipp" "${DIR}/*.cpp" "${DIR}/*.c"
+                    "${DIR}/*.cpp" "${DIR}/*.c"
                 )
                 list(APPEND FILES ${DIR_FILES})
             else()

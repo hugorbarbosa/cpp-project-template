@@ -6,8 +6,7 @@
 #include <gtest/gtest.h>
 #include <my_concrete_class.hpp>
 
-using namespace testing;
-using namespace cpp_project_template;
+using cpp_project_template::MyConcreteClass;
 
 /**
  * @brief Test that the value can be correctly updated.
@@ -24,11 +23,11 @@ TEST(UtMyConcreteClassWithoutFixture, ValueIsDefined)
 }
 
 /**
- * @brief Unit testing of my concrete class.
+ * @brief Unit testing suite of my concrete class.
  *
  * It serves as an example of a Test Fixture.
  */
-class UtMyConcreteClass : public Test {
+class UtMyConcreteClass : public testing::Test {
 protected:
     /// Default value of my concrete class used for testing.
     static constexpr auto default_value = "Initial value";
@@ -40,17 +39,7 @@ protected:
      *
      * You can do set-up work for each test here.
      */
-    UtMyConcreteClass()
-        : my_concrete_class{default_value}
-    {
-    }
-
-    /**
-     * @brief Destructor.
-     *
-     * You can do clean-up work that doesn't throw exceptions here.
-     */
-    ~UtMyConcreteClass() override {}
+    UtMyConcreteClass() = default;
 
     /**
      * @brief Test fixture setup.
@@ -63,13 +52,13 @@ protected:
     /**
      * @brief Test fixture teardown.
      *
-     * If the destructor is not enough, this function can be used for cleaning up each test.
+     * A class destructor can be defined to clean-up work that doesn't throw exceptions. However, if
+     * the destructor is not enough, this function can be used for cleaning up each test.
      * Code here will be called immediately after each test (right before the destructor).
      */
     void TearDown() override {}
 
-    /// My concrete class under testing.
-    MyConcreteClass my_concrete_class;
+    // Class members declared here can be used by all tests of this test suite.
 };
 
 /**
@@ -77,10 +66,11 @@ protected:
  */
 TEST_F(UtMyConcreteClass, InitialValueIsDefined)
 {
+    const MyConcreteClass my_concrete_class{default_value};
     ASSERT_EQ(my_concrete_class.get_value(), default_value);
 
     constexpr auto local_initial_value = "Local initial value";
-    MyConcreteClass my_concrete_class_local{local_initial_value};
+    const MyConcreteClass my_concrete_class_local{local_initial_value};
     EXPECT_EQ(my_concrete_class_local.get_value(), local_initial_value);
 }
 
@@ -90,6 +80,8 @@ TEST_F(UtMyConcreteClass, InitialValueIsDefined)
 TEST_F(UtMyConcreteClass, ValueCanBeUpdated)
 {
     constexpr auto value1 = "Value 1";
+
+    MyConcreteClass my_concrete_class{default_value};
     my_concrete_class.set_value(value1);
     ASSERT_EQ(my_concrete_class.get_value(), value1);
 
@@ -105,7 +97,7 @@ TEST_F(UtMyConcreteClass, ValueCanBeUpdated)
  */
 class ParamTestMyConcreteClass
     : public UtMyConcreteClass
-    , public WithParamInterface<std::string> {};
+    , public testing::WithParamInterface<std::string> {};
 
 /**
  * @brief Test that the value can be correctly updated.
@@ -113,6 +105,8 @@ class ParamTestMyConcreteClass
 TEST_P(ParamTestMyConcreteClass, ValueCanBeUpdated)
 {
     const auto& value = GetParam();
+
+    MyConcreteClass my_concrete_class{default_value};
     my_concrete_class.set_value(value);
     EXPECT_EQ(my_concrete_class.get_value(), value);
 }
@@ -122,4 +116,4 @@ TEST_P(ParamTestMyConcreteClass, ValueCanBeUpdated)
  */
 INSTANTIATE_TEST_SUITE_P(SetValue,
                          ParamTestMyConcreteClass,
-                         Values("value1", "value2", "value3", "value4"));
+                         testing::Values("value1", "value2", "value3", "value4"));

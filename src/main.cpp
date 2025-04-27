@@ -19,9 +19,8 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 {
     std::cout << "Hello World!\n";
 
-    using namespace cpp_project_template;
-
-    std::unique_ptr<MyClass> my_class{std::make_unique<MyConcreteClass>("Initial value")};
+    std::unique_ptr<cpp_project_template::MyClass> my_class{
+        std::make_unique<cpp_project_template::MyConcreteClass>("Initial value")};
 
     constexpr auto print_class_value
         = [](const auto& value) { std::cout << "My class value = " << value << "\n"; };

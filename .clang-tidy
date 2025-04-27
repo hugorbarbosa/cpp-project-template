@@ -8,6 +8,7 @@ Checks: '-*,
         cppcoreguidelines-*,
         google-build-explicit-make-pair,
         google-build-namespaces,
+        google-build-using-namespace,
         google-default-arguments,
         google-explicit-constructor,
         google-global-names-in-headers,
@@ -27,7 +28,7 @@ Checks: '-*,
         performance-*,
         readability-*'
 WarningsAsErrors: '*'
-HeaderFilterRegex: ''
+HeaderFilterRegex: '.*'
 FormatStyle: none
 InheritParentConfig: true
 User: user

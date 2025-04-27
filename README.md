@@ -172,9 +172,9 @@ $ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCXXPROJT_ENABLE_CLANG_TIDY=ON -DCMAKE_C_CO
 $ cmake --build . --target clang_tidy
 ```
 
-This target runs clang-tidy and generates a report with the results of the code static analysis, named as `clang-tidy-report.log`, and placed inside of the build directory (`build-clang-tidy` in this example).
+This target runs clang-tidy and generates a report with the results of the code static analysis, named as `clang-tidy-report.log` and placed inside of the build directory (`build-clang-tidy` in this example).
 
-The build succeeds only if no issues are found during the code static analysis, which utilizes the rules provided in the respective [configuration](.clang-tidy) file. The project source files to be analyzed can be configured by the user (see [CMakeLists](./CMakeLists.txt) of the project for more details).
+The build succeeds only if no issues are found during the code static analysis, which utilizes the list of checks provided in the respective [configuration](.clang-tidy) file. The project source files to be analyzed can be configured by the user (see [CMakeLists](./CMakeLists.txt) of the project for more details).
 
 Please consult the [code quality tools](./doc/code-quality-tools.md) documentation to know more details about clang-tidy.
 
@@ -202,14 +202,13 @@ If the project is open for contributions, it might make sense to have this secti
 
 This project contains this [CONTRIBUTING](./CONTRIBUTING.md) file, just for demonstration purposes, that can be used as an example for another project. In that project, this section could have the following phrase:
 
-"We welcome contributions to this project! There are many ways to contribute, from reporting bugs to suggesting features and submitting code. For more details, please see the [contributing guide](./CONTRIBUTING.md) for details on how to contribute to this project."
+"We welcome contributions to this project! There are many ways to contribute, from reporting bugs to suggesting features and submitting code. For more details on how to contribute to this project, please see the [contributing guide](./CONTRIBUTING.md)."
 
 ## Future work
 
 List of tasks to be done in the future:
 
 - Improvements:
-    - Fix code issues reported by clang-tidy.
     - Use `target_compile_options` instead of `add_compile_options`.
 - Code quality tools:
     - Add address, memory, thread and undefined behavior sanitizers.

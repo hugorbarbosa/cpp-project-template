@@ -7,11 +7,13 @@
 #include <mock_my_class.hpp>
 #include <my_class.hpp>
 
-using namespace testing;
-using namespace cpp_project_template;
+using cpp_project_template::MyClass;
 
 /**
  * @brief Class that uses the mock of my class, to demonstrate how to use a mock in tests.
+ *
+ * This class exemplifies an entity that uses my class in the implementation code (it would not be
+ * here in a "real" project).
  */
 class DemoMockUsage {
 public:
@@ -51,20 +53,19 @@ private:
 };
 
 /**
- * @brief Unit testing to demonstrate how to use a mock in tests.
+ * @brief Unit testing suite to demonstrate how to use a mock in tests.
  */
-class UtDemoMockUsage : public Test {
+class UtDemoMockUsage : public testing::Test {
 protected:
     /**
-     * @brief Constructor.
+     * @brief Get an instance of the mock of my class.
+     *
+     * @return Instance of the mock of my class.
      */
-    UtDemoMockUsage()
-        : mock_my_class{std::make_shared<test::MockMyClass>()}
+    static auto get_mock_my_class() noexcept
     {
+        return std::make_shared<cpp_project_template::test::MockMyClass>();
     }
-
-    /// Mock of my class.
-    std::shared_ptr<test::MockMyClass> mock_my_class;
 };
 
 /**
@@ -74,6 +75,7 @@ TEST_F(UtDemoMockUsage, ValueIsDefinedThroughMyClass)
 {
     constexpr auto value = "Value";
 
+    const auto mock_my_class = get_mock_my_class();
     EXPECT_CALL(*mock_my_class, set_value(value)).Times(1);
 
     DemoMockUsage demo_mock_usage{mock_my_class};
@@ -87,8 +89,9 @@ TEST_F(UtDemoMockUsage, ValueIsRetrievedThroughMyClass)
 {
     constexpr auto value = "Value";
 
-    EXPECT_CALL(*mock_my_class, get_value).WillOnce(Return(value));
+    const auto mock_my_class = get_mock_my_class();
+    EXPECT_CALL(*mock_my_class, get_value).WillOnce(testing::Return(value));
 
-    DemoMockUsage demo_mock_usage{mock_my_class};
+    const DemoMockUsage demo_mock_usage{mock_my_class};
     EXPECT_EQ(demo_mock_usage.get_my_class_value(), value);
 }

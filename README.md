@@ -1,16 +1,22 @@
 # C++ project template
 
-This project consists of a C++ project template that can be used as a starting point of a new C++ project, using CMake as build system.
+This project provides a comprehensive C++ project template, designed to help you quickly get started with a C++ project.
+
+It offers a clear project structure, essential configurations, and integrates code quality tools to ensure clean, maintainable code right from the start.
 
 ## Table of contents
 
+- [Features](#features)
+- [Getting started](#getting-started)
 - [Project structure](#project-structure)
 - [Documentation](#documentation)
 - [Requirements](#requirements)
     - [Using Docker](#using-docker)
+- [Examples](#examples)
+- [Integration](#integration)
 - [Supported compilers](#supported-compilers)
 - [Compilation](#compilation)
-- [Running](#running)
+- [Running the executable](#running-the-executable)
 - [Tests](#tests)
 - [Code coverage](#code-coverage)
 - [Coding style and format](#coding-style-and-format)
@@ -20,13 +26,46 @@ This project consists of a C++ project template that can be used as a starting p
 - [Future work](#future-work)
 - [License](#license)
 
+## Features
+
+- Build system setup using CMake.
+- Modern CMake configuration that adheres to best practices, based on my knowledge and experience.
+- Standard directory structure for easy navigation and scalability.
+- Structure for any type of project, including header-only libraries.
+- Separation of application/library code from test code to maintain a clean and modular project structure.
+- Examples of test suites and mocks.
+- Sample code files to quickly prototype and test.
+- Integration of code quality tools for:
+    - Code coverage.
+    - Code formatting.
+    - Static analysis.
+    - Documentation.
+- Code quality tools configured to be easily executed and ready for integration into CI pipelines.
+- Automatic dependency fetching, using CMake, for easy integration of third-party libraries.
+- Example of a Dockerfile.
+- Templates for README and Contributing guide.
+
+## Getting started
+
+This project template might contain some directories and files that are not needed for specific projects, so it should be adjusted to your needs.
+
+The following procedure will help you to get started with this template:
+
+- Get a copy of this template.
+- Adjust the `CMakeLists` files to use your project files.
+- Remove unused files and directories.
+- Replace the license file with the one specific to your project.
+- Adjust clang-format, clang-tidy, and doxygen configuration files, as well as some of its parameters automatically configured by CMake.
+- `Dockerfile` can also be adjusted to your needs.
+- Update this README to have only the sections that make sense for your project.
+
 ## Project structure
 
 This project template is structured in the following directories:
 
 - `cmake`: useful CMake files.
 - `doc`: project documentation.
-- `docker`: Dockerfile example and a guide.
+- `docker`: `Dockerfile` example and a guide.
 - `doxygen`: configuration used to build documentation from the source code using Doxygen.
 - `examples`: examples of how to use the library.
 - `external`: external dependencies of the project.
@@ -54,9 +93,9 @@ The following tools are used by this project:
 - CMake: system to manage the build process.
 - C++ compiler: for software compilation (examples: Microsoft Visual C++, GCC and Clang).
 - LCOV: to obtain the code coverage report.
-- Doxygen: for generation of documentation from source code.
 - Clang-format: for code formatting.
 - Clang-tidy: for code static analysis.
+- Doxygen: for generation of documentation from source code.
 
 Please consult the [code quality tools](./doc/code-quality-tools.md) documentation to know more details about some of those tools.
 
@@ -65,6 +104,52 @@ Please consult the [code quality tools](./doc/code-quality-tools.md) documentati
 There is a Docker image available in this project that contains all the dependencies to compile and run this software, as well as the required tools. This allows to quickly use this project without installing any tool in the local machine.
 
 The instructions to use the docker image can be found [here](./docker/README.md).
+
+## Examples
+
+When the C++ project is a library, this section is usually present and contains some code examples of how to use the library.
+
+In the end of this section, it should mention something similar to the following:
+
+"For more usage examples, please explore the [examples](./examples/) directory.".
+
+## Integration
+
+If the project is a library, this section can be included here to refer how the library can be integrated into the user project.
+
+The content of this section that is available in this project is an example, which considers that the library is named as "my_library".
+
+This library creates a CMake target that can be linked in your project, and there are many ways to make this library available to be used in your project.
+
+### Using CMake `FetchContent` module
+
+CMake `FetchContent` module can be used to automatically download this library as a dependency when configuring your project. For that, you just need to place this code in your `CMakeLists.txt` file:
+
+```cmake
+include(FetchContent)
+FetchContent_Declare(
+    mylibrary
+    GIT_REPOSITORY <repository_url> # Adjust to your needs.
+    GIT_TAG <tag> # Tag or a commit hash if you prefer.
+)
+FetchContent_MakeAvailable(mylibrary)
+# ...
+target_link_libraries(your-target PRIVATE my_library::my_library)
+```
+
+### Copying the entire project
+
+You can copy the entire project source tree into your project, and in your `CMakeLists.txt` file:
+
+```cmake
+add_subdirectory(my-library) # This is the repository/project name.
+# ...
+target_link_libraries(your-target PRIVATE my_library::my_library)
+```
+
+### Using as `git submodule`
+
+You can also use this library as a `git submodule` in your project. For this case, the CMake code needed is the same as the one demonstrated if this entire project was copied into your project.
 
 ## Supported compilers
 
@@ -76,7 +161,7 @@ This project can be successfully built using the following compilers (it might a
 
 ## Compilation
 
-The following commands can be utilized to configure the project (example for Debug configuration):
+The following commands can be utilized to configure the project (example for Debug build type):
 
 ```sh
 $ cd <project-directory>
@@ -99,13 +184,13 @@ $ cd build-debug
 $ cmake --build . -j 4
 ```
 
-It is also possible to compile the project calling the underlying build system directly (example for Unix Makefiles):
+Although it is recommended to use the CMake build command, it is also possible to compile the project calling the underlying build system directly (example for Unix Makefiles):
 
 ```sh
 $ make -j 4
 ```
 
-## Running
+## Running the executable
 
 After compiling the project, an executable file is created and can be run using the following command (note that some configuration generators (e.g., Visual Studio) may add a configuration folder (e.g., Debug) in the path):
 
@@ -115,7 +200,7 @@ $ ./bin/<config>/cpp-project-template
 
 ## Tests
 
-To run the unit tests, use the commands below:
+To compile and run the tests, use the commands below:
 
 ```sh
 $ cd <project-directory>
@@ -210,12 +295,13 @@ List of tasks to be done in the future:
 
 - Improvements:
     - Use `target_compile_options` instead of `add_compile_options`.
+    - Add CMake Presets.
 - Code quality tools:
     - Add address, memory, thread and undefined behavior sanitizers.
     - Add cppcheck tool for code static analysis.
     - Add valgrind (memory checker).
 - CI:
-    - Add CI pipelines to build the project, to run the tests, and to use all the code quality tools and sanitizers.
+    - Add CI pipelines, with GitHub Actions, to build the project, to run the tests, and to use all the code quality tools and sanitizers.
 
 ## License
 

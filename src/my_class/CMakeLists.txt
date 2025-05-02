@@ -8,3 +8,7 @@ add_library(${CXXPROJT_PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 target_include_directories(${PROJECT_NAME}
     PUBLIC .
 )
+
+target_link_libraries(${PROJECT_NAME}
+    PRIVATE ${CXXPROJT_PROJECT_NAME}::compile_options
+)

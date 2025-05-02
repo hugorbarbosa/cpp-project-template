@@ -1,8 +1,13 @@
-# Set the compiler options.
+#
+# Copyright (C) 2025 Hugo Barbosa.
+#
+
+# Add the default compiler options to the provided target.
 #
 # Parameters:
+#   TARGET_NAME: Target name to add the compiler options.
 #   WARNINGS_AS_ERRORS: Option to set warnings as errors.
-function(set_compiler_options WARNINGS_AS_ERRORS)
+function(add_default_compiler_options TARGET_NAME WARNINGS_AS_ERRORS)
     set(MSVC_OPTIONS
         # Displays level 1 to level 4 (informational) warnings.
         /W4
@@ -74,5 +79,23 @@ function(set_compiler_options WARNINGS_AS_ERRORS)
         message(AUTHOR_WARNING "No compiler options set for ${CMAKE_CXX_COMPILER_ID}")
     endif()
 
-    add_compile_options(${COMPILER_OPTIONS})
+    target_compile_options(${TARGET_NAME}
+        INTERFACE ${COMPILER_OPTIONS}
+    )
+endfunction()
+
+# Set the default compiler options to the provided library.
+# The library will be created by this function.
+#
+# Parameters:
+#   LIBRARY_NAME: Name of the library to add the compiler options.
+#   NAMESPACE: Namespace for the library.
+#   WARNINGS_AS_ERRORS: Option to set warnings as errors.
+function(set_project_default_compiler_options LIBRARY_NAME NAMESPACE WARNINGS_AS_ERRORS)
+    add_library(${LIBRARY_NAME} INTERFACE)
+    add_library(${NAMESPACE}::${LIBRARY_NAME} ALIAS ${LIBRARY_NAME})
+    add_default_compiler_options(
+        ${LIBRARY_NAME}
+        ${WARNINGS_AS_ERRORS}
+    )
 endfunction()

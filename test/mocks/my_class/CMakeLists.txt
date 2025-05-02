@@ -8,6 +8,7 @@ target_include_directories(${PROJECT_NAME}
 )
 
 target_link_libraries(${PROJECT_NAME}
+    INTERFACE ${CXXPROJT_PROJECT_NAME}::compile_options
     INTERFACE GTest::gmock
     INTERFACE ${CXXPROJT_PROJECT_NAME}::my_class
 )

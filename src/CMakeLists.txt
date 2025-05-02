@@ -7,6 +7,7 @@ add_executable(${PROJECT_NAME}
 )
 
 target_link_libraries(${PROJECT_NAME}
+    PRIVATE ${CXXPROJT_PROJECT_NAME}::compile_options
     PRIVATE ${CXXPROJT_PROJECT_NAME}::my_class
 )
 

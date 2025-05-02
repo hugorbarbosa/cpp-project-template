@@ -1,3 +1,7 @@
+#
+# Copyright (C) 2025 Hugo Barbosa.
+#
+
 # ----------------------------------------------------------------------------
 # Project setup
 # ----------------------------------------------------------------------------
@@ -30,43 +34,54 @@ if(CXXPROJT_ENABLE_COVERAGE)
     set(CXXPROJT_BUILD_TESTS ON)
 endif()
 
-if(CXXPROJT_ENABLE_CLANG_TIDY)
-    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-endif()
-
 # ----------------------------------------------------------------------------
 # CMake options
 # ----------------------------------------------------------------------------
-# Build type on single-configuration generators (e.g. Makefile or Ninja).
-# Set default build type if build type not set.
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Debug)
+if(MAIN_PROJECT)
+    # Build type on single-configuration generators (e.g. Makefile or Ninja).
+    # Set default build type if build type not set.
+    if(NOT CMAKE_BUILD_TYPE)
+        set(DEFAULT_BUILD_TYPE Debug)
+        message(STATUS "No build type specified, setting it to '${DEFAULT_BUILD_TYPE}'")
+        set(CMAKE_BUILD_TYPE ${DEFAULT_BUILD_TYPE})
+    endif()
+
+    # Generates a JSON file containing the exact compiler commands. Useful for clang-based tools.
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 endif()
 
-# Build type (configuration) on multi-config generators (e.g. Visual Studio, Xcode, or Ninja
-# Multi-Config).
-# Set default configuration type if configuration type not set.
-if(NOT CMAKE_CONFIGURATION_TYPES)
-    set(CMAKE_CONFIGURATION_TYPES Debug)
-endif()
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 
 # ----------------------------------------------------------------------------
 # Dependencies
 # ----------------------------------------------------------------------------
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 include(ProjectDependencies)
 fetch_project_dependencies(${CXXPROJT_BUILD_TESTS})
 
 # ----------------------------------------------------------------------------
-# Build
+# Compiler options
 # ----------------------------------------------------------------------------
+
 if(NOT CMAKE_CXX_STANDARD)
     set(CMAKE_CXX_STANDARD 20)
 endif()
 
+# Disable compiler specific extensions.
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 include(CompilerOptions)
+
+set(PROJECT_COMPILER_OPTIONS_LIBRARY compile_options)
 set(COMPILATION_WARNINGS_AS_ERRORS ON)
-set_compiler_options(${COMPILATION_WARNINGS_AS_ERRORS})
+set_project_default_compiler_options(
+    ${PROJECT_COMPILER_OPTIONS_LIBRARY}
+    ${CXXPROJT_PROJECT_NAME}
+    ${COMPILATION_WARNINGS_AS_ERRORS}
+)
+
+# ----------------------------------------------------------------------------
+# Quality tools
+# ----------------------------------------------------------------------------
 
 set(SCRIPTS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/scripts)
 
@@ -84,21 +99,13 @@ if(CXXPROJT_ENABLE_COVERAGE)
     set(COVERAGE_JOBS 4)
     set(COVERAGE_CHECK_SCRIPT ${SCRIPTS_DIR}/coverage-report-checker.sh)
     enable_coverage(
+        ${PROJECT_COMPILER_OPTIONS_LIBRARY}
         "${COVERAGE_EXCLUDE_PATTERNS}"
         ${MIN_LINE_COVERAGE}
         ${MIN_FUNCTION_COVERAGE}
         ${COVERAGE_JOBS}
         ${COVERAGE_CHECK_SCRIPT}
     )
-endif()
-
-add_subdirectory(src)
-
-if(CXXPROJT_BUILD_TESTS)
-    include(CTest)
-    include(GoogleTest)
-    enable_testing()
-    add_subdirectory(test)
 endif()
 
 if(CXXPROJT_ENABLE_FORMAT)
@@ -152,6 +159,19 @@ if(CXXPROJT_ENABLE_DOXYGEN)
 endif()
 
 # ----------------------------------------------------------------------------
+# Build
+# ----------------------------------------------------------------------------
+
+add_subdirectory(src)
+
+if(CXXPROJT_BUILD_TESTS)
+    include(CTest)
+    include(GoogleTest)
+    enable_testing()
+    add_subdirectory(test)
+endif()
+
+# ----------------------------------------------------------------------------
 # Configuration report
 # ----------------------------------------------------------------------------
 message(STATUS)
@@ -166,4 +186,5 @@ message(STATUS "- CXXPROJT_ENABLE_COVERAGE = ${CXXPROJT_ENABLE_COVERAGE}")
 message(STATUS "- CXXPROJT_ENABLE_FORMAT = ${CXXPROJT_ENABLE_FORMAT}")
 message(STATUS "- CXXPROJT_ENABLE_CLANG_TIDY = ${CXXPROJT_ENABLE_CLANG_TIDY}")
 message(STATUS "- CXXPROJT_ENABLE_DOXYGEN = ${CXXPROJT_ENABLE_DOXYGEN}")
+message(STATUS "- MAIN_PROJECT = ${MAIN_PROJECT}")
 message(STATUS)

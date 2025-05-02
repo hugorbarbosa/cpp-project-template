@@ -1,5 +1,12 @@
-# Add the compiler options for code coverage.
-function(add_coverage_compiler_options)
+#
+# Copyright (C) 2025 Hugo Barbosa.
+#
+
+# Add the compiler options for code coverage to the provided target.
+#
+# Parameters:
+#   TARGET_NAME: Name of the target to add coverage compiler options.
+function(add_coverage_compiler_options TARGET_NAME)
     set(GCC_COVERAGE_OPTIONS
         # Compile and link code instrumented for coverage analysis.
         --coverage
@@ -16,23 +23,29 @@ function(add_coverage_compiler_options)
     )
 
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        add_compile_options(${GCC_COVERAGE_OPTIONS})
-        link_libraries(gcov)
+        target_compile_options(${TARGET_NAME}
+            INTERFACE ${GCC_COVERAGE_OPTIONS}
+        )
+        target_link_libraries(${TARGET_NAME}
+            INTERFACE gcov
+        )
+        message(STATUS "Added coverage compiler options for target ${TARGET_NAME}")
     else()
         message(FATAL_ERROR "Coverage only for GCC, not available for ${CMAKE_CXX_COMPILER_ID}")
    endif()
 endfunction()
 
-# Enable code coverage and create respective target.
+# Enable code coverage for the provided target and create coverage target.
 #
 # Parameters:
+#   TARGET_NAME: Name of the target to add coverage compiler options.
 #   EXCLUDE_PATTERNS: Patterns to be excluded from the coverage analysis.
 #   MIN_LINE_COVERAGE: Minimum lines coverage value to succeed.
 #   MIN_FUNCTION_COVERAGE: Minimum functions coverage value to succeed.
 #   JOBS: Number of jobs for compilation.
 #   COV_CHECK_SCRIPT: Coverage report checker script path.
-function(enable_coverage EXCLUDE_PATTERNS MIN_LINE_COVERAGE MIN_FUNCTION_COVERAGE JOBS COV_CHECK_SCRIPT)
-    message(CHECK_START "Enabling code coverage")
+function(enable_coverage TARGET_NAME EXCLUDE_PATTERNS MIN_LINE_COVERAGE MIN_FUNCTION_COVERAGE JOBS COV_CHECK_SCRIPT)
+    message(CHECK_START "Enabling code coverage for target ${TARGET_NAME}")
 
     if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
         message(WARNING "Code coverage in a non-Debug build may be misleading")
@@ -53,7 +66,7 @@ function(enable_coverage EXCLUDE_PATTERNS MIN_LINE_COVERAGE MIN_FUNCTION_COVERAG
 
     # Compiler options.
     message(CHECK_START "Adding coverage compiler options")
-    add_coverage_compiler_options()
+    add_coverage_compiler_options(${TARGET_NAME})
     message(CHECK_PASS "done")
 
     # Excludes.

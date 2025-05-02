@@ -294,9 +294,9 @@ This project contains this [CONTRIBUTING](./CONTRIBUTING.md) file, just for demo
 List of tasks to be done in the future:
 
 - Improvements:
-    - Use `target_compile_options` instead of `add_compile_options`.
     - Add CMake Presets.
 - Code quality tools:
+    - Add CMake format.
     - Add address, memory, thread and undefined behavior sanitizers.
     - Add cppcheck tool for code static analysis.
     - Add valgrind (memory checker).

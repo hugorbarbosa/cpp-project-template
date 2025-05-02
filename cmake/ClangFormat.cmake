@@ -1,3 +1,7 @@
+#
+# Copyright (C) 2025 Hugo Barbosa.
+#
+
 # Enable code formatting check, using clang-format.
 #
 # Parameters:

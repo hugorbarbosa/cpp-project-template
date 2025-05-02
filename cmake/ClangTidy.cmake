@@ -1,3 +1,7 @@
+#
+# Copyright (C) 2025 Hugo Barbosa.
+#
+
 # Enable code static analysis, using clang-tidy.
 #
 # Parameters:

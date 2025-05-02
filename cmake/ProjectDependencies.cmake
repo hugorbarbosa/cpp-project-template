@@ -1,3 +1,7 @@
+#
+# Copyright (C) 2025 Hugo Barbosa.
+#
+
 include(FetchContent)
 
 # Fetch googletest.

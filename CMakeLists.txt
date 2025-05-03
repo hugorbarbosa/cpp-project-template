@@ -5,7 +5,7 @@
 # ----------------------------------------------------------------------------
 # Project setup
 # ----------------------------------------------------------------------------
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.21)
 
 project(cpp_project_template
     VERSION 1.0.0

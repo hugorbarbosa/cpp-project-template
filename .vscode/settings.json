@@ -5,15 +5,7 @@
     "editor.formatOnSave": true,
     "files.insertFinalNewline": true,
     "cmake.configureOnEdit": false,
-    "cmake.configureArgs": [
-        "-DCMAKE_BUILD_TYPE=Debug",
-        "-DCXXPROJT_BUILD_TESTS=ON",
-        "-DCXXPROJT_ENABLE_COVERAGE=OFF",
-        "-DCXXPROJT_ENABLE_FORMAT=OFF",
-        "-DCXXPROJT_ENABLE_CLANG_TIDY=OFF",
-        "-DCXXPROJT_ENABLE_DOXYGEN=OFF"
-    ],
-    "cmake.buildDirectory": "${workspaceFolder}/build-${buildType}-${buildKitVendor}",
+    "cmake.useCMakePresets": "always",
     "C_Cpp.codeAnalysis.clangTidy.enabled": false,
     "C_Cpp.codeAnalysis.exclude": {
         "**/build*": true

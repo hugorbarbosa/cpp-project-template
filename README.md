@@ -15,7 +15,7 @@ It offers a clear project structure, essential configurations, and integrates co
 - [Examples](#examples)
 - [Integration](#integration)
 - [Supported compilers](#supported-compilers)
-- [Compilation](#compilation)
+- [Building](#building)
 - [Running the executable](#running-the-executable)
 - [Tests](#tests)
 - [Code coverage](#code-coverage)
@@ -56,6 +56,7 @@ The following procedure will help you to get started with this template:
 - Remove unused files and directories.
 - Replace the license file with the one specific to your project.
 - Adjust clang-format, clang-tidy, and doxygen configuration files, as well as some of its parameters automatically configured by CMake.
+- Update the `CMakePresets.json` file, if necessary.
 - `Dockerfile` can also be adjusted to your needs.
 - Update this README to have only the sections that make sense for your project.
 
@@ -159,7 +160,7 @@ This project can be successfully built using the following compilers (it might a
 - GCC 13.3.0
 - Microsoft Visual C++ 2022 / Build Tools 19.32.31332
 
-## Compilation
+## Building
 
 The following commands can be utilized to configure the project (example for Debug build type):
 
@@ -190,11 +191,37 @@ Although it is recommended to use the CMake build command, it is also possible t
 $ make -j 4
 ```
 
+This project provides this [CMakePresets.json](./CMakePresets.json) file, which specifies some common configuration options to facilitate the building of the project and the sharing of these settings with the developers/users, presets that can also support CI pipelines.
+
+To list all the CMake configuration presets available for this project, use the following commands (must be executed in the project directory, where the `CMakePresets.json` is located):
+
+```sh
+$ cd <project-directory>
+$ cmake --list-presets
+```
+
+Besides the configure presets, there are build and test presets already available, which can be listed specifying the type as follows:
+
+```sh
+$ cmake --list-presets=configure
+$ cmake --list-presets=build
+$ cmake --list-presets=test
+```
+
+The usage of the CMake presets allows to avoid the definition of the necessary variables for the desired build (in the example used, `CMAKE_BUILD_TYPE=Debug` for Debug build), therefore the previous configure and build commands can be replaced by the following commands to configure and build the project, using the GCC compiler in this case but there are more compiler options available in the JSON file (build directory is automatically created using presets):
+
+```sh
+$ cd <project-directory>
+$ cmake --preset debug-gcc
+$ cmake --build --preset debug-gcc
+```
+
 ## Running the executable
 
 After compiling the project, an executable file is created and can be run using the following command (note that some configuration generators (e.g., Visual Studio) may add a configuration folder (e.g., Debug) in the path):
 
 ```sh
+$ cd <build-directory>
 $ ./bin/<config>/cpp-project-template
 ```
 
@@ -211,6 +238,15 @@ $ cmake --build . -j 4
 $ ctest
 ```
 
+Alternatively, CMake presets can be applied as follows to run the tests, configuring automatically the needed variables:
+
+```sh
+$ cd <project-directory>
+$ cmake --preset debug-gcc
+$ cmake --build --preset debug-gcc
+$ ctest --preset test-debug-gcc
+```
+
 ## Code coverage
 
 The project can be compiled for code coverage analysis (for GCC only), using the following commands:
@@ -221,6 +257,14 @@ $ mkdir build-coverage
 $ cd build-coverage
 $ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCXXPROJT_ENABLE_COVERAGE=ON
 $ cmake --build . --target coverage
+```
+
+CMake presets may be utilized instead of the previous commands to run code coverage analysis:
+
+```sh
+$ cd <project-directory>
+$ cmake --preset coverage
+$ cmake --build --preset coverage
 ```
 
 This target compiles and generates a report with the code coverage analysis, using the LCOV tool. This report is placed inside of the build directory (`build-coverage` in this example), being available in `coverage/index.html`.
@@ -237,6 +281,14 @@ $ mkdir build-format
 $ cd build-format
 $ cmake .. -DCXXPROJT_ENABLE_FORMAT=ON
 $ cmake --build . --target format
+```
+
+Alternatively, use CMake presets as follows to check the code format:
+
+```sh
+$ cd <project-directory>
+$ cmake --preset clang-format
+$ cmake --build --preset clang-format
 ```
 
 This target uses clang-format to verify the format of the code, and creates a report file in the `build-format` directory (used build directory in this example), named as `format-report.log`.
@@ -257,6 +309,14 @@ $ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCXXPROJT_ENABLE_CLANG_TIDY=ON -DCMAKE_C_CO
 $ cmake --build . --target clang_tidy
 ```
 
+Alternatively to using the previous commands, CMake presets may be applied to facilitate the build to perform static analysis using clang-tidy:
+
+```sh
+$ cd <project-directory>
+$ cmake --preset clang-tidy
+$ cmake --build --preset clang-tidy
+```
+
 This target runs clang-tidy and generates a report with the results of the code static analysis, named as `clang-tidy-report.log` and placed inside of the build directory (`build-clang-tidy` in this example).
 
 The build succeeds only if no issues are found during the code static analysis, which utilizes the list of checks provided in the respective [configuration](.clang-tidy) file. The project source files to be analyzed can be configured by the user (see [CMakeLists](./CMakeLists.txt) of the project for more details).
@@ -273,6 +333,14 @@ $ mkdir build-doxygen
 $ cd build-doxygen
 $ cmake .. -DCXXPROJT_ENABLE_DOXYGEN=ON
 $ cmake --build . --target doxygen
+```
+
+The respective CMake presets can be used instead of the previous commands to run doxygen:
+
+```sh
+$ cd <project-directory>
+$ cmake --preset doxygen
+$ cmake --build --preset doxygen
 ```
 
 This target generates documentation from the source files using doxygen, in the `build-doxygen` directory (used build directory in this example), which can be accessed from `html/index.html`. Furthermore, a report file named as `doxygen-report.log` is also created in this build directory.
@@ -293,8 +361,6 @@ This project contains this [CONTRIBUTING](./CONTRIBUTING.md) file, just for demo
 
 List of tasks to be done in the future:
 
-- Improvements:
-    - Add CMake Presets.
 - Code quality tools:
     - Add CMake format.
     - Add address, memory, thread and undefined behavior sanitizers.

@@ -21,6 +21,14 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
     set(MAIN_PROJECT ON)
 endif()
 
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
+
+# ----------------------------------------------------------------------------
+# Pre-requirements
+# ----------------------------------------------------------------------------
+include(SourceBuilds)
+validate_build_directory()
+
 # ----------------------------------------------------------------------------
 # Configuration options
 # ----------------------------------------------------------------------------
@@ -49,8 +57,6 @@ if(MAIN_PROJECT)
     # Generates a JSON file containing the exact compiler commands. Useful for clang-based tools.
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 endif()
-
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 
 # ----------------------------------------------------------------------------
 # Dependencies

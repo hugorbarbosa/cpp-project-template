@@ -43,7 +43,7 @@ This project uses this [clang-tidy configuration file](../.clang-tidy), which in
 
 As previously mentioned, clang-tidy can be integrated in a IDE/editor, like Visual Studio Code. The [C/C++ extension][ref-vscode-cpp-extension] needs to be installed for configuring and using clang-tidy from the Visual Studio Code. Additionally, you can configure to automatically analyze the code when saving a file (see the [settings](../.vscode/settings.json) file available as example).
 
-Refer to the [clang-tidy page][ref-tool-clang-tidy] for more details regarding this tool.
+Please refer to the [clang-tidy page][ref-tool-clang-tidy] for more details regarding this tool.
 
 ## Doxygen
 
@@ -59,7 +59,7 @@ This tool utilizes a configuration file (Doxyfile) that permits users to customi
 
 The format of the source code comments needs to follow some rules, in order to generate documentation from those comments by this tool.
 
-Refer to the [Doxygen page][ref-tool-doxygen] for more details regarding this tool.
+Please refer to the [Doxygen page][ref-tool-doxygen] for more details regarding this tool.
 
 ## References
 

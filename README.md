@@ -362,10 +362,10 @@ This project contains this [CONTRIBUTING](./CONTRIBUTING.md) file, just for demo
 List of tasks to be done in the future:
 
 - Code quality tools:
-    - Add CMake format.
-    - Add address, memory, thread and undefined behavior sanitizers.
+    - Add address, leak, memory, thread and undefined behavior sanitizers.
     - Add cppcheck tool for code static analysis.
     - Add valgrind (memory checker).
+    - Add CMake format.
 - CI:
     - Add CI pipelines, with GitHub Actions, to build the project, to run the tests, and to use all the code quality tools and sanitizers.
 

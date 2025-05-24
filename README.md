@@ -33,8 +33,8 @@ It offers a clear project structure, essential configurations, and integrates co
 - Standard directory structure for easy navigation and scalability.
 - Structure for any type of project, including header-only libraries.
 - Separation of application/library code from test code to maintain a clean and modular project structure.
-- Examples of test suites and mocks.
 - Sample code files to quickly prototype and test.
+- Examples of test suites and mocks.
 - Integration of code quality tools for:
     - Code coverage.
     - Code formatting.
@@ -42,8 +42,8 @@ It offers a clear project structure, essential configurations, and integrates co
     - Documentation.
 - Code quality tools configured to be easily executed and ready for integration into CI pipelines.
 - Automatic dependency fetching, using CMake, for easy integration of third-party libraries.
-- Example of a Dockerfile.
 - Templates for README and Contributing guide.
+- Example of a Dockerfile.
 
 ## Getting started
 
@@ -53,11 +53,13 @@ The following procedure will help you to get started with this template:
 
 - Get a copy of this template.
 - Adjust the `CMakeLists` files to use your project files.
+- Update prefix on the name of some CMake variables (`CXXPROJT_`) to use your project name.
 - Remove unused files and directories.
+- Update include guards on header files.
 - Replace the license file with the one specific to your project.
 - Adjust clang-format, clang-tidy, and doxygen configuration files, as well as some of its parameters automatically configured by CMake.
-- Update the `CMakePresets.json` file, if necessary.
-- `Dockerfile` can also be adjusted to your needs.
+- Update the `CMakePresets.json` file (e.g., CMake variables defined there).
+- `Dockerfile` might be adjusted to your needs.
 - Update this README to have only the sections that make sense for your project.
 
 ## Project structure
@@ -361,11 +363,12 @@ This project contains this [CONTRIBUTING](./CONTRIBUTING.md) file, just for demo
 
 List of tasks to be done in the future:
 
+- Get git hash and branch from CMake to be used from C++ code.
 - Code quality tools:
     - Add address, leak, memory, thread and undefined behavior sanitizers.
     - Add cppcheck tool for code static analysis.
     - Add valgrind (memory checker).
-    - Add CMake format.
+    - Add tool to check CMake code format.
 - CI:
     - Add CI pipelines, with GitHub Actions, to build the project, to run the tests, and to use all the code quality tools and sanitizers.
 

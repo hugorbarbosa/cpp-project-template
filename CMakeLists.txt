@@ -7,21 +7,24 @@
 # ----------------------------------------------------------------------------
 cmake_minimum_required(VERSION 3.21)
 
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
+include(ProjectVersion)
+set(VERSION_FILE ${CMAKE_CURRENT_SOURCE_DIR}/src/version.hpp)
+parse_project_version(${VERSION_FILE})
+
 project(cpp_project_template
-    VERSION 1.0.0
+    VERSION ${PROJECT_VERSION_BASE}
     LANGUAGES CXX
     DESCRIPTION "A C++ project template."
 )
 
 set(CXXPROJT_PROJECT_NAME ${PROJECT_NAME})
-set(CXXPROJT_PROJECT_VERSION ${PROJECT_VERSION})
+set(CXXPROJT_PROJECT_VERSION ${PROJECT_VERSION_FULL})
 
 set(MAIN_PROJECT OFF)
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
     set(MAIN_PROJECT ON)
 endif()
-
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 
 # ----------------------------------------------------------------------------
 # Pre-requirements

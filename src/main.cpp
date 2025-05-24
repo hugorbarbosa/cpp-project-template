@@ -6,6 +6,7 @@
 #include <iostream>
 #include <memory>
 #include <my_concrete_class.hpp>
+#include "version.hpp"
 
 /**
  * @brief Main function.
@@ -18,6 +19,8 @@
 int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 {
     std::cout << "Hello World!\n";
+
+    std::cout << "Using project version: " << cpp_project_template::get_project_version() << "\n";
 
     std::unique_ptr<cpp_project_template::MyClass> my_class{
         std::make_unique<cpp_project_template::MyConcreteClass>("Initial value")};

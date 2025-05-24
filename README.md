@@ -56,6 +56,7 @@ The following procedure will help you to get started with this template:
 - Update prefix on the name of some CMake variables (`CXXPROJT_`) to use your project name.
 - Remove unused files and directories.
 - Update include guards on header files.
+- Adjust copyrights in files.
 - Replace the license file with the one specific to your project.
 - Adjust clang-format, clang-tidy, and doxygen configuration files, as well as some of its parameters automatically configured by CMake.
 - Update the `CMakePresets.json` file (e.g., CMake variables defined there).
@@ -363,7 +364,6 @@ This project contains this [CONTRIBUTING](./CONTRIBUTING.md) file, just for demo
 
 List of tasks to be done in the future:
 
-- Get git hash and branch from CMake to be used from C++ code.
 - Code quality tools:
     - Add address, leak, memory, thread and undefined behavior sanitizers.
     - Add cppcheck tool for code static analysis.

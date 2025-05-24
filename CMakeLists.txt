@@ -9,7 +9,7 @@ cmake_minimum_required(VERSION 3.21)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 include(ProjectVersion)
-set(VERSION_FILE ${CMAKE_CURRENT_SOURCE_DIR}/src/version.hpp)
+set(VERSION_FILE ${CMAKE_CURRENT_SOURCE_DIR}/src/version/version.hpp)
 parse_project_version(${VERSION_FILE})
 
 project(cpp_project_template
@@ -31,6 +31,21 @@ endif()
 # ----------------------------------------------------------------------------
 include(SourceBuilds)
 validate_build_directory()
+
+# ----------------------------------------------------------------------------
+# Project information
+# ----------------------------------------------------------------------------
+include(ProjectGitInfo)
+set(GIT_INFO_HEADER_TEMPLATE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/cmake/project_git_info.hpp.in")
+set(GIT_INFO_HEADER_OUT_FILE "git_info.hpp")
+set(GIT_INFO_HEADER_GUARD "CPP_PROJECT_TEMPLATE_GIT_INFO_HPP")
+set(GIT_INFO_NAMESPACE "cpp_project_template")
+generate_git_info_file(
+    ${GIT_INFO_HEADER_TEMPLATE_FILE}
+    ${GIT_INFO_HEADER_OUT_FILE}
+    ${GIT_INFO_HEADER_GUARD}
+    ${GIT_INFO_NAMESPACE}
+)
 
 # ----------------------------------------------------------------------------
 # Configuration options
@@ -92,7 +107,7 @@ set_project_default_compiler_options(
 # Quality tools
 # ----------------------------------------------------------------------------
 
-set(SCRIPTS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/scripts)
+set(SCRIPTS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/scripts")
 
 if(CXXPROJT_ENABLE_COVERAGE)
     include(CodeCoverage)
@@ -106,7 +121,7 @@ if(CXXPROJT_ENABLE_COVERAGE)
     set(MIN_LINE_COVERAGE 90)
     set(MIN_FUNCTION_COVERAGE 80)
     set(COVERAGE_JOBS 4)
-    set(COVERAGE_CHECK_SCRIPT ${SCRIPTS_DIR}/coverage-report-checker.sh)
+    set(COVERAGE_CHECK_SCRIPT "${SCRIPTS_DIR}/coverage-report-checker.sh")
     enable_coverage(
         ${PROJECT_COMPILER_OPTIONS_LIBRARY}
         "${COVERAGE_EXCLUDE_PATTERNS}"
@@ -125,7 +140,7 @@ if(CXXPROJT_ENABLE_FORMAT)
         "${CMAKE_CURRENT_SOURCE_DIR}/src"
         "${CMAKE_CURRENT_SOURCE_DIR}/test"
     )
-    set(FORMAT_LOG_FILE format-report.log)
+    set(FORMAT_LOG_FILE "format-report.log")
     enable_format_check("${FORMAT_DIRECTORIES}" ${FORMAT_LOG_FILE})
 endif()
 
@@ -137,13 +152,13 @@ if(CXXPROJT_ENABLE_CLANG_TIDY)
         "${CMAKE_CURRENT_SOURCE_DIR}/src"
         "${CMAKE_CURRENT_SOURCE_DIR}/test"
     )
-    set(CLANG_TIDY_LOG_FILE clang-tidy-report.log)
+    set(CLANG_TIDY_LOG_FILE "clang-tidy-report.log")
     enable_clang_tidy("${CLANG_TIDY_DIRECTORIES}" ${CLANG_TIDY_LOG_FILE})
 endif()
 
 if(CXXPROJT_ENABLE_DOXYGEN)
     include(DoxygenDoc)
-    set(DOXYGEN_CONFIG_FILE ${CMAKE_CURRENT_SOURCE_DIR}/doxygen/Doxyfile.in)
+    set(DOXYGEN_CONFIG_FILE "${CMAKE_CURRENT_SOURCE_DIR}/doxygen/Doxyfile.in")
     set(DOXYGEN_PROJECT "C++ Project Template")
     set(DOXYGEN_VERSION ${CXXPROJT_PROJECT_VERSION})
     set(DOXYGEN_BRIEF "A C++ project template using CMake")
@@ -154,8 +169,8 @@ if(CXXPROJT_ENABLE_DOXYGEN)
         "${CMAKE_CURRENT_SOURCE_DIR}/test"
     )
     string(REPLACE ";" " " DOXYGEN_INPUT "${DOXYGEN_INPUT_LIST}")
-    set(DOXYGEN_OUT_DIR ${CMAKE_BINARY_DIR}/doxygen)
-    set(DOXYGEN_LOG_FILE doxygen-report.log)
+    set(DOXYGEN_OUT_DIR "${CMAKE_BINARY_DIR}/doxygen")
+    set(DOXYGEN_LOG_FILE "doxygen-report.log")
     enable_doxygen_doc(
         ${DOXYGEN_CONFIG_FILE}
         ${DOXYGEN_PROJECT}

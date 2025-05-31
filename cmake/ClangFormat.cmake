@@ -2,15 +2,15 @@
 # Copyright (C) 2025 Hugo Barbosa.
 #
 
-# Enable code formatting check, using clang-format.
+# Enable code formatting check using clang-format.
 #
 # Parameters:
 #   DIRECTORIES: Directories to get the files to be checked. To make clang-format ignore certain
 #                files, .clang-format-ignore files can be created. If not present, all the available
 #                files (headers and C/C++ files) in these directories will be analyzed.
 #   LOG_FILE: Log file to be created with the clang-format output.
-function(enable_format_check DIRECTORIES LOG_FILE)
-    message(CHECK_START "Enabling code formatting check")
+function(enable_clang_format_check DIRECTORIES LOG_FILE)
+    message(CHECK_START "Enabling code formatting check with clang-format")
 
     # Requirements.
     message(CHECK_START "Checking needed tools")
@@ -47,8 +47,8 @@ function(enable_format_check DIRECTORIES LOG_FILE)
         )
 
         # Target.
-        set(FORMAT_TARGET_NAME "format")
-        add_custom_target(${FORMAT_TARGET_NAME}
+        set(CLANG_FORMAT_TARGET_NAME "clang_format")
+        add_custom_target(${CLANG_FORMAT_TARGET_NAME}
             COMMENT "Check code formatting using clang-format."
             COMMAND ${CMAKE_COMMAND} -E echo "Running clang-format"
             COMMAND ${CMAKE_COMMAND} -E echo "Report: ${REPORT_FILE}"

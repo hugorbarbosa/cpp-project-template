@@ -280,10 +280,10 @@ This projects follows my [C++ coding style guide](https://github.com/hugorbarbos
 
 ```sh
 $ cd <project-directory>
-$ mkdir build-format
-$ cd build-format
-$ cmake .. -DCXXPROJT_ENABLE_FORMAT=ON
-$ cmake --build . --target format
+$ mkdir build-clang-format
+$ cd build-clang-format
+$ cmake .. -DCXXPROJT_ENABLE_CLANG_FORMAT=ON
+$ cmake --build . --target clang_format
 ```
 
 Alternatively, use CMake presets as follows to check the code format:
@@ -294,7 +294,7 @@ $ cmake --preset clang-format
 $ cmake --build --preset clang-format
 ```
 
-This target uses clang-format to verify the format of the code, and creates a report file in the `build-format` directory (used build directory in this example), named as `format-report.log`.
+This target uses clang-format to verify the format of the code, and creates a report file in the `build-clang-format` directory (used build directory in this example), named as `clang-format-report.log`.
 
 The build succeeds only if the source files are formatted accordingly to the [configuration](.clang-format) file. The project source files to be verified can be configured by the user (see [CMakeLists](./CMakeLists.txt) of the project for more details).
 

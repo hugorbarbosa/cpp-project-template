@@ -132,7 +132,7 @@
             "description": "Clang-format configuration",
             "inherits": "debug",
             "cacheVariables": {
-                "CXXPROJT_ENABLE_FORMAT": "ON"
+                "CXXPROJT_ENABLE_CLANG_FORMAT": "ON"
             }
         },
         {
@@ -224,7 +224,7 @@
             "description": "Clang-format build target",
             "inherits": "default",
             "configurePreset": "clang-format",
-            "targets": "format"
+            "targets": "clang_format"
         },
         {
             "name": "clang-tidy",

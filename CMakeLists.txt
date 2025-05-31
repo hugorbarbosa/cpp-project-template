@@ -52,7 +52,7 @@ generate_git_info_file(
 # ----------------------------------------------------------------------------
 option(CXXPROJT_BUILD_TESTS "Build tests" ${MAIN_PROJECT})
 option(CXXPROJT_ENABLE_COVERAGE "Enable code coverage analysis" OFF)
-option(CXXPROJT_ENABLE_FORMAT "Enable code formatting check" OFF)
+option(CXXPROJT_ENABLE_CLANG_FORMAT "Enable code formatting check with clang-format" OFF)
 option(CXXPROJT_ENABLE_CLANG_TIDY "Enable code static analysis with clang-tidy" OFF)
 option(CXXPROJT_ENABLE_DOXYGEN "Enable doxygen documentation generation" OFF)
 
@@ -85,7 +85,6 @@ fetch_project_dependencies(${CXXPROJT_BUILD_TESTS})
 # ----------------------------------------------------------------------------
 # Compiler options
 # ----------------------------------------------------------------------------
-
 if(NOT CMAKE_CXX_STANDARD)
     set(CMAKE_CXX_STANDARD 20)
 endif()
@@ -96,7 +95,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 include(CompilerOptions)
 
 set(PROJECT_COMPILER_OPTIONS_LIBRARY compile_options)
-set(COMPILATION_WARNINGS_AS_ERRORS ON)
+set(COMPILATION_WARNINGS_AS_ERRORS ${MAIN_PROJECT})
 set_project_default_compiler_options(
     ${PROJECT_COMPILER_OPTIONS_LIBRARY}
     ${CXXPROJT_PROJECT_NAME}
@@ -106,7 +105,6 @@ set_project_default_compiler_options(
 # ----------------------------------------------------------------------------
 # Quality tools
 # ----------------------------------------------------------------------------
-
 set(SCRIPTS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/scripts")
 
 if(CXXPROJT_ENABLE_COVERAGE)
@@ -132,16 +130,16 @@ if(CXXPROJT_ENABLE_COVERAGE)
     )
 endif()
 
-if(CXXPROJT_ENABLE_FORMAT)
+if(CXXPROJT_ENABLE_CLANG_FORMAT)
     include(ClangFormat)
-    set(FORMAT_DIRECTORIES
+    set(CLANG_FORMAT_DIRECTORIES
         "${CMAKE_CURRENT_SOURCE_DIR}/examples"
         "${CMAKE_CURRENT_SOURCE_DIR}/include"
         "${CMAKE_CURRENT_SOURCE_DIR}/src"
         "${CMAKE_CURRENT_SOURCE_DIR}/test"
     )
-    set(FORMAT_LOG_FILE "format-report.log")
-    enable_format_check("${FORMAT_DIRECTORIES}" ${FORMAT_LOG_FILE})
+    set(CLANG_FORMAT_LOG_FILE "clang-format-report.log")
+    enable_clang_format_check("${CLANG_FORMAT_DIRECTORIES}" ${CLANG_FORMAT_LOG_FILE})
 endif()
 
 if(CXXPROJT_ENABLE_CLANG_TIDY)
@@ -185,7 +183,6 @@ endif()
 # ----------------------------------------------------------------------------
 # Build
 # ----------------------------------------------------------------------------
-
 add_subdirectory(src)
 
 if(CXXPROJT_BUILD_TESTS)
@@ -207,7 +204,7 @@ message(STATUS "- CMAKE_CXX_STANDARD = ${CMAKE_CXX_STANDARD}")
 message(STATUS "- CMAKE_EXPORT_COMPILE_COMMANDS = ${CMAKE_EXPORT_COMPILE_COMMANDS}")
 message(STATUS "- CXXPROJT_BUILD_TESTS = ${CXXPROJT_BUILD_TESTS}")
 message(STATUS "- CXXPROJT_ENABLE_COVERAGE = ${CXXPROJT_ENABLE_COVERAGE}")
-message(STATUS "- CXXPROJT_ENABLE_FORMAT = ${CXXPROJT_ENABLE_FORMAT}")
+message(STATUS "- CXXPROJT_ENABLE_CLANG_FORMAT = ${CXXPROJT_ENABLE_CLANG_FORMAT}")
 message(STATUS "- CXXPROJT_ENABLE_CLANG_TIDY = ${CXXPROJT_ENABLE_CLANG_TIDY}")
 message(STATUS "- CXXPROJT_ENABLE_DOXYGEN = ${CXXPROJT_ENABLE_DOXYGEN}")
 message(STATUS "- MAIN_PROJECT = ${MAIN_PROJECT}")

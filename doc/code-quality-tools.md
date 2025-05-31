@@ -85,11 +85,11 @@ AddressSanitizer (ASan) is a fast memory error detector, that instruments memory
 
 - Out-of-bounds accesses to heap, stack and globals.
 - Use-after-free bugs.
-- Double-free and invalid free.
+- Double-free and invalid free issues.
 
 To enable AddressSanitizer, compile and link your program with `-fsanitize=address` option. To get a reasonable performance add `-O1` or higher, and to get nicer stack traces in error messages add `-fno-omit-frame-pointer`. Besides that, you should also use `-g` to produce more meaningful output. Note that the runtime behavior can be influenced by the `ASAN_OPTIONS` environment variable.
 
-For example, the following code contains an *use after free* error that should be detected by this sanitizer, using the commands below to compile and link with the Clang compiler:
+For example, the following code contains an *use after free* error that should be detected by this sanitizer:
 
 ```c++
 // asan_example.cpp
@@ -100,6 +100,8 @@ int main(int argc, char* argv[])
     return array[argc]; // Use after free.
 }
 ```
+
+Using the Clang compiler, the commands below can be utilized to compile and link with this sanitizer:
 
 ```sh
 $ clang++ -fsanitize=address -O1 -g -fno-omit-frame-pointer asan_example.cpp
@@ -120,7 +122,7 @@ LeakSanitizer (LSan) is a runtime memory leak detector, that can be used "standa
 
 To enable LeakSanitizer, compile and link your program with `-fsanitize=leak` option. Additionally, `-g` should also be used to produce more meaningful output. Note that the runtime behavior can be influenced by the `LSAN_OPTIONS` environment variable.
 
-For example, the following code contains an *use after free* error that should be detected by this sanitizer, using the commands below to compile and link with the Clang compiler:
+For example, the following code contains an *use after free* error that should be detected by this sanitizer:
 
 ```c
 // lsan_example.c
@@ -133,6 +135,8 @@ int main()
     return 0;
 }
 ```
+
+Using the Clang compiler, the commands below can be utilized to compile and link with this sanitizer:
 
 ```sh
 $ clang -fsanitize=leak -g -fno-omit-frame-pointer lsan_example.c
@@ -159,7 +163,7 @@ MemorySanitizer (MSan) is a detector of uninitialized memory use, that instrumen
 
 To enable MemorySanitizer, compile and link your program with `-fsanitize=memory` option. To get a reasonable performance add `-O1` or higher, and to get nicer stack traces in error messages add `-fno-omit-frame-pointer`. Besides that, you should also use `-g` to produce more meaningful output. Note that the runtime behavior can be influenced by the `MSAN_OPTIONS` environment variable.
 
-For example, the following code contains an *use of uninitialized value* error that should be detected by this sanitizer, using the commands below to compile and link with the Clang compiler:
+For example, the following code contains an *use of uninitialized value* error that should be detected by this sanitizer:
 
 ```c++
 // msan_example.cpp
@@ -174,6 +178,8 @@ int main(int argc, char* argv[])
     return 0;
 }
 ```
+
+Using the Clang compiler, the commands below can be utilized to compile and link with this sanitizer:
 
 ```sh
 $ clang++ -fsanitize=memory -O2 -g -fno-omit-frame-pointer msan_example.cpp
@@ -194,7 +200,7 @@ ThreadSanitizer (TSan) is a data race detector, that instruments memory access i
 
 To enable ThreadSanitizer, compile and link your program with `-fsanitize=thread` option. To get a reasonable performance add `-O1` or higher, and use `-g` to produce more meaningful output. Note that the runtime behavior can be influenced by the `TSAN_OPTIONS` environment variable.
 
-For example, the following code contains a data race that should be detected by this sanitizer, using the commands below to compile and link with the Clang compiler:
+For example, the following code contains a data race that should be detected by this sanitizer:
 
 ```c++
 // tsan_example.c
@@ -217,6 +223,8 @@ int main()
     return global;
 }
 ```
+
+Using the Clang compiler, the commands below can be utilized to compile and link with this sanitizer:
 
 ```sh
 $ clang -fsanitize=thread -O1 -g tsan_example.c
@@ -244,7 +252,7 @@ UndefinedBehaviorSanitizer (UBSan) is a fast undefined behavior detector, that i
 
 To enable UndefinedBehaviorSanitizer, compile and link your program with `-fsanitize=undefined` option. In addition, this sanitizer can be configured with a specific check or group of checks, allowing to enable or disable them, using `-fsanitize=...` and `-fno-sanitize=...`, respectively. All check options supported by UndefinedBehaviorSanitizer can be found in [UBSan checks][ref-tool-sanitizer-undefined-checks]. To get nicer stack traces in error messages add `-fno-omit-frame-pointer` and `-g`. Note that the runtime behavior can be influenced by the `UBSAN_OPTIONS` environment variable.
 
-For example, the following code contains a *signed integer overflow* error that should be detected by this sanitizer, using the commands below to compile and link with the Clang compiler:
+For example, the following code contains a *signed integer overflow* error that should be detected by this sanitizer:
 
 ```c++
 // ubsan_example.cpp
@@ -254,6 +262,8 @@ int main(int argc, char* argv[]) {
     return 0;
 }
 ```
+
+Using the Clang compiler, the commands below can be utilized to compile and link with this sanitizer:
 
 ```sh
 $ clang++ -fsanitize=undefined -g -fno-omit-frame-pointer ubsan_example.cpp

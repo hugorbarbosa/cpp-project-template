@@ -21,6 +21,12 @@ It offers a clear project structure, essential configurations, and integrates co
 - [Code coverage](#code-coverage)
 - [Coding style and format](#coding-style-and-format)
 - [Code static analysis](#code-static-analysis)
+- [Sanitizers](#sanitizers)
+    - [Address sanitizer](#address-sanitizer)
+    - [Leak sanitizer](#leak-sanitizer)
+    - [Memory sanitizer](#memory-sanitizer)
+    - [Thread sanitizer](#thread-sanitizer)
+    - [Undefined behavior sanitizer](#undefined-behavior-sanitizer)
 - [Source code documentation](#source-code-documentation)
 - [Contributing to the project](#contributing-to-the-project)
 - [Future work](#future-work)
@@ -119,11 +125,11 @@ In the end of this section, it should mention something similar to the following
 
 ## Integration
 
-If the project is a library, this section can be included here to refer how the library can be integrated into the user project.
+If the project is a library, this section can be included here to explain how the library can be integrated into the user project.
 
-The content of this section that is available in this project is an example, which considers that the library is named as "my_library".
+The content of this section available in this project is just an example, and considers that the library is named as "my_library".
 
-This library creates a CMake target that can be linked in your project, and there are many ways to make this library available to be used in your project.
+This library creates a CMake target that can be linked in your project, and there are many ways to make this library available for that.
 
 ### Using CMake `FetchContent` module
 
@@ -247,12 +253,12 @@ Alternatively, CMake presets can be applied as follows to run the tests, configu
 $ cd <project-directory>
 $ cmake --preset debug-gcc
 $ cmake --build --preset debug-gcc
-$ ctest --preset test-debug-gcc
+$ ctest --preset debug-gcc
 ```
 
 ## Code coverage
 
-The project can be compiled for code coverage analysis (for GCC only), using the following commands:
+The project can be compiled for code coverage analysis (with GCC compiler only), using the following commands:
 
 ```sh
 $ cd <project-directory>
@@ -326,6 +332,142 @@ The build succeeds only if no issues are found during the code static analysis, 
 
 Please consult the [code quality tools](./doc/code-quality-tools.md) documentation to know more details about clang-tidy.
 
+## Sanitizers
+
+Sanitizers are tools integrated into modern compilers that are able to catch many types of issues, such as memory errors, undefined behavior or thread race conditions.
+
+This project is prepared to easily enable for code compilation the sanitizers described below.
+
+### Address sanitizer
+
+AddressSanitizer (ASan) is a fast memory error detector that can be enabled using the following commands:
+
+```sh
+$ cd <project-directory>
+$ mkdir build-sanitizer-address
+$ cd build-sanitizer-address
+$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCXXPROJT_BUILD_TESTS=ON -DCXXPROJT_ENABLE_ASAN=ON
+$ cmake --build . -j 4
+$ ctest
+```
+
+Alternatively, CMake presets can be used as follows to enable this sanitizer:
+
+```sh
+$ cd <project-directory>
+$ cmake --preset sanitizer-address
+$ cmake --build --preset sanitizer-address
+$ ctest --preset sanitizer-address
+```
+
+If the sanitizer detects an issue, a diagnostic report is printed containing detailed information.
+
+Please consult the [code quality tools](./doc/code-quality-tools.md) documentation to know more details about ASan.
+
+### Leak sanitizer
+
+LeakSanitizer (LSan) is a runtime memory leak detector that can be enabled using the following commands:
+
+```sh
+$ cd <project-directory>
+$ mkdir build-sanitizer-leak
+$ cd build-sanitizer-leak
+$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCXXPROJT_BUILD_TESTS=ON -DCXXPROJT_ENABLE_LSAN=ON
+$ cmake --build . -j 4
+$ ctest
+```
+
+Alternatively, CMake presets can be used as follows to enable this sanitizer:
+
+```sh
+$ cd <project-directory>
+$ cmake --preset sanitizer-leak
+$ cmake --build --preset sanitizer-leak
+$ ctest --preset sanitizer-leak
+```
+
+If the sanitizer detects an issue, a diagnostic report is printed containing detailed information.
+
+Please consult the [code quality tools](./doc/code-quality-tools.md) documentation to know more details about LSan.
+
+### Memory sanitizer
+
+MemorySanitizer (MSan) is a detector of uninitialized memory use (with clang compiler only) that can be enabled using the following commands:
+
+```sh
+$ cd <project-directory>
+$ mkdir build-sanitizer-memory
+$ cd build-sanitizer-memory
+$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCXXPROJT_BUILD_TESTS=ON -DCXXPROJT_ENABLE_MSAN=ON -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+$ cmake --build . -j 4
+$ ctest
+```
+
+Alternatively, CMake presets can be used as follows to enable this sanitizer:
+
+```sh
+$ cd <project-directory>
+$ cmake --preset sanitizer-memory
+$ cmake --build --preset sanitizer-memory
+$ ctest --preset sanitizer-memory
+```
+
+If the sanitizer detects an issue, a diagnostic report is printed containing detailed information.
+
+Please consult the [code quality tools](./doc/code-quality-tools.md) documentation to know more details about MSan.
+
+### Thread sanitizer
+
+ThreadSanitizer (TSan) is a data race detector that can be enabled using the following commands:
+
+```sh
+$ cd <project-directory>
+$ mkdir build-sanitizer-thread
+$ cd build-sanitizer-thread
+$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCXXPROJT_BUILD_TESTS=ON -DCXXPROJT_ENABLE_TSAN=ON
+$ cmake --build . -j 4
+$ ctest
+```
+
+Alternatively, CMake presets can be used as follows to enable this sanitizer:
+
+```sh
+$ cd <project-directory>
+$ cmake --preset sanitizer-thread
+$ cmake --build --preset sanitizer-thread
+$ ctest --preset sanitizer-thread
+```
+
+If the sanitizer detects an issue, a diagnostic report is printed containing detailed information.
+
+Please consult the [code quality tools](./doc/code-quality-tools.md) documentation to know more details about TSan.
+
+### Undefined behavior sanitizer
+
+UndefinedBehaviorSanitizer (UBSan) is a fast undefined behavior detector that can be enabled using the following commands:
+
+```sh
+$ cd <project-directory>
+$ mkdir build-sanitizer-undefined
+$ cd build-sanitizer-undefined
+$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCXXPROJT_BUILD_TESTS=ON -DCXXPROJT_ENABLE_UBSAN=ON
+$ cmake --build . -j 4
+$ ctest
+```
+
+Alternatively, CMake presets can be used as follows to enable this sanitizer:
+
+```sh
+$ cd <project-directory>
+$ cmake --preset sanitizer-undefined
+$ cmake --build --preset sanitizer-undefined
+$ ctest --preset sanitizer-undefined
+```
+
+If the sanitizer detects an issue, a diagnostic report is printed containing detailed information.
+
+Please consult the [code quality tools](./doc/code-quality-tools.md) documentation to know more details about UBSan.
+
 ## Source code documentation
 
 Doxygen is used to generate documentation from source code, and the commands below can be used for that purpose:
@@ -365,7 +507,6 @@ This project contains this [CONTRIBUTING](./CONTRIBUTING.md) file, just for demo
 List of tasks to be done in the future:
 
 - Code quality tools:
-    - Add address, leak, memory, thread and undefined behavior sanitizers.
     - Add cppcheck tool for code static analysis.
     - Add valgrind (memory checker).
     - Add tool to check CMake code format.

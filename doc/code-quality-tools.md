@@ -6,13 +6,13 @@ This project uses many code quality tools commonly utilized in a C++ project. Th
 
 - [Clang-format](#clang-format)
 - [Clang-tidy](#clang-tidy)
-- [Doxygen](#doxygen)
 - [Sanitizers](#sanitizers)
     - [Address sanitizer](#address-sanitizer)
     - [Leak sanitizer](#leak-sanitizer)
     - [Memory sanitizer](#memory-sanitizer)
     - [Thread sanitizer](#thread-sanitizer)
     - [Undefined behavior sanitizer](#undefined-behavior-sanitizer)
+- [Doxygen](#doxygen)
 - [References](#references)
 
 ## Clang-format
@@ -51,22 +51,6 @@ As previously mentioned, clang-tidy can be integrated in a IDE/editor, like Visu
 
 Please refer to the [clang-tidy page][ref-tool-clang-tidy] for more details regarding this tool.
 
-## Doxygen
-
-Doxygen is a documentation generator tool that automates the creation of documentation from source code comments, supporting C++, C, C#, Python, PHP, Java, Objective-C, Fortran, VHDL, Splice, IDL, and Lex code. The documentation can be generated in various output formats, such as HTML and PDF. Moreover, this tool is able to generate graphical representations of class hierarchies and collaboration diagrams, providing a visual overview of the relationships between classes and functions.
-
-Doxygen supports many options which can be found using the `--help` option:
-
-```sh
-$ doxygen --help
-```
-
-This tool utilizes a configuration file (Doxyfile) that permits users to customize the documentation generation process, like the input files and the output format. This project uses this [doxygen configuration file](../doxygen/Doxyfile), which includes the desired options for this project, but can be used as example and be adjusted to your needs.
-
-The format of the source code comments needs to follow some rules, in order to generate documentation from those comments by this tool.
-
-Please refer to the [Doxygen page][ref-tool-doxygen] for more details regarding this tool.
-
 ## Sanitizers
 
 Sanitizers are tools integrated into modern compilers, such as GCC and Clang, that help detect bugs in programs at runtime. These tools can be enabled for code compilation and are able to catch common but hard-to-find issues such as memory errors, undefined behavior, or thread race conditions. Therefore, sanitizers allow early bug detection and improve code reliability, stability, and security.
@@ -95,7 +79,7 @@ For example, the following code contains an *use after free* error that should b
 // asan_example.cpp
 int main(int argc, char* argv[])
 {
-    int *array = new int[42];
+    int* array = new int[42];
     delete [] array;
     return array[argc]; // Use after free.
 }
@@ -125,13 +109,11 @@ To enable LeakSanitizer, compile and link your program with `-fsanitize=leak` op
 For example, the following code contains an *use after free* error that should be detected by this sanitizer:
 
 ```c
-// lsan_example.c
-#include <stdlib.h>
-void *p;
+// lsan_example.cpp
 int main()
 {
-    p = malloc(7);
-    p = 0; // Memory leak.
+    int* leaky_array = new int[100]; // Allocated memory.
+    leaky_array[0] = 42; // Used but never deleted.
     return 0;
 }
 ```
@@ -139,10 +121,10 @@ int main()
 Using the Clang compiler, the commands below can be utilized to compile and link with this sanitizer:
 
 ```sh
-$ clang -fsanitize=leak -g -fno-omit-frame-pointer lsan_example.c
+$ clang -fsanitize=leak -g -fno-omit-frame-pointer lsan_example.cpp
 $ ./a.out
 # Or combined with AddressSanitizer.
-$ clang -fsanitize=address -g -fno-omit-frame-pointer lsan_example.c ; ASAN_OPTIONS=detect_leaks=1 ./a.out
+$ clang -fsanitize=address -g -fno-omit-frame-pointer lsan_example.cpp ; ASAN_OPTIONS=detect_leaks=1 ./a.out
 ```
 
 Please refer to the [LeakSanitizer][ref-tool-sanitizer-leak] and [GCC program instrumentation options][ref-gcc-instrumentation-options] pages for more details regarding this tool.
@@ -167,14 +149,12 @@ For example, the following code contains an *use of uninitialized value* error t
 
 ```c++
 // msan_example.cpp
-#include <stdio.h>
+#include <iostream>
 int main(int argc, char* argv[])
 {
     int* a = new int[10];
-    a[5] = 0;
-    if (a[argc]) {
-        printf("xx\n");
-    }
+    auto x = a[5]; // Use of uninitialized value.
+    std::cout << "x = " << x << "\n";
     return 0;
 }
 ```
@@ -182,7 +162,7 @@ int main(int argc, char* argv[])
 Using the Clang compiler, the commands below can be utilized to compile and link with this sanitizer:
 
 ```sh
-$ clang++ -fsanitize=memory -O2 -g -fno-omit-frame-pointer msan_example.cpp
+$ clang++ -fsanitize=memory -O1 -g -fno-omit-frame-pointer msan_example.cpp
 $ ./a.out
 ```
 
@@ -203,31 +183,34 @@ To enable ThreadSanitizer, compile and link your program with `-fsanitize=thread
 For example, the following code contains a data race that should be detected by this sanitizer:
 
 ```c++
-// tsan_example.c
-#include <pthread.h>
+// tsan_example.cpp
+#include <iostream>
+#include <thread>
 
-int global;
+int shared_data = 0;
 
-void* thread1(void *x)
+void increment()
 {
-    global = 42;
-    return x;
+    for (int i = 0; i < 1000; ++i) {
+        shared_data++; // Data race.
+    }
 }
 
 int main()
 {
-    pthread_t t;
-    pthread_create(&t, NULL, thread1, NULL);
-    global = 43;
-    pthread_join(t, NULL);
-    return global;
+    std::thread t1{increment};
+    std::thread t2{increment};
+    t1.join();
+    t2.join();
+    std::cout << "Final value: " << shared_data << "\n";
+    return 0;
 }
 ```
 
 Using the Clang compiler, the commands below can be utilized to compile and link with this sanitizer:
 
 ```sh
-$ clang -fsanitize=thread -O1 -g tsan_example.c
+$ clang -fsanitize=thread -O1 -g tsan_example.cpp
 $ ./a.out
 ```
 
@@ -252,13 +235,14 @@ UndefinedBehaviorSanitizer (UBSan) is a fast undefined behavior detector, that i
 
 To enable UndefinedBehaviorSanitizer, compile and link your program with `-fsanitize=undefined` option. In addition, this sanitizer can be configured with a specific check or group of checks, allowing to enable or disable them, using `-fsanitize=...` and `-fno-sanitize=...`, respectively. All check options supported by UndefinedBehaviorSanitizer can be found in [UBSan checks][ref-tool-sanitizer-undefined-checks]. To get nicer stack traces in error messages add `-fno-omit-frame-pointer` and `-g`. Note that the runtime behavior can be influenced by the `UBSAN_OPTIONS` environment variable.
 
-For example, the following code contains a *signed integer overflow* error that should be detected by this sanitizer:
+For example, the following code contains a *null pointer dereference* error that should be detected by this sanitizer:
 
 ```c++
 // ubsan_example.cpp
-int main(int argc, char* argv[]) {
-    int k = 0x7fffffff;
-    k += argc;
+int main(int argc, char* argv[])
+{
+    int* ptr = nullptr;
+    int x = *ptr; // Null pointer dereference.
     return 0;
 }
 ```
@@ -277,13 +261,28 @@ Please refer to the [UndefinedBehaviorSanitizer][ref-tool-sanitizer-undefined] a
 - UndefinedBehaviorSanitizer checks have small runtime cost and no impact on address space layout or ABI.
 - Supported by Clang and GCC compilers.
 
+## Doxygen
+
+Doxygen is a documentation generator tool that automates the creation of documentation from source code comments, supporting C++, C, C#, Python, PHP, Java, Objective-C, Fortran, VHDL, Splice, IDL, and Lex code. The documentation can be generated in various output formats, such as HTML and PDF. Moreover, this tool is able to generate graphical representations of class hierarchies and collaboration diagrams, providing a visual overview of the relationships between classes and functions.
+
+Doxygen supports many options which can be found using the `--help` option:
+
+```sh
+$ doxygen --help
+```
+
+This tool utilizes a configuration file (Doxyfile) that permits users to customize the documentation generation process, like the input files and the output format. This project uses this [doxygen configuration file](../doxygen/Doxyfile), which includes the desired options for this project, but can be used as example and be adjusted to your needs.
+
+The format of the source code comments needs to follow some rules, in order to generate documentation from those comments by this tool.
+
+Please refer to the [Doxygen page][ref-tool-doxygen] for more details regarding this tool.
+
 ## References
 
 - [Clang-format][ref-tool-clang-format]
 - [Clang-format style options][ref-tool-clang-format-style-options]
 - [Clang-tidy][ref-tool-clang-tidy]
 - [Clang-tidy checks][ref-tool-clang-tidy-checks]
-- [Doxygen][ref-tool-doxygen]
 - [Address sanitizer][ref-tool-sanitizer-address]
 - [Leak sanitizer][ref-tool-sanitizer-leak]
 - [Memory sanitizer][ref-tool-sanitizer-memory]
@@ -291,13 +290,13 @@ Please refer to the [UndefinedBehaviorSanitizer][ref-tool-sanitizer-undefined] a
 - [Undefined behavior sanitizer][ref-tool-sanitizer-undefined]
 - [Undefined behavior sanitizer checks][ref-tool-sanitizer-undefined-checks]
 - [GCC program instrumentation options][ref-gcc-instrumentation-options]
+- [Doxygen][ref-tool-doxygen]
 - [Visual Studio Code: C/C++ extension][ref-vscode-cpp-extension]
 
 [ref-tool-clang-format]: https://clang.llvm.org/docs/ClangFormat.html "Clang-format"
 [ref-tool-clang-format-style-options]: https://clang.llvm.org/docs/ClangFormatStyleOptions.html "Clang-format style options"
 [ref-tool-clang-tidy]: https://clang.llvm.org/extra/clang-tidy/ "Clang-tidy"
 [ref-tool-clang-tidy-checks]: https://clang.llvm.org/extra/clang-tidy/checks/list.html "Clang-tidy checks"
-[ref-tool-doxygen]: https://www.doxygen.nl/ "Doxygen"
 [ref-tool-sanitizer-address]: https://clang.llvm.org/docs/AddressSanitizer.html
 [ref-tool-sanitizer-leak]: https://clang.llvm.org/docs/LeakSanitizer.html
 [ref-tool-sanitizer-memory]: https://clang.llvm.org/docs/MemorySanitizer.html
@@ -305,4 +304,5 @@ Please refer to the [UndefinedBehaviorSanitizer][ref-tool-sanitizer-undefined] a
 [ref-tool-sanitizer-undefined]: https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html
 [ref-tool-sanitizer-undefined-checks]: https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html#available-checks
 [ref-gcc-instrumentation-options]: https://gcc.gnu.org/onlinedocs/gcc/Instrumentation-Options.html
+[ref-tool-doxygen]: https://www.doxygen.nl/ "Doxygen"
 [ref-vscode-cpp-extension]: https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools "Visual Studio Code: C/C++ extension"

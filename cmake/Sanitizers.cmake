@@ -15,8 +15,8 @@ function(add_sanitize_compiler_options TARGET_NAME SANITIZE_LIST)
             -fsanitize=${SANITIZE_OPTIONS}
             # Produce debugging information.
             -g
-            # Optimize for size.
-            -O1
+            # Reduce compilation time and make debugging produce the expected results.
+            -O0
             # Do not omit the frame pointer in functions that don’t need one (to get nice stack
             # traces in error messages).
             -fno-omit-frame-pointer
@@ -37,7 +37,7 @@ function(add_sanitize_compiler_options TARGET_NAME SANITIZE_LIST)
         message(STATUS
             "Added sanitize compiler options for target ${TARGET_NAME}: ${SANITIZE_OPTIONS}")
     else()
-        message(WARNING "No sanitize compiler options added")
+        message(STATUS "No sanitize compiler options added")
     endif()
 endfunction()
 
@@ -58,7 +58,7 @@ function(enable_sanitizers TARGET_NAME ENABLE_ASAN ENABLE_LSAN ENABLE_MSAN ENABL
     endif()
 
     # Sanitizers.
-    set(SANITIZER_LIST "")
+    set(SANITIZER_LIST)
 
     if(ENABLE_ASAN)
         list(APPEND SANITIZER_LIST "address")
@@ -75,7 +75,7 @@ function(enable_sanitizers TARGET_NAME ENABLE_ASAN ENABLE_LSAN ENABLE_MSAN ENABL
             message(FATAL_ERROR
                 "Memory Sanitizer does not work with Address, Leak or Thread Sanitizer enabled")
         else()
-            message(WARNING
+            message(STATUS
                 "Memory Sanitizer requires the instrumentation of all the code, including libc++")
             list(APPEND SANITIZER_LIST "memory")
         endif()
@@ -96,7 +96,7 @@ function(enable_sanitizers TARGET_NAME ENABLE_ASAN ENABLE_LSAN ENABLE_MSAN ENABL
 
     # Compiler options.
     message(CHECK_START "Adding sanitize options to compiler")
-    add_sanitize_compiler_options(${TARGET_NAME} ${SANITIZER_LIST})
+    add_sanitize_compiler_options(${TARGET_NAME} "${SANITIZER_LIST}")
     message(CHECK_PASS "done")
 
     message(CHECK_PASS "done")

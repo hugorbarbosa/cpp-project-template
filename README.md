@@ -248,7 +248,7 @@ Alternatively, CMake presets can be applied as follows to run the tests, configu
 $ cd <project-directory>
 $ cmake --preset debug-gcc
 $ cmake --build --preset debug-gcc
-$ ctest --preset test-debug-gcc
+$ ctest --preset debug-gcc
 ```
 
 ## Code coverage

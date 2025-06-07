@@ -147,10 +147,46 @@
         {
             "name": "sanitizer-address",
             "displayName": "Address Sanitizer",
-            "description": "Address Sanitizer configuration",
+            "description": "Address Sanitizer configuration using the clang compiler",
             "inherits": "debug-clang",
             "cacheVariables": {
                 "CXXPROJT_ENABLE_ASAN": "ON"
+            }
+        },
+        {
+            "name": "sanitizer-leak",
+            "displayName": "Leak Sanitizer",
+            "description": "Leak Sanitizer configuration using the clang compiler",
+            "inherits": "debug-clang",
+            "cacheVariables": {
+                "CXXPROJT_ENABLE_LSAN": "ON"
+            }
+        },
+        {
+            "name": "sanitizer-memory",
+            "displayName": "Memory Sanitizer",
+            "description": "Memory Sanitizer configuration using the clang compiler",
+            "inherits": "debug-clang",
+            "cacheVariables": {
+                "CXXPROJT_ENABLE_MSAN": "ON"
+            }
+        },
+        {
+            "name": "sanitizer-thread",
+            "displayName": "Thread Sanitizer",
+            "description": "Thread Sanitizer configuration using the clang compiler",
+            "inherits": "debug-clang",
+            "cacheVariables": {
+                "CXXPROJT_ENABLE_TSAN": "ON"
+            }
+        },
+        {
+            "name": "sanitizer-undefined",
+            "displayName": "Undefined Behavior Sanitizer",
+            "description": "Undefined Behavior Sanitizer configuration using the clang compiler",
+            "inherits": "debug-clang",
+            "cacheVariables": {
+                "CXXPROJT_ENABLE_UBSAN": "ON"
             }
         },
         {
@@ -251,6 +287,34 @@
             "configurePreset": "sanitizer-address"
         },
         {
+            "name": "sanitizer-leak",
+            "displayName": "Leak Sanitizer",
+            "description": "Leak Sanitizer build using the clang compiler",
+            "inherits": "default-parallel",
+            "configurePreset": "sanitizer-leak"
+        },
+        {
+            "name": "sanitizer-memory",
+            "displayName": "Memory Sanitizer",
+            "description": "Memory Sanitizer build using the clang compiler",
+            "inherits": "default-parallel",
+            "configurePreset": "sanitizer-memory"
+        },
+        {
+            "name": "sanitizer-thread",
+            "displayName": "Thread Sanitizer",
+            "description": "Thread Sanitizer build using the clang compiler",
+            "inherits": "default-parallel",
+            "configurePreset": "sanitizer-thread"
+        },
+        {
+            "name": "sanitizer-undefined",
+            "displayName": "Undefined Behavior Sanitizer",
+            "description": "Undefined Behavior Sanitizer build using the clang compiler",
+            "inherits": "default-parallel",
+            "configurePreset": "sanitizer-undefined"
+        },
+        {
             "name": "doxygen",
             "displayName": "Doxygen",
             "description": "Doxygen build target",
@@ -300,6 +364,34 @@
             "description": "Testing with Address Sanitizer using the clang compiler",
             "inherits": "default",
             "configurePreset": "sanitizer-address"
+        },
+        {
+            "name": "sanitizer-leak",
+            "displayName": "Testing with Leak Sanitizer",
+            "description": "Testing with Leak Sanitizer using the clang compiler",
+            "inherits": "default",
+            "configurePreset": "sanitizer-leak"
+        },
+        {
+            "name": "sanitizer-memory",
+            "displayName": "Testing with Memory Sanitizer",
+            "description": "Testing with Memory Sanitizer using the clang compiler",
+            "inherits": "default",
+            "configurePreset": "sanitizer-memory"
+        },
+        {
+            "name": "sanitizer-thread",
+            "displayName": "Testing with Thread Sanitizer",
+            "description": "Testing with Thread Sanitizer using the clang compiler",
+            "inherits": "default",
+            "configurePreset": "sanitizer-thread"
+        },
+        {
+            "name": "sanitizer-undefined",
+            "displayName": "Testing with Undefined Behavior Sanitizer",
+            "description": "Testing with Undefined Behavior Sanitizer using the clang compiler",
+            "inherits": "default",
+            "configurePreset": "sanitizer-undefined"
         }
     ]
 }

@@ -54,6 +54,8 @@ option(CXXPROJT_BUILD_TESTS "Build tests" ${MAIN_PROJECT})
 option(CXXPROJT_ENABLE_COVERAGE "Enable code coverage analysis" OFF)
 option(CXXPROJT_ENABLE_CLANG_FORMAT "Enable code formatting check with clang-format" OFF)
 option(CXXPROJT_ENABLE_CLANG_TIDY "Enable code static analysis with clang-tidy" OFF)
+option(CXXPROJT_ENABLE_ASAN "Enable Address Sanitizer" OFF)
+# TODO HB: Add the other sanitizers.
 option(CXXPROJT_ENABLE_DOXYGEN "Enable doxygen documentation generation" OFF)
 
 if(CXXPROJT_ENABLE_COVERAGE)
@@ -154,6 +156,12 @@ if(CXXPROJT_ENABLE_CLANG_TIDY)
     enable_clang_tidy("${CLANG_TIDY_DIRECTORIES}" ${CLANG_TIDY_LOG_FILE})
 endif()
 
+# TODO HB: Add the other sanitizers.
+if(CXXPROJT_ENABLE_ASAN)
+    include(Sanitizers)
+    enable_sanitizers(${PROJECT_COMPILER_OPTIONS_LIBRARY} ${CXXPROJT_ENABLE_ASAN} OFF OFF OFF OFF)
+endif()
+
 if(CXXPROJT_ENABLE_DOXYGEN)
     include(DoxygenDoc)
     set(DOXYGEN_CONFIG_FILE "${CMAKE_CURRENT_SOURCE_DIR}/doxygen/Doxyfile.in")
@@ -206,6 +214,8 @@ message(STATUS "- CXXPROJT_BUILD_TESTS = ${CXXPROJT_BUILD_TESTS}")
 message(STATUS "- CXXPROJT_ENABLE_COVERAGE = ${CXXPROJT_ENABLE_COVERAGE}")
 message(STATUS "- CXXPROJT_ENABLE_CLANG_FORMAT = ${CXXPROJT_ENABLE_CLANG_FORMAT}")
 message(STATUS "- CXXPROJT_ENABLE_CLANG_TIDY = ${CXXPROJT_ENABLE_CLANG_TIDY}")
+message(STATUS "- CXXPROJT_ENABLE_ASAN = ${CXXPROJT_ENABLE_ASAN}")
+# TODO HB: Add the other sanitizers.
 message(STATUS "- CXXPROJT_ENABLE_DOXYGEN = ${CXXPROJT_ENABLE_DOXYGEN}")
 message(STATUS "- MAIN_PROJECT = ${MAIN_PROJECT}")
 message(STATUS)

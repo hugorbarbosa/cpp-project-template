@@ -21,6 +21,7 @@ It offers a clear project structure, essential configurations, and integrates co
 - [Code coverage](#code-coverage)
 - [Coding style and format](#coding-style-and-format)
 - [Code static analysis](#code-static-analysis)
+- [Sanitizers](#sanitizers)
 - [Source code documentation](#source-code-documentation)
 - [Contributing to the project](#contributing-to-the-project)
 - [Future work](#future-work)
@@ -119,11 +120,11 @@ In the end of this section, it should mention something similar to the following
 
 ## Integration
 
-If the project is a library, this section can be included here to refer how the library can be integrated into the user project.
+If the project is a library, this section can be included here to explain how the library can be integrated into the user project.
 
-The content of this section that is available in this project is an example, which considers that the library is named as "my_library".
+The content of this section available in this project is just an example, and considers that the library is named as "my_library".
 
-This library creates a CMake target that can be linked in your project, and there are many ways to make this library available to be used in your project.
+This library creates a CMake target that can be linked in your project, and there are many ways to make this library available for that.
 
 ### Using CMake `FetchContent` module
 
@@ -326,6 +327,10 @@ The build succeeds only if no issues are found during the code static analysis, 
 
 Please consult the [code quality tools](./doc/code-quality-tools.md) documentation to know more details about clang-tidy.
 
+## Sanitizers
+
+// TODO HB: Complete.
+
 ## Source code documentation
 
 Doxygen is used to generate documentation from source code, and the commands below can be used for that purpose:
@@ -365,7 +370,7 @@ This project contains this [CONTRIBUTING](./CONTRIBUTING.md) file, just for demo
 List of tasks to be done in the future:
 
 - Code quality tools:
-    - Add address, leak, memory, thread and undefined behavior sanitizers.
+    - Add address, leak, memory, thread and undefined behavior sanitizers. // TODO HB: Remove this entry.
     - Add cppcheck tool for code static analysis.
     - Add valgrind (memory checker).
     - Add tool to check CMake code format.

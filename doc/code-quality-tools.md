@@ -256,7 +256,8 @@ For example, the following code contains a *signed integer overflow* error that 
 
 ```c++
 // ubsan_example.cpp
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[])
+{
     int k = 0x7fffffff;
     k += argc;
     return 0;

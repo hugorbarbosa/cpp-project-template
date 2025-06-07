@@ -145,6 +145,15 @@
             }
         },
         {
+            "name": "sanitizer-address",
+            "displayName": "Address Sanitizer",
+            "description": "Address Sanitizer configuration",
+            "inherits": "debug-clang",
+            "cacheVariables": {
+                "CXXPROJT_ENABLE_ASAN": "ON"
+            }
+        },
+        {
             "name": "doxygen",
             "displayName": "Doxygen",
             "description": "Doxygen configuration",
@@ -235,6 +244,13 @@
             "targets": "clang_tidy"
         },
         {
+            "name": "sanitizer-address",
+            "displayName": "Address Sanitizer",
+            "description": "Address Sanitizer build using the clang compiler",
+            "inherits": "default-parallel",
+            "configurePreset": "sanitizer-address"
+        },
+        {
             "name": "doxygen",
             "displayName": "Doxygen",
             "description": "Doxygen build target",
@@ -258,25 +274,32 @@
             "hidden": true
         },
         {
-            "name": "test-debug-msvc",
-            "displayName": "Testing, debug with MSVC",
-            "description": "Testing with debug build using the MSVC compiler",
+            "name": "debug-msvc",
+            "displayName": "Testing in Debug with MSVC",
+            "description": "Testing with Debug build using the MSVC compiler",
             "inherits": "default",
             "configurePreset": "debug-msvc"
         },
         {
-            "name": "test-debug-gcc",
-            "displayName": "Testing, debug with GCC",
-            "description": "Testing with debug build using the GCC compiler",
+            "name": "debug-gcc",
+            "displayName": "Testing in Debug with GCC",
+            "description": "Testing with Debug build using the GCC compiler",
             "inherits": "default",
             "configurePreset": "debug-gcc"
         },
         {
-            "name": "test-debug-clang",
-            "displayName": "Testing, debug with Clang",
-            "description": "Testing with debug build using the clang compiler",
+            "name": "debug-clang",
+            "displayName": "Testing in Debug with Clang",
+            "description": "Testing with Debug build using the clang compiler",
             "inherits": "default",
             "configurePreset": "debug-clang"
+        },
+        {
+            "name": "sanitizer-address",
+            "displayName": "Testing with Address Sanitizer",
+            "description": "Testing with Address Sanitizer using the clang compiler",
+            "inherits": "default",
+            "configurePreset": "sanitizer-address"
         }
     ]
 }

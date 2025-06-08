@@ -171,20 +171,20 @@ This project can be successfully built using the following compilers (it might a
 
 ## Building
 
-The following commands can be utilized to configure the project (example for Debug build type):
+The following commands can be utilized to configure the project (example for Debug build type), creating automatically the build directory:
+
+```sh
+$ cd <project-directory>
+$ cmake -S . -B ./build-debug -DCMAKE_BUILD_TYPE=Debug
+```
+
+Alternatively, the build directory can be manually created using the following commands, but the result in the end will be exactly the same:
 
 ```sh
 $ cd <project-directory>
 $ mkdir build-debug
 $ cd build-debug
 $ cmake .. -DCMAKE_BUILD_TYPE=Debug
-```
-
-Alternatively to creating the build directory manually, the following CMake command can be used to create it automatically, but the result will be exactly the same:
-
-```sh
-$ cd <project-directory>
-$ cmake -S . -B ./build-debug -DCMAKE_BUILD_TYPE=Debug
 ```
 
 To compile the software, use the CMake build command (universal command for building, that abstracts a native build tool's command-line interface):

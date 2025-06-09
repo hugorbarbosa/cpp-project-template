@@ -45,8 +45,10 @@ It offers a clear project structure, essential configurations, and integrates co
     - Code coverage.
     - Code formatting.
     - Static analysis.
+    - Sanitizers.
     - Documentation.
-- Code quality tools configured to be easily executed and ready for integration into CI pipelines.
+- Code quality tools configured to be easily executed and ready for integration into CI/CD pipelines.
+- CI setup, using GitHub Actions, that builds the project and runs the tests on different operating systems and with different compilers. Additionally, the code quality tools used by this project are also executed in CI.
 - Automatic dependency fetching, using CMake, for easy integration of third-party libraries.
 - Templates for README and Contributing guide.
 - Example of a Dockerfile.
@@ -167,7 +169,7 @@ This project can be successfully built using the following compilers (it might a
 
 - Clang 18.1.3
 - GCC 13.3.0
-- Microsoft Visual C++ 2022 / Build Tools 19.32.31332
+- Microsoft Visual C++ 2022 / Build Tools 19.43.34808.0
 
 ## Building
 
@@ -510,8 +512,6 @@ List of tasks to be done in the future:
     - Add cppcheck tool for code static analysis.
     - Add valgrind (memory checker).
     - Add tool to check CMake code format.
-- CI:
-    - Add CI pipelines, with GitHub Actions, to build the project, to run the tests, and to use all the code quality tools and sanitizers.
 
 ## License
 

@@ -67,5 +67,66 @@ jobs:
     - name: Configure project
       run: cmake --preset coverage
 
-    - name: Build coverage
+    - name: Build project and check coverage
       run: cmake --build --preset coverage
+
+  clang_format:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Configure project
+      run: cmake --preset clang-format
+
+    - name: Build project and check code format
+      run: cmake --build --preset clang-format
+
+  clang_tidy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Configure project
+      run: cmake --preset clang-tidy
+
+    - name: Build project and run code static analysis
+      run: cmake --build --preset clang-tidy
+
+  sanitizer:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        sanitize: [address, leak, memory, thread, undefined]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Configure project
+      run: cmake --preset sanitizer-${{ matrix.sanitize }}
+
+    - name: Build project
+      run: cmake --build --preset sanitizer-${{ matrix.sanitize }}
+
+    - name: Run tests
+      run: ctest --preset sanitizer-${{ matrix.sanitize }}
+
+  doxygen:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Configure project
+      run: cmake --preset doxygen
+
+    - name: Build project and run doxygen
+      run: cmake --build --preset doxygen

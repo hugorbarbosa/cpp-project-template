@@ -7,4 +7,4 @@ Pull request checklist:
 - [ ] New code is properly documented.
 - [ ] Project documentation (architecture diagrams, user guides, etc) is updated (if applicable).
 
-Refer to the [Contributing](https://github.com/hugorbarbosa/cpp-project-template/blob/main/CONTRIBUTING.md) guide for more details.
+Please refer to the [Contributing](https://github.com/hugorbarbosa/cpp-project-template/blob/main/CONTRIBUTING.md) guide for more details.

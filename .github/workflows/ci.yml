@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+    branches: [ $default-branch ]
+  push:
+    branches:
+      - develop
+      - main
+      - release/*
+  pull_request:
+    branches:
+      - develop
+      - main
+      - release/*
+
+jobs:
+  build_and_test_debug_gcc:
+    name: Build and test with Debug build type and using the GCC compiler
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Display job information
+      run: |
+        echo "The job was triggered by a ${{ github.event_name }} event."
+        echo "The job is now running on a ${{ runner.os }} machine."
+        echo "Repository is ${{ github.repository }}, branch is ${{ github.ref }}."
+
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Configure project
+      run: cmake --preset debug-gcc
+
+    - name: Build project
+      run: cmake --build --preset debug-gcc
+
+    - name: Run tests
+      run: ctest --preset debug-gcc

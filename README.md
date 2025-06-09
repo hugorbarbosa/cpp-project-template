@@ -511,7 +511,7 @@ List of tasks to be done in the future:
     - Add valgrind (memory checker).
     - Add tool to check CMake code format.
 - CI:
-    - Add CI pipelines, with GitHub Actions, to build the project, to run the tests, and to use all the code quality tools and sanitizers.
+    - Add CI pipelines, with GitHub Actions, to build the project, to run the tests, and to use all the code quality tools and sanitizers. // TODO HB: Remove this entry.
 
 ## License
 

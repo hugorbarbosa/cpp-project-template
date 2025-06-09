@@ -1,4 +1,4 @@
-name: CI
+name: ci
 
 on:
   push:
@@ -56,6 +56,11 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+
+    - name: Install requirements
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y lcov
 
     - name: Configure project
       run: cmake --preset coverage

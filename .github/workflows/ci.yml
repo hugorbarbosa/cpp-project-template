@@ -103,7 +103,9 @@ jobs:
       fail-fast: false
 
       matrix:
-        sanitize: [address, leak, memory, thread, undefined]
+        # Memory sanitizer is not included since it requires the instrumentation of the all
+        # libraries.
+        sanitize: [address, leak, thread, undefined]
 
     steps:
     - name: Checkout repository
@@ -124,6 +126,11 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+
+    - name: Install requirements
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y doxygen
 
     - name: Configure project
       run: cmake --preset doxygen

@@ -49,7 +49,7 @@ jobs:
       run: cmake --build --preset ${{ matrix.preset_build_type }}-${{ matrix.compiler }}
 
     - name: Run tests
-      if: ${{ github.preset_build_type == 'debug' }}
+      if: ${{ github.preset_build_type == debug }}
       run: ctest --preset ${{ matrix.preset_build_type }}-${{ matrix.compiler }}
 
   coverage:

@@ -5,6 +5,6 @@ Pull request checklist:
 - [ ] New code is properly tested.
 - [ ] New code is properly documented.
 - [ ] If applicable, the issue related to this pull request is referenced.
-- [ ] If application, the project documentation is updated (architecture diagrams, user guides, etc).
+- [ ] If applicable, the project documentation is updated (architecture diagrams, user guides, etc).
 
 Please refer to the [Contributing](https://github.com/hugorbarbosa/cpp-project-template/blob/main/CONTRIBUTING.md) guide for more details.

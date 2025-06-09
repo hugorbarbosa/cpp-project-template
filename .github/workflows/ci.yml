@@ -61,13 +61,13 @@ jobs:
 
     - name: Install requirements
       run: |
-        sudo apt-get update
-        sudo apt-get install -y lcov
+        sudo apt update
+        sudo apt install -y lcov
 
     - name: Configure project
       run: cmake --preset coverage
 
-    - name: Build project and check coverage
+    - name: Build project and check code coverage
       run: cmake --build --preset coverage
 
   clang_format:
@@ -80,7 +80,7 @@ jobs:
     - name: Configure project
       run: cmake --preset clang-format
 
-    - name: Build project and check code format
+    - name: Build project and check code formatting with clang-format
       run: cmake --build --preset clang-format
 
   clang_tidy:
@@ -93,7 +93,7 @@ jobs:
     - name: Configure project
       run: cmake --preset clang-tidy
 
-    - name: Build project and run code static analysis
+    - name: Build project and run code static analysis with clang-tidy
       run: cmake --build --preset clang-tidy
 
   sanitizer:
@@ -103,8 +103,8 @@ jobs:
       fail-fast: false
 
       matrix:
-        # Memory sanitizer is not included since it requires the instrumentation of the all
-        # libraries.
+        # Memory sanitizer is not included since it requires all the used libraries to be
+        # instrumented.
         sanitize: [address, leak, thread, undefined]
 
     steps:
@@ -129,8 +129,8 @@ jobs:
 
     - name: Install requirements
       run: |
-        sudo apt-get update
-        sudo apt-get install -y doxygen
+        sudo apt update
+        sudo apt install -y doxygen
 
     - name: Configure project
       run: cmake --preset doxygen

@@ -167,7 +167,7 @@ This project can be successfully built using the following compilers (it might a
 
 - Clang 18.1.3
 - GCC 13.3.0
-- Microsoft Visual C++ 2022 / Build Tools 19.32.31332
+- Microsoft Visual C++ 2022 / Build Tools 19.43.34808.0
 
 ## Building
 

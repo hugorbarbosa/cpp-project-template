@@ -109,8 +109,6 @@ TEST_P(ParamTestMyConcreteClass, ValueCanBeUpdated)
     MyConcreteClass my_concrete_class{default_value};
     my_concrete_class.set_value(value);
     EXPECT_EQ(my_concrete_class.get_value(), value);
-
-    ASSERT_TRUE(false);
 }
 
 /**

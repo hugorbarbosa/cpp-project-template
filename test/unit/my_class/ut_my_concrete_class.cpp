@@ -100,6 +100,13 @@ class ParamTestMyConcreteClass
     , public testing::WithParamInterface<std::string> {};
 
 /**
+ * @brief Instantiation of the parameterized test fixture of my concrete class.
+ */
+INSTANTIATE_TEST_SUITE_P(SetValue,
+                         ParamTestMyConcreteClass,
+                         testing::Values("value1", "value2", "value3", "value4"));
+
+/**
  * @brief Test that the value can be correctly updated.
  */
 TEST_P(ParamTestMyConcreteClass, ValueCanBeUpdated)
@@ -110,10 +117,3 @@ TEST_P(ParamTestMyConcreteClass, ValueCanBeUpdated)
     my_concrete_class.set_value(value);
     EXPECT_EQ(my_concrete_class.get_value(), value);
 }
-
-/**
- * @brief Instantiation of the parameterized test fixture of my concrete class.
- */
-INSTANTIATE_TEST_SUITE_P(SetValue,
-                         ParamTestMyConcreteClass,
-                         testing::Values("value1", "value2", "value3", "value4"));

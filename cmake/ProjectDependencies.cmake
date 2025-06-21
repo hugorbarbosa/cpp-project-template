@@ -21,10 +21,10 @@ endfunction()
 # Fetch project dependencies.
 #
 # Parameters:
-#   build_tests: Flag to indicate if the build includes tests.
-function(fetch_project_dependencies build_tests)
+#   BUILD_TESTS: Flag to indicate if the build includes tests.
+function(fetch_project_dependencies BUILD_TESTS)
     message(CHECK_START "Fetching project dependencies")
-    if (build_tests)
+    if(BUILD_TESTS)
         fetch_googletest()
     endif()
     message(CHECK_PASS "done")

@@ -27,4 +27,4 @@ Run image creating a container and mounting the project (`<project-directory>` m
 $ docker run -it --name mycontainer -v <project-directory>:/src cppprojtempl
 ```
 
-The project will be available in the `/src` directory of the container, and can be compiled and run inside of the container using the commands described [here](../README.md).
+The project will be available in the `/src` directory of the container.

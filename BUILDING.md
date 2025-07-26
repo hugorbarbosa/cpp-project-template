@@ -38,7 +38,7 @@ The following are the code quality tools used by the project (only required for 
 - Clang-tidy: code static analysis.
 - Doxygen: generation of documentation.
 
-Please consult the [code quality tools](./doc/code-quality-tools.md) documentation to know more details about some of those tools.
+Please consult the [code quality tools](./doc/code_quality_tools.md) documentation to know more details about some of those tools.
 
 ### Using Docker
 
@@ -172,7 +172,7 @@ This target uses clang-format to verify the format of the code, and creates a re
 
 The build succeeds only if the source files are formatted accordingly to the [configuration](.clang-format) file. The project source files to be verified are configured through CMake.
 
-Please consult the [code quality tools](./doc/code-quality-tools.md) documentation to know more details about clang-format.
+Please consult the [code quality tools](./doc/code_quality_tools.md) documentation to know more details about clang-format.
 
 ## Code static analysis
 
@@ -200,7 +200,7 @@ This target runs clang-tidy and generates a report with the results of the code 
 
 The build succeeds only if no issues are found during the code static analysis, which utilizes the list of checks provided in the respective [configuration](.clang-tidy) file. The project source files to be analyzed are configured through CMake.
 
-Please consult the [code quality tools](./doc/code-quality-tools.md) documentation to know more details about clang-tidy.
+Please consult the [code quality tools](./doc/code_quality_tools.md) documentation to know more details about clang-tidy.
 
 ## Sanitizers
 
@@ -208,7 +208,7 @@ Sanitizers are tools integrated into modern compilers that are able to catch man
 
 This project is prepared to easily enable the sanitizers described below. If a sanitizer detects an issue, a diagnostic report is printed containing detailed information.
 
-Please consult the [code quality tools](./doc/code-quality-tools.md) documentation to know more details about each sanitizer.
+Please consult the [code quality tools](./doc/code_quality_tools.md) documentation to know more details about each sanitizer.
 
 ### Address sanitizer
 
@@ -346,4 +346,4 @@ This target generates documentation from the source files using doxygen, in the 
 
 This target only succeeds if the source files are correctly documented. The doxygen [configuration](./doxygen/Doxyfile.in) file in this project is prepared to be automatically configured through CMake, namely the source files from which documentation should be generated, as well as other parameters related to the project.
 
-Please consult the [code quality tools](./doc/code-quality-tools.md) documentation to know more details about doxygen.
+Please consult the [code quality tools](./doc/code_quality_tools.md) documentation to know more details about doxygen.

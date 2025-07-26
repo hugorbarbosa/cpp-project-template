@@ -148,7 +148,7 @@ Additionally, this target also verifies the code coverage percentage and succeed
 
 ## Coding style and format
 
-This projects follows my [C++ coding style guide](https://github.com/hugorbarbosa/cpp-coding-style-guide), and to ensure consistency, clang-format is used to check the format of the code.
+This projects follows my [C++ coding style guide](https://github.com/hugorbarbosa/cpp-coding-style-guide), and to ensure consistency, clang-format is used to format the code.
 
 Using the standard CMake commands:
 
@@ -157,7 +157,10 @@ $ cd <project-directory>
 $ mkdir build-clang-format
 $ cd build-clang-format
 $ cmake .. -DCXXPROJT_ENABLE_CLANG_FORMAT=ON
-$ cmake --build . --target clang_format
+$ # To just check the files without modifying them.
+$ cmake --build . --target clang_format_check
+$ # To format the files.
+$ cmake --build . --target clang_format_apply
 ```
 
 CMake Preset equivalent:
@@ -165,12 +168,15 @@ CMake Preset equivalent:
 ```sh
 $ cd <project-directory>
 $ cmake --preset clang-format
-$ cmake --build --preset clang-format
+$ # To just check the files without modifying them.
+$ cmake --build --preset clang-format-check
+$ # To format the files.
+$ cmake --build --preset clang-format-apply
 ```
 
-This target uses clang-format to verify the format of the code, and creates a report file in the `build-clang-format` directory (used build directory in this example), named as `clang-format-report.log`.
+These targets use clang-format to verify/apply the desired format of the code, and creates a report file in the `build-clang-format` directory (used build directory in this example), named as `clang-format-report.log`.
 
-The build succeeds only if the source files are formatted accordingly to the [configuration](.clang-format) file. The project source files to be verified are configured through CMake.
+The build succeeds only if the source files are formatted accordingly to the [configuration](.clang-format) file, when using the target to only check the files. The project source files to be verified are configured through CMake.
 
 Please consult the [code quality tools](./doc/code_quality_tools.md) documentation to know more details about clang-format.
 

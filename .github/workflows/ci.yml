@@ -81,7 +81,7 @@ jobs:
       run: cmake --preset clang-format
 
     - name: Build project and check code formatting with clang-format
-      run: cmake --build --preset clang-format
+      run: cmake --build --preset clang-format-check
 
   clang_tidy:
     runs-on: ubuntu-latest

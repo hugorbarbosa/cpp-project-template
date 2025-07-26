@@ -144,7 +144,7 @@ if(CXXPROJT_ENABLE_CLANG_FORMAT)
         "${CMAKE_CURRENT_SOURCE_DIR}/test"
     )
     set(CLANG_FORMAT_LOG_FILE "clang-format-report.log")
-    enable_clang_format_check("${CLANG_FORMAT_DIRECTORIES}" ${CLANG_FORMAT_LOG_FILE})
+    enable_clang_format("${CLANG_FORMAT_DIRECTORIES}" ${CLANG_FORMAT_LOG_FILE})
 endif()
 
 if(CXXPROJT_ENABLE_CLANG_TIDY)

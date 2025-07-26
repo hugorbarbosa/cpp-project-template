@@ -2,15 +2,19 @@
 # Copyright (C) 2025 Hugo Barbosa.
 #
 
-# Enable code formatting check using clang-format.
+# Enable code formatting using clang-format.
+#
+# The following targets are created:
+# - A target that just checks the files without modifying them.
+# - A target that formats the files.
 #
 # Parameters:
-#   DIRECTORIES: Directories to get the files to be checked. To make clang-format ignore certain
-#                files, .clang-format-ignore files can be created. If not present, all the available
-#                files (headers and C/C++ files) in these directories will be analyzed.
+#   DIRECTORIES: Directories to get the files. To make clang-format ignore certain files,
+#                .clang-format-ignore files can be created. If not present, all the available files
+#                (headers and C/C++ files) in these directories will be analyzed.
 #   LOG_FILE: Log file to be created with the clang-format output.
-function(enable_clang_format_check DIRECTORIES LOG_FILE)
-    message(CHECK_START "Enabling code formatting check with clang-format")
+function(enable_clang_format DIRECTORIES LOG_FILE)
+    message(CHECK_START "Enabling code formatting with clang-format")
 
     # Requirements.
     message(CHECK_START "Checking needed tools")
@@ -41,25 +45,32 @@ function(enable_clang_format_check DIRECTORIES LOG_FILE)
     set(REPORT_FILE "${CMAKE_BINARY_DIR}/${LOG_FILE}")
 
     if(FILES)
-        # List of commands.
-        set(CLANG_FORMAT_CMD 
-            ${CLANG_FORMAT_PATH} --verbose --dry-run -Werror --style=file ${FILES}
-        )
-
-        # Target.
-        set(CLANG_FORMAT_TARGET_NAME "clang_format")
-        add_custom_target(${CLANG_FORMAT_TARGET_NAME}
+        set(CLANG_FORMAT_CHECK_TARGET "clang_format_check")
+        add_custom_target(${CLANG_FORMAT_CHECK_TARGET}
             COMMENT "Check code formatting using clang-format."
             COMMAND ${CMAKE_COMMAND} -E echo "Running clang-format"
             COMMAND ${CMAKE_COMMAND} -E echo "Report: ${REPORT_FILE}"
-            COMMAND ${CLANG_FORMAT_CMD} > ${REPORT_FILE} 2>&1
+            COMMAND ${CLANG_FORMAT_PATH} --verbose --dry-run -Werror --style=file
+                    ${FILES} > ${REPORT_FILE} 2>&1
+            BYPRODUCTS
+                ${REPORT_FILE}
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+            VERBATIM
+        )
+
+        set(CLANG_FORMAT_APPLY_TARGET "clang_format_apply")
+        add_custom_target(${CLANG_FORMAT_APPLY_TARGET}
+            COMMENT "Apply code formatting using clang-format."
+            COMMAND ${CMAKE_COMMAND} -E echo "Running clang-format"
+            COMMAND ${CMAKE_COMMAND} -E echo "Report: ${REPORT_FILE}"
+            COMMAND ${CLANG_FORMAT_PATH} --verbose --style=file -i ${FILES} > ${REPORT_FILE} 2>&1
             BYPRODUCTS
                 ${REPORT_FILE}
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
             VERBATIM
         )
     else()
-        message(WARNING "No files found in the provided directories to check code formatting")
+        message(WARNING "No files found in the provided directories for code formatting")
     endif()
 
     message(CHECK_PASS "done")

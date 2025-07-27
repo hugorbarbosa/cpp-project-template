@@ -47,7 +47,7 @@ function(enable_cmake_format directories files log_file)
     if(files_to_check)
         add_custom_target(
             cmake_format_check
-            COMMENT "Check CMake code formatting using cmake-format."
+            COMMENT "Check CMake code formatting using cmake-format"
             COMMAND ${CMAKE_COMMAND} -E echo "Running cmake-format"
             COMMAND ${CMAKE_COMMAND} -E echo "Report: ${report_file}"
             COMMAND ${cmake_format_path} --check ${files_to_check} > ${report_file} 2>&1
@@ -58,7 +58,7 @@ function(enable_cmake_format directories files log_file)
 
         add_custom_target(
             cmake_format_apply
-            COMMENT "Apply CMake code formatting using cmake-format."
+            COMMENT "Apply CMake code formatting using cmake-format"
             COMMAND ${CMAKE_COMMAND} -E echo "Running cmake-format"
             COMMAND ${CMAKE_COMMAND} -E echo "Report: ${report_file}"
             COMMAND ${cmake_format_path} -i ${files_to_check} > ${report_file} 2>&1

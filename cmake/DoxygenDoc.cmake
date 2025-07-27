@@ -51,7 +51,7 @@ function(
 
     add_custom_target(
         doxygen
-        COMMENT "Generate doxygen documentation for project ${project}."
+        COMMENT "Generate doxygen documentation for project ${project}"
         COMMAND ${CMAKE_COMMAND} -E echo "Running doxygen"
         COMMAND ${CMAKE_COMMAND} -E echo "Report: ${report_file}"
         COMMAND ${CMAKE_COMMAND} -E echo "Generated doc index: ${doxygen_index_file}"

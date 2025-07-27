@@ -55,7 +55,7 @@ function(enable_clang_format directories log_file)
     if(files)
         add_custom_target(
             clang_format_check
-            COMMENT "Check code formatting using clang-format."
+            COMMENT "Check code formatting using clang-format"
             COMMAND ${CMAKE_COMMAND} -E echo "Running clang-format"
             COMMAND ${CMAKE_COMMAND} -E echo "Report: ${report_file}"
             COMMAND ${clang_format_path} --verbose --dry-run -Werror --style=file ${files} >
@@ -67,7 +67,7 @@ function(enable_clang_format directories log_file)
 
         add_custom_target(
             clang_format_apply
-            COMMENT "Apply code formatting using clang-format."
+            COMMENT "Apply code formatting using clang-format"
             COMMAND ${CMAKE_COMMAND} -E echo "Running clang-format"
             COMMAND ${CMAKE_COMMAND} -E echo "Report: ${report_file}"
             COMMAND ${clang_format_path} --verbose --style=file -i ${files} > ${report_file} 2>&1

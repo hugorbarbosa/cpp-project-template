@@ -4,14 +4,16 @@
 
 # Add the sanitize compiler options to the provided target.
 #
-# Parameters: TARGET_NAME: Name of the target to add sanitize compiler options. SANITIZE_LIST: List
-# of the sanitize compiler options.
-function(add_sanitize_compiler_options TARGET_NAME SANITIZE_LIST)
-    if(SANITIZE_LIST)
-        string(REPLACE ";" "," SANITIZE_OPTIONS "${SANITIZE_LIST}")
-        set(SANITIZE_COMPILER_OPTIONS
+# Parameters:
+#
+# - target_name: Name of the target to add sanitize compiler options.
+# - sanitize_list: List of the sanitize compiler options.
+function(add_sanitize_compiler_options target_name sanitize_list)
+    if(sanitize_list)
+        string(REPLACE ";" "," sanitize_options "${sanitize_list}")
+        set(sanitize_compiler_options
             # Runtime checks for various forms of undefined or suspicious behavior.
-            -fsanitize=${SANITIZE_OPTIONS}
+            -fsanitize=${sanitize_options}
             # Produce debugging information.
             -g
             # Reduce compilation time and make debugging produce the expected results.
@@ -28,11 +30,11 @@ function(add_sanitize_compiler_options TARGET_NAME SANITIZE_LIST)
             )
         endif()
 
-        target_compile_options(${TARGET_NAME} INTERFACE ${SANITIZE_COMPILER_OPTIONS})
-        target_link_options(${TARGET_NAME} INTERFACE ${SANITIZE_COMPILER_OPTIONS})
+        target_compile_options(${target_name} INTERFACE ${sanitize_compiler_options})
+        target_link_options(${target_name} INTERFACE ${sanitize_compiler_options})
 
         message(
-            STATUS "Added sanitize compiler options for target ${TARGET_NAME}: ${SANITIZE_OPTIONS}"
+            STATUS "Added sanitize compiler options for target ${target_name}: ${sanitize_options}"
         )
     else()
         message(STATUS "No sanitize compiler options added")
@@ -41,74 +43,75 @@ endfunction()
 
 # Enable sanitizers for the provided target.
 #
-# Parameters: TARGET_NAME: Name of the target to add sanitizers options. ENABLE_ASAN: Flag to enable
-# Address Sanitizer. ENABLE_LSAN: Flag to enable Leak Sanitizer. ENABLE_MSAN: Flag to enable Memory
-# Sanitizer. ENABLE_TSAN: Flag to enable Thread Sanitizer. ENABLE_UBSAN: Flag to enable Undefined
-# Behavior Sanitizer.
+# Parameters:
+#
+# - target_name: Name of the target to add sanitizers options.
+# - enable_asan: Flag to enable Address Sanitizer.
+# - enable_lsan: Flag to enable Leak Sanitizer.
+# - enable_msan: Flag to enable Memory Sanitizer.
+# - enable_tsan: Flag to enable Thread Sanitizer.
+# - enable_ubsan: Flag to enable Undefined Behavior Sanitizer.
 function(
     enable_sanitizers
-    TARGET_NAME
-    ENABLE_ASAN
-    ENABLE_LSAN
-    ENABLE_MSAN
-    ENABLE_TSAN
-    ENABLE_UBSAN
+    target_name
+    enable_asan
+    enable_lsan
+    enable_msan
+    enable_tsan
+    enable_ubsan
 )
-    message(CHECK_START "Enabling sanitizers for target ${TARGET_NAME}")
+    message(CHECK_START "Enabling sanitizers for target ${target_name}")
 
     if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
         message(WARNING "Sanitizers in a non-Debug build may not give meaningful output")
     endif()
 
-    # Sanitizers.
-    set(SANITIZER_LIST)
+    set(sanitizer_list)
 
-    if(ENABLE_ASAN)
-        list(APPEND SANITIZER_LIST "address")
+    if(enable_asan)
+        list(APPEND sanitizer_list "address")
     endif()
 
-    if(ENABLE_LSAN)
-        list(APPEND SANITIZER_LIST "leak")
+    if(enable_lsan)
+        list(APPEND sanitizer_list "leak")
     endif()
 
-    if(ENABLE_MSAN)
+    if(enable_msan)
         if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
             message(FATAL_ERROR "Memory Sanitizer is only supported by Clang compiler")
         elseif(
-            ENABLE_ASAN
-            OR ENABLE_LSAN
-            OR ENABLE_TSAN
+            enable_asan
+            OR enable_lsan
+            OR enable_tsan
         )
             message(
                 FATAL_ERROR
                     "Memory Sanitizer does not work with Address, Leak or Thread Sanitizer enabled"
             )
         else()
-            message(
-                STATUS
-                    "Memory Sanitizer requires the instrumentation of all the code, including libc++"
+            message(STATUS "Memory Sanitizer requires the instrumentation of all the code, including
+                    libc++"
             )
-            list(APPEND SANITIZER_LIST "memory")
+            list(APPEND sanitizer_list "memory")
         endif()
     endif()
 
-    if(ENABLE_TSAN)
-        if(ENABLE_ASAN OR ENABLE_LSAN)
+    if(enable_tsan)
+        if(enable_asan OR enable_lsan)
             message(
                 FATAL_ERROR "Thread Sanitizer does not work with Address or Leak Sanitizer enabled"
             )
         else()
-            list(APPEND SANITIZER_LIST "thread")
+            list(APPEND sanitizer_list "thread")
         endif()
     endif()
 
-    if(ENABLE_UBSAN)
-        list(APPEND SANITIZER_LIST "undefined")
+    if(enable_ubsan)
+        list(APPEND sanitizer_list "undefined")
     endif()
 
-    # Compiler options.
     message(CHECK_START "Adding sanitize options to compiler")
-    add_sanitize_compiler_options(${TARGET_NAME} "${SANITIZER_LIST}")
+    add_sanitize_compiler_options(${target_name} "${sanitizer_list}")
     message(CHECK_PASS "done")
 
     message(CHECK_PASS "done")

@@ -41,7 +41,7 @@ function(enable_clang_tidy directories log_file)
         if(files)
             add_custom_target(
                 clang_tidy
-                COMMENT "Run code static analysis using clang-tidy."
+                COMMENT "Run code static analysis using clang-tidy"
                 COMMAND ${CMAKE_COMMAND} -E echo "Listing clang-tidy checks"
                 COMMAND ${clang_tidy_path} --list-checks
                 COMMAND ${CMAKE_COMMAND} -E echo "Running clang-tidy"

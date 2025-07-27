@@ -91,7 +91,7 @@ function(enable_coverage target_name exclude_patterns min_line_coverage min_func
     set(jobs 4)
     add_custom_target(
         ${coverage_target}
-        COMMENT "Run code coverage analysis."
+        COMMENT "Run code coverage analysis"
         COMMAND ${CMAKE_COMMAND} -E echo "Cleaning coverage data"
         COMMAND ${lcov_path} --directory . -b ${lcov_base_dir} --zerocounters
         COMMAND ${CMAKE_COMMAND} -E echo "Building project using ${jobs} jobs"

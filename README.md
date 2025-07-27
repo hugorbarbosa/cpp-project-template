@@ -150,7 +150,6 @@ This project contains this [CONTRIBUTING](./CONTRIBUTING.md) file, just for demo
 - Code quality tools:
     - Add cppcheck (code static analysis).
     - Add valgrind (memory checker).
-    - Add tool to check CMake code format.
 
 ## License
 

@@ -42,7 +42,7 @@ function(enable_cmake_lint directories files log_file)
     if(files_to_check)
         add_custom_target(
             cmake_lint
-            COMMENT "Check CMake code using cmake-lint."
+            COMMENT "Check CMake code using cmake-lint"
             COMMAND ${CMAKE_COMMAND} -E echo "Running cmake-lint"
             COMMAND ${CMAKE_COMMAND} -E echo "Report: ${report_file}"
             COMMAND ${cmake_lint_path} ${files_to_check} -o ${report_file} 2>&1

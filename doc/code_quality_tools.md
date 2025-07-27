@@ -13,6 +13,8 @@ This project uses many code quality tools commonly utilized in a C++ project. Th
     - [Thread sanitizer](#thread-sanitizer)
     - [Undefined behavior sanitizer](#undefined-behavior-sanitizer)
 - [Doxygen](#doxygen)
+- [CMake format](#cmake-format)
+- [CMake lint](#cmake-lint)
 - [References](#references)
 
 ## Clang-format
@@ -301,6 +303,56 @@ $ doxygen <config_file>
 
 Please refer to the [Doxygen page][ref-tool-doxygen] for more details regarding this tool.
 
+## CMake format
+
+cmake-format is a tool that can be used to format CMake code.
+
+This tool allows you to specify various options for formatting through a configuration file that can be in JSON, YAML or Python format.
+
+This project uses this [cmake-format configuration file](../.cmake-format.py), which includes the desired style options for this project, but can be used as example and be adjusted to your needs.
+
+cmake-format supports many options which can be found using the `--help` option:
+
+```sh
+$ cmake-format --help
+```
+
+For example, to run cmake-format on a file and apply the necessary changes:
+
+```sh
+$ cmake-format -i <file>
+```
+
+To just check the file without modifying it:
+
+```sh
+$ cmake-format --check <file>
+```
+
+Please refer to the [cmake-format page][ref-tool-cmake-format] for more details regarding this tool.
+
+## CMake lint
+
+cmake-lint is a tool that can be used to check CMake code problems and conventions.
+
+This tool allows you to specify various options for linting through a configuration file that can be in JSON, YAML or Python format, and is used together with the cmake-format tool (configuration file is usually the same for both cmake-format and cmake-lint).
+
+This project uses this [cmake-lint configuration file](../.cmake-format.py) (the same used for cmake-format), which includes the desired options for this project, but can be used as example and be adjusted to your needs.
+
+cmake-lint supports many options which can be found using the `--help` option:
+
+```sh
+$ cmake-lint --help
+```
+
+For example, to run cmake-lint on a file:
+
+```sh
+$ cmake-lint <file>
+```
+
+Please refer to the [cmake-lint page][ref-tool-cmake-format] for more details regarding this tool.
+
 ## References
 
 - [Clang-format][ref-tool-clang-format]
@@ -315,6 +367,7 @@ Please refer to the [Doxygen page][ref-tool-doxygen] for more details regarding 
 - [Undefined behavior sanitizer checks][ref-tool-sanitizer-undefined-checks]
 - [GCC program instrumentation options][ref-gcc-instrumentation-options]
 - [Doxygen][ref-tool-doxygen]
+- [cmake-format][ref-tool-cmake-format]
 - [Visual Studio Code: C/C++ extension][ref-vscode-cpp-extension]
 
 [ref-tool-clang-format]: https://clang.llvm.org/docs/ClangFormat.html "Clang-format"
@@ -329,4 +382,5 @@ Please refer to the [Doxygen page][ref-tool-doxygen] for more details regarding 
 [ref-tool-sanitizer-undefined-checks]: https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html#available-checks
 [ref-gcc-instrumentation-options]: https://gcc.gnu.org/onlinedocs/gcc/Instrumentation-Options.html
 [ref-tool-doxygen]: https://www.doxygen.nl/ "Doxygen"
+[ref-tool-cmake-format]: https://github.com/cheshirekow/cmake_format "cmake-format"
 [ref-vscode-cpp-extension]: https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools "Visual Studio Code: C/C++ extension"

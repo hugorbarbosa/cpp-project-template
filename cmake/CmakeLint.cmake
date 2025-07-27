@@ -4,47 +4,49 @@
 
 # Enable CMake lint using cmake-lint.
 #
-# Parameters: * DIRECTORIES: Directories to get the files. * FILES: Specific files to be analyzed. *
-# LOG_FILE: Log file to be created with the cmake-lint output.
-function(enable_cmake_lint DIRECTORIES FILES LOG_FILE)
+# Parameters:
+#
+# - directories: Directories to get the files.
+# - files: Specific files to be analyzed.
+# - log_file: Log file to be created with the cmake-lint output.
+function(enable_cmake_lint directories files log_file)
     message(CHECK_START "Enabling CMake lint with cmake-lint")
 
     # Requirements.
     message(CHECK_START "Checking needed tools")
-    find_program(CMAKE_LINT_PATH cmake-lint REQUIRED)
+    find_program(cmake_lint_path cmake-lint REQUIRED)
     execute_process(
-        COMMAND ${CMAKE_LINT_PATH} --version
-        OUTPUT_VARIABLE CMAKE_LINT_VERSION
-        ERROR_VARIABLE CMAKE_LINT_VERSION
+        COMMAND ${cmake_lint_path} --version
+        OUTPUT_VARIABLE cmake_lint_version
+        ERROR_VARIABLE cmake_lint_version
     )
-    message(STATUS "cmake-lint: ${CMAKE_LINT_VERSION}")
+    message(STATUS "cmake-lint: ${cmake_lint_version}")
     message(CHECK_PASS "done")
 
     # Files to check.
-    set(FILES_TO_CHECK)
-    foreach(DIR IN LISTS DIRECTORIES)
-        if(EXISTS ${DIR})
+    set(files_to_check)
+    foreach(dir IN LISTS directories)
+        if(EXISTS ${dir})
             # Search recursively the files.
-            file(GLOB_RECURSE DIR_FILES "${DIR}/*.cmake" "${DIR}/CMakeLists.txt")
-            list(APPEND FILES_TO_CHECK ${DIR_FILES})
+            file(GLOB_RECURSE dir_files "${dir}/*.cmake" "${dir}/CMakeLists.txt")
+            list(APPEND files_to_check ${dir_files})
         else()
-            message(WARNING "Directory ${DIR} does not exist")
+            message(WARNING "Directory ${dir} does not exist")
         endif()
     endforeach()
-    list(APPEND FILES_TO_CHECK ${FILES})
+    list(APPEND files_to_check ${files})
 
     # Generated files.
-    set(REPORT_FILE "${CMAKE_BINARY_DIR}/${LOG_FILE}")
+    set(report_file "${CMAKE_BINARY_DIR}/${log_file}")
 
-    if(FILES_TO_CHECK)
-        set(CMAKE_LINT_TARGET "cmake_lint")
+    if(files_to_check)
         add_custom_target(
-            ${CMAKE_LINT_TARGET}
+            cmake_lint
             COMMENT "Check CMake code using cmake-lint."
             COMMAND ${CMAKE_COMMAND} -E echo "Running cmake-lint"
-            COMMAND ${CMAKE_COMMAND} -E echo "Report: ${REPORT_FILE}"
-            COMMAND ${CMAKE_LINT_PATH} ${FILES_TO_CHECK} -o ${REPORT_FILE} 2>&1
-            BYPRODUCTS ${REPORT_FILE}
+            COMMAND ${CMAKE_COMMAND} -E echo "Report: ${report_file}"
+            COMMAND ${cmake_lint_path} ${files_to_check} -o ${report_file} 2>&1
+            BYPRODUCTS ${report_file}
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
             VERBATIM
         )

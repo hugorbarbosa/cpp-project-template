@@ -15,7 +15,7 @@
             "inherits": "default",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
-                "CXXPROJT_BUILD_TESTS": "ON"
+                "CPROJT_BUILD_TESTS": "ON"
             },
             "hidden": true
         },
@@ -26,7 +26,7 @@
             "inherits": "default",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
-                "CXXPROJT_BUILD_TESTS": "OFF"
+                "CPROJT_BUILD_TESTS": "OFF"
             },
             "hidden": true
         },
@@ -123,7 +123,7 @@
             "description": "Coverage configuration using the GCC compiler",
             "inherits": "debug-gcc",
             "cacheVariables": {
-                "CXXPROJT_ENABLE_COVERAGE": "ON"
+                "CPROJT_ENABLE_COVERAGE": "ON"
             }
         },
         {
@@ -132,7 +132,7 @@
             "description": "Clang-format configuration",
             "inherits": "debug",
             "cacheVariables": {
-                "CXXPROJT_ENABLE_CLANG_FORMAT": "ON"
+                "CPROJT_ENABLE_CLANG_FORMAT": "ON"
             }
         },
         {
@@ -141,7 +141,7 @@
             "description": "Clang-tidy configuration",
             "inherits": "debug-clang",
             "cacheVariables": {
-                "CXXPROJT_ENABLE_CLANG_TIDY": "ON"
+                "CPROJT_ENABLE_CLANG_TIDY": "ON"
             }
         },
         {
@@ -150,7 +150,7 @@
             "description": "Address Sanitizer configuration using the clang compiler",
             "inherits": "debug-clang",
             "cacheVariables": {
-                "CXXPROJT_ENABLE_ASAN": "ON"
+                "CPROJT_ENABLE_ASAN": "ON"
             }
         },
         {
@@ -159,7 +159,7 @@
             "description": "Leak Sanitizer configuration using the clang compiler",
             "inherits": "debug-clang",
             "cacheVariables": {
-                "CXXPROJT_ENABLE_LSAN": "ON"
+                "CPROJT_ENABLE_LSAN": "ON"
             }
         },
         {
@@ -168,7 +168,7 @@
             "description": "Memory Sanitizer configuration using the clang compiler",
             "inherits": "debug-clang",
             "cacheVariables": {
-                "CXXPROJT_ENABLE_MSAN": "ON"
+                "CPROJT_ENABLE_MSAN": "ON"
             }
         },
         {
@@ -177,7 +177,7 @@
             "description": "Thread Sanitizer configuration using the clang compiler",
             "inherits": "debug-clang",
             "cacheVariables": {
-                "CXXPROJT_ENABLE_TSAN": "ON"
+                "CPROJT_ENABLE_TSAN": "ON"
             }
         },
         {
@@ -186,7 +186,7 @@
             "description": "Undefined Behavior Sanitizer configuration using the clang compiler",
             "inherits": "debug-clang",
             "cacheVariables": {
-                "CXXPROJT_ENABLE_UBSAN": "ON"
+                "CPROJT_ENABLE_UBSAN": "ON"
             }
         },
         {
@@ -195,7 +195,7 @@
             "description": "Doxygen configuration",
             "inherits": "debug",
             "cacheVariables": {
-                "CXXPROJT_ENABLE_DOXYGEN": "ON"
+                "CPROJT_ENABLE_DOXYGEN": "ON"
             }
         },
         {
@@ -204,7 +204,7 @@
             "description": "CMake format configuration",
             "inherits": "debug",
             "cacheVariables": {
-                "CXXPROJT_ENABLE_CMAKE_FORMAT": "ON"
+                "CPROJT_ENABLE_CMAKE_FORMAT": "ON"
             }
         },
         {
@@ -213,7 +213,7 @@
             "description": "CMake lint configuration",
             "inherits": "debug",
             "cacheVariables": {
-                "CXXPROJT_ENABLE_CMAKE_LINT": "ON"
+                "CPROJT_ENABLE_CMAKE_LINT": "ON"
             }
         }
     ],

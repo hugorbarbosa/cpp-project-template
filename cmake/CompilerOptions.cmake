@@ -4,14 +4,19 @@
 
 # Add the default compiler options to the provided target.
 #
-# Parameters: TARGET_NAME: Target name to add the compiler options. WARNINGS_AS_ERRORS: Option to
-# set warnings as errors.
-function(add_default_compiler_options TARGET_NAME WARNINGS_AS_ERRORS)
-    set(MSVC_OPTIONS # Displays level 1 to level 4 (informational) warnings.
+# Parameters:
+#
+# - target_name: Target name to add the compiler options.
+# - warnings_as_errors: Option to set warnings as errors.
+function(add_default_compiler_options target_name warnings_as_errors)
+    set(mscl_options
+        # ~~~
+        # Displays level 1 to level 4 (informational) warnings.
+        # ~~~
         /W4
     )
 
-    set(CLANG_OPTIONS
+    set(clang_options
         # Enable most warning messages.
         -Wall
         # Enable some extra warnings.
@@ -44,8 +49,8 @@ function(add_default_compiler_options TARGET_NAME WARNINGS_AS_ERRORS)
         -Wimplicit-fallthrough
     )
 
-    set(GCC_OPTIONS
-        ${CLANG_OPTIONS}
+    set(gcc_options
+        ${clang_options}
         # Warn when the indentation of the code does not reflect the block structure.
         -Wmisleading-indentation
         # Warn about duplicated conditions in an if-else-if chain.
@@ -60,33 +65,35 @@ function(add_default_compiler_options TARGET_NAME WARNINGS_AS_ERRORS)
         -Wsuggest-override
     )
 
-    if(WARNINGS_AS_ERRORS)
+    if(warnings_as_errors)
         message(STATUS "Compilation warnings will be treated as errors")
-        list(APPEND MSVC_OPTIONS /WX)
-        list(APPEND CLANG_OPTIONS -Werror)
-        list(APPEND GCC_OPTIONS -Werror)
+        list(APPEND mscl_options /WX)
+        list(APPEND clang_options -Werror)
+        list(APPEND gcc_options -Werror)
     endif()
 
     if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        set(COMPILER_OPTIONS ${MSVC_OPTIONS})
+        set(compiler_options ${mscl_options})
     elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-        set(COMPILER_OPTIONS ${CLANG_OPTIONS})
+        set(compiler_options ${clang_options})
     elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        set(COMPILER_OPTIONS ${GCC_OPTIONS})
+        set(compiler_options ${gcc_options})
     else()
         message(AUTHOR_WARNING "No compiler options set for ${CMAKE_CXX_COMPILER_ID}")
     endif()
 
-    target_compile_options(${TARGET_NAME} INTERFACE ${COMPILER_OPTIONS})
+    target_compile_options(${target_name} INTERFACE ${compiler_options})
 endfunction()
 
-# Set the default compiler options to the provided library. The library will be created by this
-# function.
+# Set the default compiler options to the provided library, which will be created by this function.
 #
-# Parameters: LIBRARY_NAME: Name of the library to add the compiler options. NAMESPACE: Namespace
-# for the library. WARNINGS_AS_ERRORS: Option to set warnings as errors.
-function(set_project_default_compiler_options LIBRARY_NAME NAMESPACE WARNINGS_AS_ERRORS)
-    add_library(${LIBRARY_NAME} INTERFACE)
-    add_library(${NAMESPACE}::${LIBRARY_NAME} ALIAS ${LIBRARY_NAME})
-    add_default_compiler_options(${LIBRARY_NAME} ${WARNINGS_AS_ERRORS})
+# Parameters:
+#
+# - library_name: Name of the library to add the compiler options.
+# - namespace: Namespace for the library.
+# - warnings_as_errors: Option to set warnings as errors.
+function(set_project_default_compiler_options library_name namespace warnings_as_errors)
+    add_library(${library_name} INTERFACE)
+    add_library(${namespace}::${library_name} ALIAS ${library_name})
+    add_default_compiler_options(${library_name} ${warnings_as_errors})
 endfunction()

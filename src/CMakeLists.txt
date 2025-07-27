@@ -9,9 +9,9 @@ target_include_git_info_directory(${PROJECT_NAME})
 
 target_link_libraries(
     ${PROJECT_NAME}
-    PRIVATE ${CXXPROJT_PROJECT_NAME}::compile_options
-    PRIVATE ${CXXPROJT_PROJECT_NAME}::version
-    PRIVATE ${CXXPROJT_PROJECT_NAME}::my_class
+    PRIVATE ${CPROJT_PROJECT_NAME}::compile_options
+    PRIVATE ${CPROJT_PROJECT_NAME}::version
+    PRIVATE ${CPROJT_PROJECT_NAME}::my_class
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")

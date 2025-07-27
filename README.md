@@ -28,10 +28,11 @@ It offers a clear project structure, essential configurations, and integrates co
 - Examples of test suites and mocks.
 - Integration of code quality tools for:
     - Code coverage.
-    - Code formatting.
+    - Source code formatting.
     - Static analysis.
     - Sanitizers.
     - Generation of documentation.
+    - CMake code formatting and linting.
 - Code quality tools configured to be easily executed and ready for integration into CI/CD pipelines.
 - CI setup, using GitHub Actions, to build the project and run the tests on different operating systems and with different compilers. Additionally, the code quality tools used by this project are also executed in CI.
 - Automatic dependency fetching, using CMake, for easy integration of third-party libraries.
@@ -46,12 +47,12 @@ The following procedure will help you to get started with this template:
 
 - Get a copy of this template.
 - Adjust the `CMakeLists` files to use your project files.
-- Update prefix on the name of some CMake variables (`CXXPROJT_`) to use your project name.
+- Update prefix on the name of some CMake variables (`CPROJT_`) to use your project name.
 - Remove unused files and directories.
 - Update include guards on header files.
 - Adjust copyrights in files.
 - Replace the license file with the one specific to your project.
-- Adjust clang-format, clang-tidy, and doxygen configuration files, as well as some of its parameters automatically configured by CMake.
+- Adjust clang-format, clang-tidy, doxygen and cmake-format/cmake-lint configuration files, as well as some of its parameters automatically configured by CMake.
 - Update the `CMakePresets.json` file (e.g., CMake variables defined there).
 - `Dockerfile` might be adjusted to your needs.
 - Update this README to have only the sections that make sense for your project.
@@ -88,7 +89,7 @@ Using this project as example, the following is what this section could have:
 
 This project uses CMake as its build system, with support for CMake Presets to simplify configuration and building.
 
-For detailed build instructions, including how to build the project, run tests, enable optional code quality tools (code coverage, sanitizers, static analysis, etc) and generate documentation, please see the [Building guide](BUILDING.md).
+For detailed build instructions, including how to build the project, run tests, enable optional code quality tools (code coverage, code formatting, sanitizers, static analysis, etc) and generate documentation, please see the [Building guide](BUILDING.md).
 
 ## Examples
 

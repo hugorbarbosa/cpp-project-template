@@ -137,3 +137,39 @@ jobs:
 
     - name: Build project and run doxygen
       run: cmake --build --preset doxygen
+
+  cmake_format:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install requirements
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake-format
+
+    - name: Configure project
+      run: cmake --preset cmake-format
+
+    - name: Build project and check CMake code formatting with cmake-format
+      run: cmake --build --preset cmake-format-check
+
+  cmake_lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install requirements
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake-format
+
+    - name: Configure project
+      run: cmake --preset cmake-lint
+
+    - name: Build project and check CMake code with cmake-lint
+      run: cmake --build --preset cmake-lint

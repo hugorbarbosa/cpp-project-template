@@ -3,18 +3,18 @@
  * @copyright Copyright (C) 2025 Hugo Barbosa.
  */
 
-#ifndef @PROJECT_GIT_INFO_HEADER_GUARD@
-#define @PROJECT_GIT_INFO_HEADER_GUARD@
+#ifndef @project_git_info_header_guard@
+#define @project_git_info_header_guard@
 
 #include <string_view>
 
-namespace @PROJECT_GIT_INFO_NAMESPACE@ {
+namespace @project_git_info_namespace@ {
 
 /// Project git branch.
-inline constexpr std::string_view project_git_branch{"@PROJECT_GIT_BRANCH@"};
+inline constexpr std::string_view project_git_branch{"@project_git_branch@"};
 /// Project git commit hash.
-inline constexpr std::string_view project_git_commit_hash{"@PROJECT_GIT_COMMIT_HASH@"};
+inline constexpr std::string_view project_git_commit_hash{"@project_git_commit_hash@"};
 
-} // namespace @PROJECT_GIT_INFO_NAMESPACE@
+} // namespace @project_git_info_namespace@
 
-#endif // @PROJECT_GIT_INFO_HEADER_GUARD@
+#endif // @project_git_info_header_guard@

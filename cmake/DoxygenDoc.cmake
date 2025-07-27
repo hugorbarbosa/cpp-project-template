@@ -5,57 +5,58 @@
 # Enable source code documentation generation, using doxygen.
 #
 # Parameters:
-#   CONFIG_FILE: Doxygen configuration file.
-#   PROJECT: Project name used to update the respective option in the configuration file.
-#   VERSION: Project version used to update the respective option in the configuration file.
-#   BRIEF: Project brief used to update the respective option in the configuration file.
-#   INPUT: Input directories/files, separated with spaces, used to update the respective option in
-#          the configuration file.
-#   OUT_DIR: Output directory used to update the respective option in the configuration file.
-#   LOG_FILE: Log file to be created with the doxygen output.
-function(enable_doxygen_doc CONFIG_FILE PROJECT VERSION BRIEF INPUT OUT_DIR LOG_FILE)
+#
+# - config_file: Doxygen configuration file.
+# - project: Project name used to update the respective option in the configuration file.
+# - version: Project version used to update the respective option in the configuration file.
+# - brief: Project brief used to update the respective option in the configuration file.
+# - input: Input directories/files, separated with spaces, used to update the respective option in
+#   the configuration file.
+# - out_dir: Output directory used to update the respective option in the configuration file.
+# - log_file: Log file to be created with the doxygen output.
+function(
+    enable_doxygen_doc
+    config_file
+    project
+    version
+    brief
+    input
+    out_dir
+    log_file
+)
     message(CHECK_START "Enabling doxygen documentation generation")
 
     # Requirements.
     message(CHECK_START "Checking needed tools")
-    find_program(DOXYGEN_PATH doxygen REQUIRED)
+    find_program(doxygen_path doxygen REQUIRED)
     execute_process(
-        COMMAND ${DOXYGEN_PATH} --version
-        OUTPUT_VARIABLE DOXYGEN_VERSION
-        ERROR_VARIABLE DOXYGEN_VERSION
+        COMMAND ${doxygen_path} --version
+        OUTPUT_VARIABLE doxygen_version
+        ERROR_VARIABLE doxygen_version
     )
-    message(STATUS "Doxygen: ${DOXYGEN_VERSION}")
+    message(STATUS "Doxygen: ${doxygen_version}")
     message(CHECK_PASS "done")
 
     # Generate the configuration file using the configuration variables.
-    set(DOXYGEN_PROJECT_NAME "\"${PROJECT}\"")
-    set(DOXYGEN_PROJECT_NUMBER "${VERSION}")
-    set(DOXYGEN_PROJECT_BRIEF "\"${BRIEF}\"")
-    set(DOXYGEN_INPUT "${INPUT}")
-    set(DOXYGEN_OUTPUT_DIRECTORY "${OUT_DIR}")
-    set(CONFIG_FILE_OUT "${CMAKE_BINARY_DIR}/Doxyfile")
-    configure_file(${CONFIG_FILE} ${CONFIG_FILE_OUT} @ONLY)
+    set(doxygen_project_name "\"${project}\"")
+    set(doxygen_project_number "${version}")
+    set(doxygen_project_brief "\"${brief}\"")
+    set(doxygen_input "${input}")
+    set(doxygen_output_directory "${out_dir}")
+    set(config_file_out "${CMAKE_BINARY_DIR}/Doxyfile")
+    configure_file(${config_file} ${config_file_out} @ONLY)
 
-    set(REPORT_FILE "${CMAKE_BINARY_DIR}/${LOG_FILE}")
-    set(DOXYGEN_INDEX_FILE "${OUT_DIR}/index.html")
+    set(report_file "${CMAKE_BINARY_DIR}/${log_file}")
+    set(doxygen_index_file "${out_dir}/index.html")
 
-    # List of commands.
-    set(DOXYGEN_CMD 
-        ${DOXYGEN_PATH} ${CONFIG_FILE_OUT}
-    )
-
-    # Target.
-    set(DOXYGEN_TARGET_NAME "doxygen")
-    add_custom_target(${DOXYGEN_TARGET_NAME}
-        COMMENT "Generate doxygen documentation for project ${PROJECT}."
+    add_custom_target(
+        doxygen
+        COMMENT "Generate doxygen documentation for project ${project}"
         COMMAND ${CMAKE_COMMAND} -E echo "Running doxygen"
-        COMMAND ${CMAKE_COMMAND} -E echo "Report: ${REPORT_FILE}"
-        COMMAND ${CMAKE_COMMAND} -E echo "Generated doc index: ${DOXYGEN_INDEX_FILE}"
-        COMMAND ${DOXYGEN_CMD} > ${REPORT_FILE} 2>&1
-        BYPRODUCTS
-            ${REPORT_FILE}
-            ${DOXYGEN_INDEX_FILE}
-            ${CONFIG_FILE_OUT}
+        COMMAND ${CMAKE_COMMAND} -E echo "Report: ${report_file}"
+        COMMAND ${CMAKE_COMMAND} -E echo "Generated doc index: ${doxygen_index_file}"
+        COMMAND ${doxygen_path} ${config_file_out} > ${report_file} 2>&1
+        BYPRODUCTS ${report_file} ${doxygen_index_file} ${config_file_out}
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         VERBATIM
     )

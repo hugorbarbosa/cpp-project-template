@@ -19,6 +19,7 @@ This guide provides detailed instructions to build the project, namely how to co
     - [Thread sanitizer](#thread-sanitizer)
     - [Undefined behavior sanitizer](#undefined-behavior-sanitizer)
 - [Source code documentation](#source-code-documentation)
+- [CMake coding style and format](#cmake-coding-style-and-format)
 
 ## Requirements
 
@@ -37,6 +38,8 @@ The following are the code quality tools used by the project (only required for 
 - Clang-format: code formatting.
 - Clang-tidy: code static analysis.
 - Doxygen: generation of documentation.
+- cmake-format: CMake code formatting.
+- cmake-lint: CMake code linting.
 
 Please consult the [code quality tools](./doc/code_quality_tools.md) documentation to know more details about some of those tools.
 
@@ -108,7 +111,7 @@ Using the standard CMake commands:
 $ cd <project-directory>
 $ mkdir build-debug
 $ cd build-debug
-$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCXXPROJT_BUILD_TESTS=ON
+$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCPROJT_BUILD_TESTS=ON
 $ cmake --build . -j 4
 $ ctest
 ```
@@ -130,7 +133,7 @@ Using the standard CMake commands (with GCC compiler only):
 $ cd <project-directory>
 $ mkdir build-coverage
 $ cd build-coverage
-$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCXXPROJT_ENABLE_COVERAGE=ON
+$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCPROJT_ENABLE_COVERAGE=ON
 $ cmake --build . --target coverage
 ```
 
@@ -156,7 +159,7 @@ Using the standard CMake commands:
 $ cd <project-directory>
 $ mkdir build-clang-format
 $ cd build-clang-format
-$ cmake .. -DCXXPROJT_ENABLE_CLANG_FORMAT=ON
+$ cmake .. -DCPROJT_ENABLE_CLANG_FORMAT=ON
 $ # To just check the files without modifying them.
 $ cmake --build . --target clang_format_check
 $ # To format the files.
@@ -176,7 +179,7 @@ $ cmake --build --preset clang-format-apply
 
 These targets use clang-format to verify/apply the desired format of the code, and creates a report file in the `build-clang-format` directory (used build directory in this example), named as `clang-format-report.log`.
 
-The build succeeds only if the source files are formatted accordingly to the [configuration](.clang-format) file, when using the target to only check the files. The project source files to be verified are configured through CMake.
+The build succeeds only if the source files are formatted accordingly to the [configuration](.clang-format) file. The project source files to be verified are configured through CMake.
 
 Please consult the [code quality tools](./doc/code_quality_tools.md) documentation to know more details about clang-format.
 
@@ -190,7 +193,7 @@ Using the standard CMake commands:
 $ cd <project-directory>
 $ mkdir build-clang-tidy
 $ cd build-clang-tidy
-$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCXXPROJT_ENABLE_CLANG_TIDY=ON -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCPROJT_ENABLE_CLANG_TIDY=ON -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
 $ cmake --build . --target clang_tidy
 ```
 
@@ -224,7 +227,7 @@ Using the standard CMake commands:
 $ cd <project-directory>
 $ mkdir build-sanitizer-address
 $ cd build-sanitizer-address
-$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCXXPROJT_BUILD_TESTS=ON -DCXXPROJT_ENABLE_ASAN=ON
+$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCPROJT_BUILD_TESTS=ON -DCPROJT_ENABLE_ASAN=ON
 $ cmake --build . -j 4
 $ ctest
 ```
@@ -246,7 +249,7 @@ Using the standard CMake commands:
 $ cd <project-directory>
 $ mkdir build-sanitizer-leak
 $ cd build-sanitizer-leak
-$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCXXPROJT_BUILD_TESTS=ON -DCXXPROJT_ENABLE_LSAN=ON
+$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCPROJT_BUILD_TESTS=ON -DCPROJT_ENABLE_LSAN=ON
 $ cmake --build . -j 4
 $ ctest
 ```
@@ -268,7 +271,7 @@ Using the standard CMake commands (with clang compiler only):
 $ cd <project-directory>
 $ mkdir build-sanitizer-memory
 $ cd build-sanitizer-memory
-$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCXXPROJT_BUILD_TESTS=ON -DCXXPROJT_ENABLE_MSAN=ON -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCPROJT_BUILD_TESTS=ON -DCPROJT_ENABLE_MSAN=ON -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
 $ cmake --build . -j 4
 $ ctest
 ```
@@ -290,7 +293,7 @@ Using the standard CMake commands:
 $ cd <project-directory>
 $ mkdir build-sanitizer-thread
 $ cd build-sanitizer-thread
-$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCXXPROJT_BUILD_TESTS=ON -DCXXPROJT_ENABLE_TSAN=ON
+$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCPROJT_BUILD_TESTS=ON -DCPROJT_ENABLE_TSAN=ON
 $ cmake --build . -j 4
 $ ctest
 ```
@@ -312,7 +315,7 @@ Using the standard CMake commands:
 $ cd <project-directory>
 $ mkdir build-sanitizer-undefined
 $ cd build-sanitizer-undefined
-$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCXXPROJT_BUILD_TESTS=ON -DCXXPROJT_ENABLE_UBSAN=ON
+$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCPROJT_BUILD_TESTS=ON -DCPROJT_ENABLE_UBSAN=ON
 $ cmake --build . -j 4
 $ ctest
 ```
@@ -336,7 +339,7 @@ Using the standard CMake commands:
 $ cd <project-directory>
 $ mkdir build-doxygen
 $ cd build-doxygen
-$ cmake .. -DCXXPROJT_ENABLE_DOXYGEN=ON
+$ cmake .. -DCPROJT_ENABLE_DOXYGEN=ON
 $ cmake --build . --target doxygen
 ```
 
@@ -353,3 +356,57 @@ This target generates documentation from the source files using doxygen, in the 
 This target only succeeds if the source files are correctly documented. The doxygen [configuration](./doxygen/Doxyfile.in) file in this project is prepared to be automatically configured through CMake, namely the source files from which documentation should be generated, as well as other parameters related to the project.
 
 Please consult the [code quality tools](./doc/code_quality_tools.md) documentation to know more details about doxygen.
+
+## CMake coding style and format
+
+To ensure consistency, cmake-format and cmake-lint are used to format and check the CMake code.
+
+Using the standard CMake commands for cmake-format:
+
+```sh
+$ cd <project-directory>
+$ mkdir build-cmake-format
+$ cd build-cmake-format
+$ cmake .. -DCPROJT_ENABLE_CMAKE_FORMAT=ON
+$ # To just check the files without modifying them.
+$ cmake --build . --target cmake_format_check
+$ # To format the files.
+$ cmake --build . --target cmake_format_apply
+```
+
+CMake Preset equivalent:
+
+```sh
+$ cd <project-directory>
+$ cmake --preset cmake-format
+$ # To just check the files without modifying them.
+$ cmake --build --preset cmake-format-check
+$ # To format the files.
+$ cmake --build --preset cmake-format-apply
+```
+
+These targets use cmake-format to verify/apply the desired format of the CMake code, and creates a report file in the `build-cmake-format` directory (used build directory in this example), named as `cmake-format-report.log`.
+
+Relatively to cmake-lint, using the standard CMake commands:
+
+```sh
+$ cd <project-directory>
+$ mkdir build-cmake-lint
+$ cd build-cmake-lint
+$ cmake .. -DCPROJT_ENABLE_CMAKE_LINT=ON
+$ cmake --build . --target cmake_lint
+```
+
+CMake Preset equivalent:
+
+```sh
+$ cd <project-directory>
+$ cmake --preset cmake-lint
+$ cmake --build --preset cmake-lint
+```
+
+The target uses cmake-lint to verify the desired lint options of the CMake code, and creates a report file in the `build-cmake-lint` directory (used build directory in this example), named as `cmake-lint-report.log`.
+
+The builds for the cmake-format and cmake-lint targets succeed only if the CMake files are formatted accordingly to the [configuration](.cmake-format.py) file. The CMake files to be verified are configured through CMake.
+
+Please consult the [code quality tools](./doc/code_quality_tools.md) documentation to know more details about cmake-format and cmake-lint.

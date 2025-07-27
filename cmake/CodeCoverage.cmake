@@ -5,9 +5,10 @@
 # Add the compiler options for code coverage to the provided target.
 #
 # Parameters:
-#   TARGET_NAME: Name of the target to add coverage compiler options.
-function(add_coverage_compiler_options TARGET_NAME)
-    set(GCC_COVERAGE_OPTIONS
+#
+# - target_name: Name of the target to add coverage compiler options.
+function(add_coverage_compiler_options target_name)
+    set(gcc_coverage_options
         # Compile and link code instrumented for coverage analysis.
         --coverage
         # Produce debugging information.
@@ -23,29 +24,27 @@ function(add_coverage_compiler_options TARGET_NAME)
     )
 
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        target_compile_options(${TARGET_NAME}
-            INTERFACE ${GCC_COVERAGE_OPTIONS}
-        )
-        target_link_libraries(${TARGET_NAME}
-            INTERFACE gcov
-        )
-        message(STATUS "Added coverage compiler options for target ${TARGET_NAME}")
+        target_compile_options(${target_name} INTERFACE ${gcc_coverage_options})
+        target_link_libraries(${target_name} INTERFACE gcov)
+        message(STATUS "Added coverage compiler options for target ${target_name}")
     else()
         message(FATAL_ERROR "Coverage only for GCC, not available for ${CMAKE_CXX_COMPILER_ID}")
-   endif()
+    endif()
 endfunction()
 
 # Enable code coverage for the provided target and create coverage target.
 #
 # Parameters:
-#   TARGET_NAME: Name of the target to add coverage compiler options.
-#   EXCLUDE_PATTERNS: Patterns to be excluded from the coverage analysis.
-#   MIN_LINE_COVERAGE: Minimum lines coverage value to succeed.
-#   MIN_FUNCTION_COVERAGE: Minimum functions coverage value to succeed.
-#   JOBS: Number of jobs for compilation.
-#   COV_CHECK_SCRIPT: Coverage report checker script path.
-function(enable_coverage TARGET_NAME EXCLUDE_PATTERNS MIN_LINE_COVERAGE MIN_FUNCTION_COVERAGE JOBS COV_CHECK_SCRIPT)
-    message(CHECK_START "Enabling code coverage for target ${TARGET_NAME}")
+#
+# - target_name: Name of the target to add coverage compiler options.
+# - exclude_patterns: Patterns to be excluded from the coverage analysis.
+# - min_line_coverage: Minimum lines coverage value to succeed.
+# - min_function_coverage: Minimum functions coverage value to succeed.
+# - cov_check_script: Coverage report checker script path.
+function(enable_coverage target_name exclude_patterns min_line_coverage min_function_coverage
+         cov_check_script
+)
+    message(CHECK_START "Enabling code coverage for target ${target_name}")
 
     if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
         message(WARNING "Code coverage in a non-Debug build may be misleading")
@@ -53,109 +52,72 @@ function(enable_coverage TARGET_NAME EXCLUDE_PATTERNS MIN_LINE_COVERAGE MIN_FUNC
 
     # Requirements.
     message(CHECK_START "Checking needed tools")
-    find_program(GCOV_PATH gcov REQUIRED)
-    find_program(LCOV_PATH lcov REQUIRED)
+    find_program(gcov_path gcov REQUIRED)
+    find_program(lcov_path lcov REQUIRED)
     execute_process(
-        COMMAND ${LCOV_PATH} --version
-        OUTPUT_VARIABLE LCOV_VERSION
-        ERROR_VARIABLE LCOV_VERSION
+        COMMAND ${lcov_path} --version
+        OUTPUT_VARIABLE lcov_version
+        ERROR_VARIABLE lcov_version
     )
-    message(STATUS "LCOV: ${LCOV_VERSION}")
-    find_program(GENHTML_PATH genhtml REQUIRED)
+    message(STATUS "LCOV: ${lcov_version}")
+    find_program(genhtml_path genhtml REQUIRED)
     message(CHECK_PASS "done")
 
     # Compiler options.
     message(CHECK_START "Adding coverage compiler options")
-    add_coverage_compiler_options(${TARGET_NAME})
+    add_coverage_compiler_options(${target_name})
     message(CHECK_PASS "done")
 
     # Excludes.
-    set(LCOV_EXCLUDES "")
-    foreach(PATTERN IN LISTS EXCLUDE_PATTERNS)
-        message(STATUS "Excluding pattern: ${PATTERN}")
-        list(APPEND LCOV_EXCLUDES "${PATTERN}")
+    set(lcov_excludes "")
+    foreach(pattern IN LISTS exclude_patterns)
+        message(STATUS "Excluding pattern: ${pattern}")
+        list(APPEND lcov_excludes "${pattern}")
     endforeach()
-    list(REMOVE_DUPLICATES LCOV_EXCLUDES)
-    
+    list(REMOVE_DUPLICATES lcov_excludes)
+
     # LCOV base directory.
-    set(LCOV_BASE_DIR ${PROJECT_SOURCE_DIR})
+    set(lcov_base_dir ${PROJECT_SOURCE_DIR})
 
     # Generated files.
-    set(COVERAGE_TARGET_NAME "coverage")
-    set(COVERAGE_BASE_FILE "${COVERAGE_TARGET_NAME}-base.info")
-    set(COVERAGE_CAPTURE_FILE "${COVERAGE_TARGET_NAME}-capture.info")
-    set(COVERAGE_TOTAL_FILE "${COVERAGE_TARGET_NAME}-total.info")
-    set(COVERAGE_FILTERED_FILE "${COVERAGE_TARGET_NAME}-filtered.info")
-    set(COVERAGE_REPORT_DIR "${COVERAGE_TARGET_NAME}")
-    set(COVERAGE_REPORT_FILE "${COVERAGE_TARGET_NAME}/index.html")
+    set(coverage_target "coverage")
+    set(base_file "${coverage_target}-base.info")
+    set(capture_file "${coverage_target}-capture.info")
+    set(total_file "${coverage_target}-total.info")
+    set(filtered_file "${coverage_target}-filtered.info")
+    set(report_dir "${coverage_target}")
+    set(report_file "${coverage_target}/index.html")
 
-    # List of commands.
-    # Build and test.
-    set(BUILD_CMD 
-        ${CMAKE_COMMAND} --build . -j ${JOBS}
-    )
-    set(TEST_CMD 
-        ${CMAKE_CTEST_COMMAND} --output-on-failure
-    )
-    # LCOV.
-    set(LCOV_CLEAN_CMD 
-        ${LCOV_PATH} --directory . -b ${LCOV_BASE_DIR} --zerocounters
-    )
-    set(LCOV_BASELINE_CMD 
-        ${LCOV_PATH} --directory . -b ${LCOV_BASE_DIR} --capture --initial
-            --output-file ${COVERAGE_BASE_FILE} --ignore-errors mismatch --ignore-errors unused
-    )
-    set(LCOV_CAPTURE_CMD 
-        ${LCOV_PATH} --directory . -b ${LCOV_BASE_DIR} --capture
-            --output-file ${COVERAGE_CAPTURE_FILE} --ignore-errors mismatch --ignore-errors unused
-    )
-    set(LCOV_TOTAL_CMD 
-        ${LCOV_PATH} --add-tracefile ${COVERAGE_BASE_FILE} --add-tracefile ${COVERAGE_CAPTURE_FILE}
-            --output-file ${COVERAGE_TOTAL_FILE}
-    )
-    set(LCOV_FILTER_CMD 
-        ${LCOV_PATH} --remove ${COVERAGE_TOTAL_FILE} ${LCOV_EXCLUDES}
-            --output-file ${COVERAGE_FILTERED_FILE} --ignore-errors mismatch --ignore-errors unused
-    )
-    # HTML report.
-    set(GENHTML_REPORT_CMD 
-        ${GENHTML_PATH} ${COVERAGE_FILTERED_FILE} --output-directory ${COVERAGE_REPORT_DIR}
-            --legend --show-details
-    )
-    # Coverage report checker.
-    set(COV_CHECK_SCRIPT_CMD 
-        ${COV_CHECK_SCRIPT} -b ${LCOV_PATH} -r ${COVERAGE_FILTERED_FILE} -l ${MIN_LINE_COVERAGE}
-            -f ${MIN_FUNCTION_COVERAGE}
-    )
-
-    # Target.
-    add_custom_target(${COVERAGE_TARGET_NAME}
-        COMMENT "Run code coverage analysis."
+    set(jobs 4)
+    add_custom_target(
+        ${coverage_target}
+        COMMENT "Run code coverage analysis"
         COMMAND ${CMAKE_COMMAND} -E echo "Cleaning coverage data"
-        COMMAND ${LCOV_CLEAN_CMD}
-        COMMAND ${CMAKE_COMMAND} -E echo "Building project using ${JOBS} jobs"
-        COMMAND ${BUILD_CMD}
+        COMMAND ${lcov_path} --directory . -b ${lcov_base_dir} --zerocounters
+        COMMAND ${CMAKE_COMMAND} -E echo "Building project using ${jobs} jobs"
+        COMMAND ${CMAKE_COMMAND} --build . -j ${jobs}
         COMMAND ${CMAKE_COMMAND} -E echo "Creating coverage baseline"
-        COMMAND ${LCOV_BASELINE_CMD}
+        COMMAND ${lcov_path} --directory . -b ${lcov_base_dir} --capture --initial --output-file
+                ${base_file} --ignore-errors mismatch --ignore-errors unused
         COMMAND ${CMAKE_COMMAND} -E echo "Running tests"
-        COMMAND ${TEST_CMD}
+        COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
         COMMAND ${CMAKE_COMMAND} -E echo "Generating code coverage information"
-        COMMAND ${LCOV_CAPTURE_CMD}
-        COMMAND ${LCOV_TOTAL_CMD}
-        COMMAND ${LCOV_FILTER_CMD}
+        COMMAND ${lcov_path} --directory . -b ${lcov_base_dir} --capture --output-file
+                ${capture_file} --ignore-errors mismatch --ignore-errors unused
+        COMMAND ${lcov_path} --add-tracefile ${base_file} --add-tracefile ${capture_file}
+                --output-file ${total_file}
+        COMMAND ${lcov_path} --remove ${total_file} ${lcov_excludes} --output-file ${filtered_file}
+                --ignore-errors mismatch --ignore-errors unused
         COMMAND ${CMAKE_COMMAND} -E echo "Generating HTML code coverage report"
-        COMMAND ${GENHTML_REPORT_CMD}
-        COMMAND ${CMAKE_COMMAND} -E echo "Coverage report: ${CMAKE_BINARY_DIR}/${COVERAGE_REPORT_FILE}"
+        COMMAND ${genhtml_path} ${filtered_file} --output-directory ${report_dir} --legend
+                --show-details
+        COMMAND ${CMAKE_COMMAND} -E echo "Coverage report: ${CMAKE_BINARY_DIR}/${report_file}"
         COMMAND ${CMAKE_COMMAND} -E echo "Checking code coverage report:"
-        COMMAND ${CMAKE_COMMAND} -E echo "- Minimum line coverage: ${MIN_LINE_COVERAGE}"
-        COMMAND ${CMAKE_COMMAND} -E echo "- Minimum function coverage: ${MIN_FUNCTION_COVERAGE}"
-        COMMAND ${COV_CHECK_SCRIPT_CMD}
-        BYPRODUCTS
-            ${COVERAGE_BASE_FILE}
-            ${COVERAGE_CAPTURE_FILE}
-            ${COVERAGE_TOTAL_FILE}
-            ${COVERAGE_FILTERED_FILE}
-            ${COVERAGE_REPORT_FILE}
+        COMMAND ${CMAKE_COMMAND} -E echo "- Minimum line coverage: ${min_line_coverage}"
+        COMMAND ${CMAKE_COMMAND} -E echo "- Minimum function coverage: ${min_function_coverage}"
+        COMMAND ${cov_check_script} -b ${lcov_path} -r ${filtered_file} -l ${min_line_coverage} -f
+                ${min_function_coverage}
+        BYPRODUCTS ${base_file} ${capture_file} ${total_file} ${filtered_file} ${report_file}
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         VERBATIM
     )

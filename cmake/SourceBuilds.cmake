@@ -7,9 +7,8 @@ function(validate_build_directory)
     message(CHECK_START "Validating build directory")
 
     if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
-        message(FATAL_ERROR
-            "In-source builds are not allowed.\n"
-            "Please use a separate build directory"
+        message(FATAL_ERROR "In-source builds are not allowed.\n"
+                            "Please use a separate build directory"
         )
     endif()
 

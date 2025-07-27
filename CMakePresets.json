@@ -197,6 +197,24 @@
             "cacheVariables": {
                 "CXXPROJT_ENABLE_DOXYGEN": "ON"
             }
+        },
+        {
+            "name": "cmake-format",
+            "displayName": "CMake format",
+            "description": "CMake format configuration",
+            "inherits": "debug",
+            "cacheVariables": {
+                "CXXPROJT_ENABLE_CMAKE_FORMAT": "ON"
+            }
+        },
+        {
+            "name": "cmake-lint",
+            "displayName": "CMake lint",
+            "description": "CMake lint configuration",
+            "inherits": "debug",
+            "cacheVariables": {
+                "CXXPROJT_ENABLE_CMAKE_LINT": "ON"
+            }
         }
     ],
     "buildPresets": [
@@ -329,6 +347,30 @@
             "inherits": "default",
             "configurePreset": "doxygen",
             "targets": "doxygen"
+        },
+        {
+            "name": "cmake-format-check",
+            "displayName": "CMake format check",
+            "description": "CMake format check build target",
+            "inherits": "default",
+            "configurePreset": "cmake-format",
+            "targets": "cmake_format_check"
+        },
+        {
+            "name": "cmake-format-apply",
+            "displayName": "CMake format apply",
+            "description": "CMake format apply build target",
+            "inherits": "default",
+            "configurePreset": "cmake-format",
+            "targets": "cmake_format_apply"
+        },
+        {
+            "name": "cmake-lint",
+            "displayName": "CMake lint",
+            "description": "CMake lint build target",
+            "inherits": "default",
+            "configurePreset": "cmake-lint",
+            "targets": "cmake_lint"
         }
     ],
     "testPresets": [

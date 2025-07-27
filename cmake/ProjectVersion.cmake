@@ -4,10 +4,8 @@
 
 # Extract version value from the provided version name and content.
 #
-# Parameters:
-#   OUT_VAR: Output variable that will contain the extracted version.
-#   VERSION_NAME: Version name (major, minor, etc).
-#   CONTENT: Content from which the version should be extracted.
+# Parameters: OUT_VAR: Output variable that will contain the extracted version. VERSION_NAME:
+# Version name (major, minor, etc). CONTENT: Content from which the version should be extracted.
 macro(extract_version OUT_VAR VERSION_NAME CONTENT)
     set(REGEX_PATTERN "${VERSION_NAME}[ \t]*=[ \t]*([0-9]+)")
 
@@ -22,10 +20,8 @@ endmacro()
 
 # Extract an optional version string from the provided version name and content.
 #
-# Parameters:
-#   OUT_VAR: Output variable that will contain the extracted version.
-#   VERSION_NAME: Version name (prerelease, etc).
-#   CONTENT: Content from which the version should be extracted.
+# Parameters: OUT_VAR: Output variable that will contain the extracted version. VERSION_NAME:
+# Version name (prerelease, etc). CONTENT: Content from which the version should be extracted.
 macro(extract_optional_version_str OUT_VAR VERSION_NAME CONTENT)
     # Match: key = "some string" or key = "".
     set(REGEX_PATTERN "${VERSION_NAME}[ \t]*=[ \t]*\"([^\"]*)\"")
@@ -45,8 +41,7 @@ endmacro()
 
 # Parse project version from the provided header file.
 #
-# Parameters:
-#   HEADER_FILE: Header file that contains the project version to be parsed.
+# Parameters: HEADER_FILE: Header file that contains the project version to be parsed.
 function(parse_project_version HEADER_FILE)
     message(CHECK_START "Parsing project version from header file ${HEADER_FILE}")
 
@@ -69,7 +64,7 @@ function(parse_project_version HEADER_FILE)
     extract_optional_version_str(PRERELEASE_VERSION "project_version_prerelease" "${FILE_CONTENT}")
 
     # Version without prerelease.
-   set(BASE_VERSION "${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}")
+    set(BASE_VERSION "${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}")
 
     # Version with prerelease if exists.
     set(FULL_VERSION ${BASE_VERSION})
@@ -78,8 +73,14 @@ function(parse_project_version HEADER_FILE)
     endif()
 
     # Variables to be used in the parent scope.
-    set(PROJECT_VERSION_BASE ${BASE_VERSION} PARENT_SCOPE)
-    set(PROJECT_VERSION_FULL ${FULL_VERSION} PARENT_SCOPE)
+    set(PROJECT_VERSION_BASE
+        ${BASE_VERSION}
+        PARENT_SCOPE
+    )
+    set(PROJECT_VERSION_FULL
+        ${FULL_VERSION}
+        PARENT_SCOPE
+    )
 
     message(CHECK_PASS "done")
 endfunction()

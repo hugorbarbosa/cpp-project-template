@@ -4,9 +4,8 @@
 
 # Enable code static analysis, using clang-tidy.
 #
-# Parameters:
-#   DIRECTORIES: Directories to get the files to be analyzed.
-#   LOG_FILE: Log file to be created with the clang-tidy output.
+# Parameters: DIRECTORIES: Directories to get the files to be analyzed. LOG_FILE: Log file to be
+# created with the clang-tidy output.
 function(enable_clang_tidy DIRECTORIES LOG_FILE)
     message(CHECK_START "Enabling code static analysis with clang-tidy")
 
@@ -27,9 +26,7 @@ function(enable_clang_tidy DIRECTORIES LOG_FILE)
         foreach(DIR IN LISTS DIRECTORIES)
             if(EXISTS ${DIR})
                 # Search recursively the files.
-                file(GLOB_RECURSE DIR_FILES
-                    "${DIR}/*.cpp" "${DIR}/*.c"
-                )
+                file(GLOB_RECURSE DIR_FILES "${DIR}/*.cpp" "${DIR}/*.c")
                 list(APPEND FILES ${DIR_FILES})
             else()
                 message(WARNING "Directory ${DIR} does not exist")
@@ -41,24 +38,20 @@ function(enable_clang_tidy DIRECTORIES LOG_FILE)
 
         if(FILES)
             # List of commands.
-            set(CLANG_TIDY_LIST_CHECKS_CMD 
-                ${CLANG_TIDY_PATH} --list-checks
-            )
-            set(CLANG_TIDY_RUN_CMD 
-                ${CLANG_TIDY_PATH} -p ${CMAKE_BINARY_DIR} ${FILES}
-            )
+            set(CLANG_TIDY_LIST_CHECKS_CMD ${CLANG_TIDY_PATH} --list-checks)
+            set(CLANG_TIDY_RUN_CMD ${CLANG_TIDY_PATH} -p ${CMAKE_BINARY_DIR} ${FILES})
 
             # Target.
             set(CLANG_TIDY_TARGET_NAME "clang_tidy")
-            add_custom_target(${CLANG_TIDY_TARGET_NAME}
+            add_custom_target(
+                ${CLANG_TIDY_TARGET_NAME}
                 COMMENT "Run code static analysis using clang-tidy."
                 COMMAND ${CMAKE_COMMAND} -E echo "Listing clang-tidy checks"
                 COMMAND ${CLANG_TIDY_LIST_CHECKS_CMD}
                 COMMAND ${CMAKE_COMMAND} -E echo "Running clang-tidy"
                 COMMAND ${CMAKE_COMMAND} -E echo "Report: ${REPORT_FILE}"
                 COMMAND ${CLANG_TIDY_RUN_CMD} > ${REPORT_FILE} 2>&1
-                BYPRODUCTS
-                    ${REPORT_FILE}
+                BYPRODUCTS ${REPORT_FILE}
                 WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
                 VERBATIM
             )
@@ -66,9 +59,11 @@ function(enable_clang_tidy DIRECTORIES LOG_FILE)
             message(WARNING "No files found in the provided directories for clang-tidy")
         endif()
     else()
-        message(FATAL_ERROR
-            "Clang-tidy analysis requires the clang compiler, not available for ${CMAKE_CXX_COMPILER_ID}")
-   endif()
+        message(
+            FATAL_ERROR
+                "Clang-tidy analysis requires the clang compiler, not available for ${CMAKE_CXX_COMPILER_ID}"
+        )
+    endif()
 
     message(CHECK_PASS "done")
 endfunction()

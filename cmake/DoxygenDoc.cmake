@@ -4,16 +4,23 @@
 
 # Enable source code documentation generation, using doxygen.
 #
-# Parameters:
-#   CONFIG_FILE: Doxygen configuration file.
-#   PROJECT: Project name used to update the respective option in the configuration file.
-#   VERSION: Project version used to update the respective option in the configuration file.
-#   BRIEF: Project brief used to update the respective option in the configuration file.
-#   INPUT: Input directories/files, separated with spaces, used to update the respective option in
-#          the configuration file.
-#   OUT_DIR: Output directory used to update the respective option in the configuration file.
-#   LOG_FILE: Log file to be created with the doxygen output.
-function(enable_doxygen_doc CONFIG_FILE PROJECT VERSION BRIEF INPUT OUT_DIR LOG_FILE)
+# Parameters: CONFIG_FILE: Doxygen configuration file. PROJECT: Project name used to update the
+# respective option in the configuration file. VERSION: Project version used to update the
+# respective option in the configuration file. BRIEF: Project brief used to update the respective
+# option in the configuration file. INPUT: Input directories/files, separated with spaces, used to
+# update the respective option in the configuration file. OUT_DIR: Output directory used to update
+# the respective option in the configuration file. LOG_FILE: Log file to be created with the doxygen
+# output.
+function(
+    enable_doxygen_doc
+    CONFIG_FILE
+    PROJECT
+    VERSION
+    BRIEF
+    INPUT
+    OUT_DIR
+    LOG_FILE
+)
     message(CHECK_START "Enabling doxygen documentation generation")
 
     # Requirements.
@@ -40,22 +47,18 @@ function(enable_doxygen_doc CONFIG_FILE PROJECT VERSION BRIEF INPUT OUT_DIR LOG_
     set(DOXYGEN_INDEX_FILE "${OUT_DIR}/index.html")
 
     # List of commands.
-    set(DOXYGEN_CMD 
-        ${DOXYGEN_PATH} ${CONFIG_FILE_OUT}
-    )
+    set(DOXYGEN_CMD ${DOXYGEN_PATH} ${CONFIG_FILE_OUT})
 
     # Target.
     set(DOXYGEN_TARGET_NAME "doxygen")
-    add_custom_target(${DOXYGEN_TARGET_NAME}
+    add_custom_target(
+        ${DOXYGEN_TARGET_NAME}
         COMMENT "Generate doxygen documentation for project ${PROJECT}."
         COMMAND ${CMAKE_COMMAND} -E echo "Running doxygen"
         COMMAND ${CMAKE_COMMAND} -E echo "Report: ${REPORT_FILE}"
         COMMAND ${CMAKE_COMMAND} -E echo "Generated doc index: ${DOXYGEN_INDEX_FILE}"
         COMMAND ${DOXYGEN_CMD} > ${REPORT_FILE} 2>&1
-        BYPRODUCTS
-            ${REPORT_FILE}
-            ${DOXYGEN_INDEX_FILE}
-            ${CONFIG_FILE_OUT}
+        BYPRODUCTS ${REPORT_FILE} ${DOXYGEN_INDEX_FILE} ${CONFIG_FILE_OUT}
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         VERBATIM
     )

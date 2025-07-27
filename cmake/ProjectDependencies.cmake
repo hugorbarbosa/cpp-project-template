@@ -13,15 +13,17 @@ function(fetch_googletest)
         GIT_TAG release-1.11.0
     )
     # For Windows: Prevent overriding the parent project's compiler/linker settings.
-    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+    set(gtest_force_shared_crt
+        ON
+        CACHE BOOL "" FORCE
+    )
     FetchContent_MakeAvailable(googletest)
     message(CHECK_PASS "done")
 endfunction()
 
 # Fetch project dependencies.
 #
-# Parameters:
-#   BUILD_TESTS: Flag to indicate if the build includes tests.
+# Parameters: BUILD_TESTS: Flag to indicate if the build includes tests.
 function(fetch_project_dependencies BUILD_TESTS)
     message(CHECK_START "Fetching project dependencies")
     if(BUILD_TESTS)

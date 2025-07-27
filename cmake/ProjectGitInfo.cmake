@@ -6,12 +6,10 @@ set(GIT_INFO_OUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/git_info")
 
 # Generate project git information file, namely with the git branch and commit hash.
 #
-# Parameters:
-#   IN_FILE: Input file to be used as template to generate the git information file.
-#   OUT_FILE: Output file to be generated that will contain the git information (it will be placed
-#             in the build directory).
-#   HEADER_GUARD: Header guard to be used in the generated file.
-#   NAMESPACE: Namespace to be used in the generated file.
+# Parameters: IN_FILE: Input file to be used as template to generate the git information file.
+# OUT_FILE: Output file to be generated that will contain the git information (it will be placed in
+# the build directory). HEADER_GUARD: Header guard to be used in the generated file. NAMESPACE:
+# Namespace to be used in the generated file.
 function(generate_git_info_file IN_FILE OUT_FILE HEADER_GUARD NAMESPACE)
     message(CHECK_START "Generating project git information file")
 
@@ -29,16 +27,14 @@ function(generate_git_info_file IN_FILE OUT_FILE HEADER_GUARD NAMESPACE)
     execute_process(
         COMMAND ${GIT_PATH} rev-parse --abbrev-ref HEAD
         OUTPUT_VARIABLE GIT_BRANCH
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-        COMMAND_ERROR_IS_FATAL ANY
+        OUTPUT_STRIP_TRAILING_WHITESPACE COMMAND_ERROR_IS_FATAL ANY
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     )
 
     execute_process(
         COMMAND ${GIT_PATH} rev-parse --short HEAD
         OUTPUT_VARIABLE GIT_COMMIT_HASH
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-        COMMAND_ERROR_IS_FATAL ANY
+        OUTPUT_STRIP_TRAILING_WHITESPACE COMMAND_ERROR_IS_FATAL ANY
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     )
 
@@ -62,8 +58,7 @@ endfunction()
 
 # Add include project git info directory to the provided target.
 #
-# Parameters:
-#   TARGET_NAME: Name of the target to add include git info directory.
+# Parameters: TARGET_NAME: Name of the target to add include git info directory.
 function(target_include_git_info_directory TARGET_NAME)
     target_include_directories(${TARGET_NAME} PRIVATE ${GIT_INFO_OUT_DIR})
 endfunction()

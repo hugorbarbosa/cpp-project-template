@@ -4,15 +4,13 @@
 
 # Enable code formatting using clang-format.
 #
-# The following targets are created:
-# - A target that just checks the files without modifying them.
-# - A target that formats the files.
+# The following targets are created: - A target that just checks the files without modifying them. -
+# A target that formats the files.
 #
-# Parameters:
-#   DIRECTORIES: Directories to get the files. To make clang-format ignore certain files,
-#                .clang-format-ignore files can be created. If not present, all the available files
-#                (headers and C/C++ files) in these directories will be analyzed.
-#   LOG_FILE: Log file to be created with the clang-format output.
+# Parameters: DIRECTORIES: Directories to get the files. To make clang-format ignore certain files,
+# .clang-format-ignore files can be created. If not present, all the available files (headers and
+# C/C++ files) in these directories will be analyzed. LOG_FILE: Log file to be created with the
+# clang-format output.
 function(enable_clang_format DIRECTORIES LOG_FILE)
     message(CHECK_START "Enabling code formatting with clang-format")
 
@@ -32,8 +30,14 @@ function(enable_clang_format DIRECTORIES LOG_FILE)
     foreach(DIR IN LISTS DIRECTORIES)
         if(EXISTS ${DIR})
             # Search recursively the files.
-            file(GLOB_RECURSE DIR_FILES
-                "${DIR}/*.h" "${DIR}/*.hpp" "${DIR}/*.ipp" "${DIR}/*.cpp" "${DIR}/*.c"
+            file(
+                GLOB_RECURSE
+                DIR_FILES
+                "${DIR}/*.h"
+                "${DIR}/*.hpp"
+                "${DIR}/*.ipp"
+                "${DIR}/*.cpp"
+                "${DIR}/*.c"
             )
             list(APPEND FILES ${DIR_FILES})
         else()
@@ -46,31 +50,31 @@ function(enable_clang_format DIRECTORIES LOG_FILE)
 
     if(FILES)
         set(CLANG_FORMAT_CHECK_TARGET "clang_format_check")
-        add_custom_target(${CLANG_FORMAT_CHECK_TARGET}
+        add_custom_target(
+            ${CLANG_FORMAT_CHECK_TARGET}
             COMMENT "Check code formatting using clang-format."
             COMMAND ${CMAKE_COMMAND} -E echo "Running clang-format"
             COMMAND ${CMAKE_COMMAND} -E echo "Report: ${REPORT_FILE}"
-            COMMAND ${CLANG_FORMAT_PATH} --verbose --dry-run -Werror --style=file
-                    ${FILES} > ${REPORT_FILE} 2>&1
-            BYPRODUCTS
-                ${REPORT_FILE}
+            COMMAND ${CLANG_FORMAT_PATH} --verbose --dry-run -Werror --style=file ${FILES} >
+                    ${REPORT_FILE} 2>&1
+            BYPRODUCTS ${REPORT_FILE}
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
             VERBATIM
         )
 
         set(CLANG_FORMAT_APPLY_TARGET "clang_format_apply")
-        add_custom_target(${CLANG_FORMAT_APPLY_TARGET}
+        add_custom_target(
+            ${CLANG_FORMAT_APPLY_TARGET}
             COMMENT "Apply code formatting using clang-format."
             COMMAND ${CMAKE_COMMAND} -E echo "Running clang-format"
             COMMAND ${CMAKE_COMMAND} -E echo "Report: ${REPORT_FILE}"
             COMMAND ${CLANG_FORMAT_PATH} --verbose --style=file -i ${FILES} > ${REPORT_FILE} 2>&1
-            BYPRODUCTS
-                ${REPORT_FILE}
+            BYPRODUCTS ${REPORT_FILE}
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
             VERBATIM
         )
     else()
-        message(WARNING "No files found in the provided directories for code formatting")
+        message(WARNING "No files found for code formatting")
     endif()
 
     message(CHECK_PASS "done")

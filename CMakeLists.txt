@@ -12,7 +12,8 @@ include(ProjectVersion)
 set(VERSION_FILE ${CMAKE_CURRENT_SOURCE_DIR}/src/version/version.hpp)
 parse_project_version(${VERSION_FILE})
 
-project(cpp_project_template
+project(
+    cpp_project_template
     VERSION ${PROJECT_VERSION_BASE}
     LANGUAGES CXX
     DESCRIPTION "A C++ project template."
@@ -41,9 +42,7 @@ set(GIT_INFO_HEADER_OUT_FILE "git_info.hpp")
 set(GIT_INFO_HEADER_GUARD "CPP_PROJECT_TEMPLATE_GIT_INFO_HPP")
 set(GIT_INFO_NAMESPACE "cpp_project_template")
 generate_git_info_file(
-    ${GIT_INFO_HEADER_TEMPLATE_FILE}
-    ${GIT_INFO_HEADER_OUT_FILE}
-    ${GIT_INFO_HEADER_GUARD}
+    ${GIT_INFO_HEADER_TEMPLATE_FILE} ${GIT_INFO_HEADER_OUT_FILE} ${GIT_INFO_HEADER_GUARD}
     ${GIT_INFO_NAMESPACE}
 )
 
@@ -52,7 +51,7 @@ generate_git_info_file(
 # ----------------------------------------------------------------------------
 option(CXXPROJT_BUILD_TESTS "Build tests" ${MAIN_PROJECT})
 option(CXXPROJT_ENABLE_COVERAGE "Enable code coverage analysis" OFF)
-option(CXXPROJT_ENABLE_CLANG_FORMAT "Enable code formatting check with clang-format" OFF)
+option(CXXPROJT_ENABLE_CLANG_FORMAT "Enable code formatting with clang-format" OFF)
 option(CXXPROJT_ENABLE_CLANG_TIDY "Enable code static analysis with clang-tidy" OFF)
 option(CXXPROJT_ENABLE_ASAN "Enable Address Sanitizer" OFF)
 option(CXXPROJT_ENABLE_LSAN "Enable Leak Sanitizer" OFF)
@@ -60,6 +59,8 @@ option(CXXPROJT_ENABLE_MSAN "Enable Memory Sanitizer" OFF)
 option(CXXPROJT_ENABLE_TSAN "Enable Thread Sanitizer" OFF)
 option(CXXPROJT_ENABLE_UBSAN "Enable Undefined Behavior Sanitizer" OFF)
 option(CXXPROJT_ENABLE_DOXYGEN "Enable doxygen documentation generation" OFF)
+option(CXXPROJT_ENABLE_CMAKE_FORMAT "Enable CMake code formatting with cmake-format" OFF)
+option(CXXPROJT_ENABLE_CMAKE_LINT "Enable CMake lint with cmake-lint" OFF)
 
 if(CXXPROJT_ENABLE_COVERAGE)
     set(CXXPROJT_BUILD_TESTS ON)
@@ -69,8 +70,8 @@ endif()
 # CMake options
 # ----------------------------------------------------------------------------
 if(MAIN_PROJECT)
-    # Build type on single-configuration generators (e.g. Makefile or Ninja).
-    # Set default build type if build type not set.
+    # Build type on single-configuration generators (e.g. Makefile or Ninja). Set default build type
+    # if build type not set.
     if(NOT CMAKE_BUILD_TYPE)
         set(DEFAULT_BUILD_TYPE Debug)
         message(STATUS "No build type specified, setting it to '${DEFAULT_BUILD_TYPE}'")
@@ -102,9 +103,7 @@ include(CompilerOptions)
 set(PROJECT_COMPILER_OPTIONS_LIBRARY compile_options)
 set(COMPILATION_WARNINGS_AS_ERRORS ${MAIN_PROJECT})
 set_project_default_compiler_options(
-    ${PROJECT_COMPILER_OPTIONS_LIBRARY}
-    ${CXXPROJT_PROJECT_NAME}
-    ${COMPILATION_WARNINGS_AS_ERRORS}
+    ${PROJECT_COMPILER_OPTIONS_LIBRARY} ${CXXPROJT_PROJECT_NAME} ${COMPILATION_WARNINGS_AS_ERRORS}
 )
 
 # ----------------------------------------------------------------------------
@@ -115,10 +114,7 @@ set(SCRIPTS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/scripts")
 if(CXXPROJT_ENABLE_COVERAGE)
     include(CodeCoverage)
     set(COVERAGE_EXCLUDE_PATTERNS
-        "/usr/include/*"
-        "/usr/local/*"
-        "*/_deps/*"
-        "${CMAKE_CURRENT_SOURCE_DIR}/test/*"
+        "/usr/include/*" "/usr/local/*" "*/_deps/*" "${CMAKE_CURRENT_SOURCE_DIR}/test/*"
         "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp"
     )
     set(MIN_LINE_COVERAGE 90)
@@ -126,22 +122,16 @@ if(CXXPROJT_ENABLE_COVERAGE)
     set(COVERAGE_JOBS 4)
     set(COVERAGE_CHECK_SCRIPT "${SCRIPTS_DIR}/coverage_report_checker.sh")
     enable_coverage(
-        ${PROJECT_COMPILER_OPTIONS_LIBRARY}
-        "${COVERAGE_EXCLUDE_PATTERNS}"
-        ${MIN_LINE_COVERAGE}
-        ${MIN_FUNCTION_COVERAGE}
-        ${COVERAGE_JOBS}
-        ${COVERAGE_CHECK_SCRIPT}
+        ${PROJECT_COMPILER_OPTIONS_LIBRARY} "${COVERAGE_EXCLUDE_PATTERNS}" ${MIN_LINE_COVERAGE}
+        ${MIN_FUNCTION_COVERAGE} ${COVERAGE_JOBS} ${COVERAGE_CHECK_SCRIPT}
     )
 endif()
 
 if(CXXPROJT_ENABLE_CLANG_FORMAT)
     include(ClangFormat)
     set(CLANG_FORMAT_DIRECTORIES
-        "${CMAKE_CURRENT_SOURCE_DIR}/examples"
-        "${CMAKE_CURRENT_SOURCE_DIR}/include"
-        "${CMAKE_CURRENT_SOURCE_DIR}/src"
-        "${CMAKE_CURRENT_SOURCE_DIR}/test"
+        "${CMAKE_CURRENT_SOURCE_DIR}/examples" "${CMAKE_CURRENT_SOURCE_DIR}/include"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src" "${CMAKE_CURRENT_SOURCE_DIR}/test"
     )
     set(CLANG_FORMAT_LOG_FILE "clang-format-report.log")
     enable_clang_format("${CLANG_FORMAT_DIRECTORIES}" ${CLANG_FORMAT_LOG_FILE})
@@ -150,28 +140,23 @@ endif()
 if(CXXPROJT_ENABLE_CLANG_TIDY)
     include(ClangTidy)
     set(CLANG_TIDY_DIRECTORIES
-        "${CMAKE_CURRENT_SOURCE_DIR}/examples"
-        "${CMAKE_CURRENT_SOURCE_DIR}/include"
-        "${CMAKE_CURRENT_SOURCE_DIR}/src"
-        "${CMAKE_CURRENT_SOURCE_DIR}/test"
+        "${CMAKE_CURRENT_SOURCE_DIR}/examples" "${CMAKE_CURRENT_SOURCE_DIR}/include"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src" "${CMAKE_CURRENT_SOURCE_DIR}/test"
     )
     set(CLANG_TIDY_LOG_FILE "clang-tidy-report.log")
     enable_clang_tidy("${CLANG_TIDY_DIRECTORIES}" ${CLANG_TIDY_LOG_FILE})
 endif()
 
 if(CXXPROJT_ENABLE_ASAN
-        OR CXXPROJT_ENABLE_LSAN
-        OR CXXPROJT_ENABLE_MSAN
-        OR CXXPROJT_ENABLE_TSAN
-        OR CXXPROJT_ENABLE_UBSAN)
+   OR CXXPROJT_ENABLE_LSAN
+   OR CXXPROJT_ENABLE_MSAN
+   OR CXXPROJT_ENABLE_TSAN
+   OR CXXPROJT_ENABLE_UBSAN
+)
     include(Sanitizers)
     enable_sanitizers(
-        ${PROJECT_COMPILER_OPTIONS_LIBRARY}
-        ${CXXPROJT_ENABLE_ASAN}
-        ${CXXPROJT_ENABLE_LSAN}
-        ${CXXPROJT_ENABLE_MSAN}
-        ${CXXPROJT_ENABLE_TSAN}
-        ${CXXPROJT_ENABLE_UBSAN}
+        ${PROJECT_COMPILER_OPTIONS_LIBRARY} ${CXXPROJT_ENABLE_ASAN} ${CXXPROJT_ENABLE_LSAN}
+        ${CXXPROJT_ENABLE_MSAN} ${CXXPROJT_ENABLE_TSAN} ${CXXPROJT_ENABLE_UBSAN}
     )
 endif()
 
@@ -182,10 +167,8 @@ if(CXXPROJT_ENABLE_DOXYGEN)
     set(DOXYGEN_VERSION ${CXXPROJT_PROJECT_VERSION})
     set(DOXYGEN_BRIEF "A C++ project template using CMake")
     set(DOXYGEN_INPUT_LIST
-        "${CMAKE_CURRENT_SOURCE_DIR}/examples"
-        "${CMAKE_CURRENT_SOURCE_DIR}/include"
-        "${CMAKE_CURRENT_SOURCE_DIR}/src"
-        "${CMAKE_CURRENT_SOURCE_DIR}/test"
+        "${CMAKE_CURRENT_SOURCE_DIR}/examples" "${CMAKE_CURRENT_SOURCE_DIR}/include"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src" "${CMAKE_CURRENT_SOURCE_DIR}/test"
     )
     string(REPLACE ";" " " DOXYGEN_INPUT "${DOXYGEN_INPUT_LIST}")
     set(DOXYGEN_OUT_DIR "${CMAKE_BINARY_DIR}/doxygen")
@@ -198,6 +181,34 @@ if(CXXPROJT_ENABLE_DOXYGEN)
         ${DOXYGEN_INPUT}
         ${DOXYGEN_OUT_DIR}
         ${DOXYGEN_LOG_FILE}
+    )
+endif()
+
+if(CXXPROJT_ENABLE_CMAKE_FORMAT)
+    include(CmakeFormat)
+    set(CMAKE_FORMAT_DIRECTORIES
+        "${CMAKE_CURRENT_SOURCE_DIR}/cmake" "${CMAKE_CURRENT_SOURCE_DIR}/examples"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include" "${CMAKE_CURRENT_SOURCE_DIR}/src"
+        "${CMAKE_CURRENT_SOURCE_DIR}/test"
+    )
+    set(CMAKE_FORMAT_FILES "${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt")
+    set(CMAKE_FORMAT_LOG_FILE "cmake-format-report.log")
+    enable_cmake_format(
+        "${CMAKE_FORMAT_DIRECTORIES}" "${CMAKE_FORMAT_FILES}" ${CMAKE_FORMAT_LOG_FILE}
+    )
+endif()
+
+if(CXXPROJT_ENABLE_CMAKE_LINT)
+    include(CmakeLint)
+    set(CMAKE_LINT_DIRECTORIES
+        "${CMAKE_CURRENT_SOURCE_DIR}/cmake" "${CMAKE_CURRENT_SOURCE_DIR}/examples"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include" "${CMAKE_CURRENT_SOURCE_DIR}/src"
+        "${CMAKE_CURRENT_SOURCE_DIR}/test"
+    )
+    set(CMAKE_LINT_FILES "${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt")
+    set(CMAKE_LINT_LOG_FILE "cmake-lint-report.log")
+    enable_cmake_lint(
+        "${CMAKE_LINT_DIRECTORIES}" "${CMAKE_LINT_FILES}" ${CMAKE_LINT_LOG_FILE}
     )
 endif()
 
@@ -233,5 +244,7 @@ message(STATUS "- CXXPROJT_ENABLE_MSAN = ${CXXPROJT_ENABLE_MSAN}")
 message(STATUS "- CXXPROJT_ENABLE_TSAN = ${CXXPROJT_ENABLE_TSAN}")
 message(STATUS "- CXXPROJT_ENABLE_UBSAN = ${CXXPROJT_ENABLE_UBSAN}")
 message(STATUS "- CXXPROJT_ENABLE_DOXYGEN = ${CXXPROJT_ENABLE_DOXYGEN}")
+message(STATUS "- CXXPROJT_ENABLE_CMAKE_FORMAT = ${CXXPROJT_ENABLE_CMAKE_FORMAT}")
+message(STATUS "- CXXPROJT_ENABLE_CMAKE_LINT = ${CXXPROJT_ENABLE_CMAKE_LINT}")
 message(STATUS "- MAIN_PROJECT = ${MAIN_PROJECT}")
 message(STATUS)

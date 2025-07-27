@@ -387,7 +387,7 @@ $ cmake --build --preset cmake-format-apply
 
 These targets use cmake-format to verify/apply the desired format of the CMake code, and creates a report file in the `build-cmake-format` directory (used build directory in this example), named as `cmake-format-report.log`.
 
-Relative to cmake-lint, using the standard CMake commands:
+Relatively to cmake-lint, using the standard CMake commands:
 
 ```sh
 $ cd <project-directory>

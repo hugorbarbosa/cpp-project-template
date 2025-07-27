@@ -105,11 +105,6 @@ set_project_default_compiler_options(
 # Quality tools
 # ----------------------------------------------------------------------------
 set(scripts_dir "${CMAKE_CURRENT_SOURCE_DIR}/scripts")
-set(source_code_directories
-    "${CMAKE_CURRENT_SOURCE_DIR}/examples" "${CMAKE_CURRENT_SOURCE_DIR}/include"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src" "${CMAKE_CURRENT_SOURCE_DIR}/test"
-)
-set(cmake_directories "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 if(CPROJT_ENABLE_COVERAGE)
     include(CodeCoverage)
@@ -126,16 +121,20 @@ if(CPROJT_ENABLE_COVERAGE)
     )
 endif()
 
+set(source_code_dirs "${CMAKE_CURRENT_SOURCE_DIR}/examples" "${CMAKE_CURRENT_SOURCE_DIR}/include"
+                     "${CMAKE_CURRENT_SOURCE_DIR}/src" "${CMAKE_CURRENT_SOURCE_DIR}/test"
+)
+
 if(CPROJT_ENABLE_CLANG_FORMAT)
     include(ClangFormat)
     set(log_file "clang-format-report.log")
-    enable_clang_format("${source_code_directories}" ${log_file})
+    enable_clang_format("${source_code_dirs}" ${log_file})
 endif()
 
 if(CPROJT_ENABLE_CLANG_TIDY)
     include(ClangTidy)
     set(log_file "clang-tidy-report.log")
-    enable_clang_tidy("${source_code_directories}" ${log_file})
+    enable_clang_tidy("${source_code_dirs}" ${log_file})
 endif()
 
 if(CPROJT_ENABLE_ASAN
@@ -157,7 +156,7 @@ if(CPROJT_ENABLE_DOXYGEN)
     set(doxygen_project "C++ Project Template")
     set(doxygen_version ${CPROJT_PROJECT_VERSION})
     set(doxygen_brief "A C++ project template using CMake")
-    set(input_list "${source_code_directories}")
+    set(input_list "${source_code_dirs}")
     string(REPLACE ";" " " doxygen_input "${input_list}")
     set(doxygen_out_dir "${CMAKE_BINARY_DIR}/doxygen")
     set(log_file "doxygen-report.log")
@@ -172,20 +171,21 @@ if(CPROJT_ENABLE_DOXYGEN)
     )
 endif()
 
-list(APPEND cmake_directories_to_check ${cmake_directories})
-list(APPEND cmake_directories_to_check ${source_code_directories})
+set(cmake_dirs "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+list(APPEND cmake_dirs_to_check ${cmake_dirs})
+list(APPEND cmake_dirs_to_check ${source_code_dirs})
 set(cmake_files_to_check "${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt")
 
 if(CPROJT_ENABLE_CMAKE_FORMAT)
     include(CmakeFormat)
     set(log_file "cmake-format-report.log")
-    enable_cmake_format("${cmake_directories_to_check}" "${cmake_files_to_check}" ${log_file})
+    enable_cmake_format("${cmake_dirs_to_check}" "${cmake_files_to_check}" ${log_file})
 endif()
 
 if(CPROJT_ENABLE_CMAKE_LINT)
     include(CmakeLint)
     set(log_file "cmake-lint-report.log")
-    enable_cmake_lint("${cmake_directories_to_check}" "${cmake_files_to_check}" ${log_file})
+    enable_cmake_lint("${cmake_dirs_to_check}" "${cmake_files_to_check}" ${log_file})
 endif()
 
 # ----------------------------------------------------------------------------

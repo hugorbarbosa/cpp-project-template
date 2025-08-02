@@ -359,7 +359,7 @@ Please consult the [code quality tools](./doc/code_quality_tools.md) documentati
 
 ## CMake coding style and format
 
-To ensure consistency, cmake-format and cmake-lint are used to format and check the CMake code.
+This projects follows my [CMake coding style guide](https://github.com/hugorbarbosa/cmake-style-guide), and to ensure consistency, cmake-format and cmake-lint are used to format and check the CMake code.
 
 Using the standard CMake commands for cmake-format:
 
@@ -385,7 +385,7 @@ $ # To format the files.
 $ cmake --build --preset cmake-format-apply
 ```
 
-These targets use cmake-format to verify/apply the desired format of the CMake code, and creates a report file in the `build-cmake-format` directory (used build directory in this example), named as `cmake-format-report.log`.
+These targets use cmake-format to verify/apply the desired format of the CMake code, and create a report file in the `build-cmake-format` directory (used build directory in this example), named as `cmake-format-report.log`.
 
 Relatively to cmake-lint, using the standard CMake commands:
 

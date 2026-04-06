@@ -7,7 +7,7 @@
 #include <mock_my_class.hpp>
 #include <my_class.hpp>
 
-using cpp_project_template::MyClass;
+using cpp_project_template::my_class;
 
 /**
  * @brief Class that uses the mock of my class, to demonstrate how to use a mock in tests.
@@ -15,15 +15,15 @@ using cpp_project_template::MyClass;
  * This class exemplifies an entity that uses my class in the implementation code (it would not be
  * here in a "real" project).
  */
-class DemoMockUsage {
+class demo_mock_usage {
 public:
     /**
      * @brief Constructor.
      *
      * @param my_cl My class.
      */
-    explicit DemoMockUsage(std::shared_ptr<MyClass> my_cl)
-        : my_class{std::move(my_cl)}
+    explicit demo_mock_usage(std::shared_ptr<my_class> my_cl)
+        : class_example{std::move(my_cl)}
     {
     }
 
@@ -34,7 +34,7 @@ public:
      */
     void set_my_class_value(std::string value) noexcept
     {
-        my_class->set_value(std::move(value));
+        class_example->set_value(std::move(value));
     }
 
     /**
@@ -44,54 +44,59 @@ public:
      */
     std::string get_my_class_value() const noexcept
     {
-        return my_class->get_value();
+        return class_example->get_value();
     }
 
 private:
     /// My class.
-    std::shared_ptr<MyClass> my_class;
+    std::shared_ptr<my_class> class_example;
 };
 
 /**
  * @brief Unit testing suite to demonstrate how to use a mock in tests.
  */
-class UtDemoMockUsage : public testing::Test {
+class ut_demo_mock_usage : public testing::Test {
 protected:
     /**
-     * @brief Get an instance of the mock of my class.
-     *
-     * @return Instance of the mock of my class.
+     * @brief Constructor.
      */
-    static auto get_mock_my_class() noexcept
+    ut_demo_mock_usage()
+        : mock_my_class{std::make_shared<cpp_project_template::test::mock_my_class>()}
     {
-        return std::make_shared<cpp_project_template::test::MockMyClass>();
     }
+
+    // Clang-tidy suppression.
+    // Rationale: Test fixtures are meant to expose data to the test cases.
+    // NOLINTBEGIN(cppcoreguidelines-non-private-member-variables-in-classes)
+
+    /// Mock of my class.
+    std::shared_ptr<cpp_project_template::test::mock_my_class> mock_my_class;
+
+    // NOLINTEND(cppcoreguidelines-non-private-member-variables-in-classes)
 };
 
 /**
  * @brief Test that the mock of my class is notified to set a value.
  */
-TEST_F(UtDemoMockUsage, ValueIsDefinedThroughMyClass)
+TEST_F(ut_demo_mock_usage, value_is_set_through_my_class)
 {
     constexpr auto value = "Value";
 
-    const auto mock_my_class = get_mock_my_class();
     EXPECT_CALL(*mock_my_class, set_value(value)).Times(1);
 
-    DemoMockUsage demo_mock_usage{mock_my_class};
-    demo_mock_usage.set_my_class_value(value);
+    demo_mock_usage mock_usage{mock_my_class};
+    mock_usage.set_my_class_value(value);
 }
 
 /**
  * @brief Test that the mock of my class is notified to get a value.
  */
-TEST_F(UtDemoMockUsage, ValueIsRetrievedThroughMyClass)
+TEST_F(ut_demo_mock_usage, value_is_retrieved_through_my_class)
 {
     constexpr auto value = "Value";
 
-    const auto mock_my_class = get_mock_my_class();
     EXPECT_CALL(*mock_my_class, get_value).WillOnce(testing::Return(value));
 
-    const DemoMockUsage demo_mock_usage{mock_my_class};
-    EXPECT_EQ(demo_mock_usage.get_my_class_value(), value);
+    const demo_mock_usage mock_usage{mock_my_class};
+    EXPECT_EQ(mock_usage.get_my_class_value(), value);
 }

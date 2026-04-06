@@ -7,17 +7,17 @@
 
 namespace cpp_project_template {
 
-MyConcreteClass::MyConcreteClass(std::string value) noexcept
+my_concrete_class::my_concrete_class(std::string value) noexcept
     : my_value{std::move(value)}
 {
 }
 
-void MyConcreteClass::set_value(std::string value) noexcept
+void my_concrete_class::set_value(std::string value) noexcept
 {
     my_value = std::move(value);
 }
 
-std::string MyConcreteClass::get_value() const noexcept
+std::string my_concrete_class::get_value() const noexcept
 {
     return my_value;
 }

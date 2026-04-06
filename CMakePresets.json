@@ -5,7 +5,7 @@
             "name": "default",
             "displayName": "Default",
             "description": "Default configuration",
-            "binaryDir": "${sourceDir}/build-${presetName}",
+            "binaryDir": "${sourceDir}/build/${presetName}",
             "hidden": true
         },
         {

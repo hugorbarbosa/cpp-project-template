@@ -49,7 +49,7 @@ The following procedure will help you to get started with this template:
 - Adjust the `CMakeLists` files to use your project files.
 - Update prefix on the name of some CMake variables (`CPROJT_`) to use your project name.
 - Remove unused files and directories.
-- Update include guards on header files.
+- Update "include guards" on header files.
 - Adjust copyrights in files.
 - Replace the license file with the one specific to your project.
 - Adjust clang-format, clang-tidy, doxygen and cmake-format/cmake-lint configuration files, as well as some of its parameters automatically configured by CMake.
@@ -59,8 +59,6 @@ The following procedure will help you to get started with this template:
 - Adjust the BUILDING and CONTRIBUTING guides to your needs.
 
 ## Project structure
-
-This project template is structured in the following directories:
 
 - `cmake`: useful CMake files.
 - `doc`: project documentation.
@@ -78,12 +76,9 @@ This project template is structured in the following directories:
 
 This section could describe the documentation available in the [`doc`](./doc/) directory, and eventually some links with information related to the project.
 
-Using this project as example, the following is what this section could have:
+The following is an example of what this section could have:
 
-"Documentation of this project is available in [`doc`](./doc/), and includes the following:
-
-- Description of some examples of what can be inserted as documentation of a project (architecture diagrams, user guides, etc).
-- Details about some code quality tools used by this project."
+"Comprehensive documentation of the project can be found in the [`doc`](./doc/) directory, including architecture diagrams, user guides, and additional resources."
 
 ## Building
 
@@ -97,7 +92,7 @@ When the C++ project is a library, this section is usually present and contains 
 
 In the end of this section, it should mention something similar to the following:
 
-"For more usage examples, please explore the [examples](./examples/) directory.".
+"For more usage examples, please explore the [examples](./examples/) directory."
 
 ## Integration
 
@@ -114,34 +109,34 @@ CMake `FetchContent` module can be used to automatically download this library a
 ```cmake
 include(FetchContent)
 FetchContent_Declare(
-    mylibrary
+    my_library
     GIT_REPOSITORY <repository_url> # Adjust to your needs.
-    GIT_TAG <tag> # Tag or a commit hash if you prefer.
+    GIT_TAG <tag> # Tag or a commit hash.
 )
-FetchContent_MakeAvailable(mylibrary)
-# ...
-target_link_libraries(your-target PRIVATE my_library::my_library)
-```
-
-### Copying the entire project
-
-You can copy the entire project source tree into your project, and in your `CMakeLists.txt` file:
-
-```cmake
-add_subdirectory(my-library) # This is the repository/project name.
+FetchContent_MakeAvailable(my_library)
 # ...
 target_link_libraries(your-target PRIVATE my_library::my_library)
 ```
 
 ### Using as `git submodule`
 
-You can also use this library as a `git submodule` in your project. For this case, the CMake code needed is the same as the one demonstrated if this entire project was copied into your project.
+You can use this library as a `git submodule` in your project. For this case, the following code shall be added to your `CMakeLists.txt` file:
+
+```cmake
+add_subdirectory(external/my-library) # Submodule shall be placed in the "external" directory.
+# ...
+target_link_libraries(your-target PRIVATE my_library::my_library)
+```
+
+### Copying the entire project
+
+You can also copy the entire project source tree into your project. For this case, the CMake code needed is the same as the one demonstrated for when the library is used as a `git submodule`.
 
 ## Contributing to the project
 
 If the project is open for contributions, it might make sense to have this section to explain briefly how to contribute to the project. Usually, it is common to have a `CONTRIBUTING.md` file in the project directory that explains it in more detail.
 
-This project contains this [CONTRIBUTING](./CONTRIBUTING.md) file, just for demonstration purposes, that can be used as an example for another project. In that project, this section could have the following phrase:
+This project contains this [CONTRIBUTING](./CONTRIBUTING.md) file, just for demonstration purposes, that can be used as an example for another project. In that project, this section could have the following:
 
 "We welcome contributions to this project! There are many ways to contribute, from reporting bugs to suggesting features and submitting code. For more details on how to contribute to this project, please see the [Contributing guide](./CONTRIBUTING.md)."
 

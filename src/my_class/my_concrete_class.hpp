@@ -15,22 +15,22 @@ namespace cpp_project_template {
  *
  * This is just an example of a derived class.
  */
-class MyConcreteClass : public MyClass {
+class my_concrete_class : public my_class {
 public:
     /**
      * @brief Constructor.
      *
      * @param value Initial value.
      */
-    explicit MyConcreteClass(std::string value) noexcept;
+    explicit my_concrete_class(std::string value) noexcept;
 
     /**
-     * @copydoc MyClass#set_value
+     * @copydoc my_class::set_value
      */
     void set_value(std::string value) noexcept override;
 
     /**
-     * @copydoc MyClass#get_value
+     * @copydoc my_class::get_value
      */
     std::string get_value() const noexcept override;
 

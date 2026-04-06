@@ -15,12 +15,12 @@ namespace test {
 /**
  * @brief Mock of my class.
  */
-class MockMyClass : public MyClass {
+class mock_my_class : public my_class {
 public:
-    /// Mock of set_value.
+    /// Mocked function.
     MOCK_METHOD(void, set_value, (std::string), (noexcept, override));
 
-    /// Mock of get_value.
+    /// Mocked function.
     MOCK_METHOD(std::string, get_value, (), (const, noexcept, override));
 };
 

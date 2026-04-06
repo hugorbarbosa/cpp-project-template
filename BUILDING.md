@@ -56,7 +56,7 @@ For Debug build, using the standard CMake configure and build commands:
 ```sh
 $ cd <project-directory>
 $ cmake -S . -B ./build-debug -DCMAKE_BUILD_TYPE=Debug
-$ cmake --build ./build-debug -j 4
+$ cmake --build ./build-debug -j 8
 ```
 
 This project supports CMake Presets ([CMakePresets.json](./CMakePresets.json)), which specifies some common configuration options to facilitate the building of the project and the sharing of these settings with the developers/users.
@@ -69,15 +69,7 @@ $ cmake --preset debug-gcc
 $ cmake --build --preset debug-gcc
 ```
 
-For Release build, using the standard CMake commands:
-
-```sh
-$ cd <project-directory>
-$ cmake -S . -B ./build-release -DCMAKE_BUILD_TYPE=Release
-$ cmake --build ./build-release -j 4
-```
-
-CMake Preset equivalent:
+For Release build, using the respective CMake Preset:
 
 ```sh
 $ cd <project-directory>
@@ -88,7 +80,6 @@ $ cmake --build --preset release-gcc
 To list all the CMake configuration presets available for this project:
 
 ```sh
-$ cd <project-directory>
 $ cmake --list-presets=configure
 $ cmake --list-presets=build
 $ cmake --list-presets=test
@@ -96,7 +87,7 @@ $ cmake --list-presets=test
 
 ## Running the executable
 
-After compiling the project, an executable file is created and can be run using the following command (note that some configuration generators (e.g., Visual Studio) may add a configuration folder (e.g., Debug) in the path):
+After compiling the project, an executable file is created and can be run using the following command (note that some configuration generators (e.g., Visual Studio) may add a configuration folder (e.g., Debug) to the path):
 
 ```sh
 $ cd <build-directory>
@@ -109,11 +100,9 @@ Using the standard CMake commands:
 
 ```sh
 $ cd <project-directory>
-$ mkdir build-debug
-$ cd build-debug
-$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCPROJT_BUILD_TESTS=ON
-$ cmake --build . -j 4
-$ ctest
+$ cmake -S . -B ./build-debug -DCMAKE_BUILD_TYPE=Debug -DCPROJT_BUILD_TESTS=ON
+$ cmake --build ./build-debug -j 8
+$ ctest --test-dir ./build-debug
 ```
 
 CMake Preset equivalent:
@@ -127,25 +116,14 @@ $ ctest --preset debug-gcc
 
 ## Code coverage
 
-Using the standard CMake commands (with GCC compiler only):
+Code coverage analysis is available using GCC compiler only. Using the respective CMake Preset:
 
 ```sh
-$ cd <project-directory>
-$ mkdir build-coverage
-$ cd build-coverage
-$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCPROJT_ENABLE_COVERAGE=ON
-$ cmake --build . --target coverage
-```
-
-CMake Preset equivalent:
-
-```sh
-$ cd <project-directory>
 $ cmake --preset coverage
 $ cmake --build --preset coverage
 ```
 
-This target compiles and generates a report with the code coverage analysis, using the LCOV tool. This report is placed inside of the build directory (`build-coverage` in this example), being available in `coverage/index.html`.
+This target compiles and generates a report with the code coverage analysis, using the LCOV tool. This report is placed inside of the respective build directory, being available in `coverage/index.html`.
 
 Additionally, this target also verifies the code coverage percentage and succeeds or fails if the coverage is sufficient or not, respectively. The accepted coverage percentage value is configured through CMake.
 
@@ -153,23 +131,9 @@ Additionally, this target also verifies the code coverage percentage and succeed
 
 This projects follows my [C++ coding style guide](https://github.com/hugorbarbosa/cpp-coding-style-guide), and to ensure consistency, clang-format is used to format the code.
 
-Using the standard CMake commands:
+Using the respective CMake Preset:
 
 ```sh
-$ cd <project-directory>
-$ mkdir build-clang-format
-$ cd build-clang-format
-$ cmake .. -DCPROJT_ENABLE_CLANG_FORMAT=ON
-$ # To just check the files without modifying them.
-$ cmake --build . --target clang_format_check
-$ # To format the files.
-$ cmake --build . --target clang_format_apply
-```
-
-CMake Preset equivalent:
-
-```sh
-$ cd <project-directory>
 $ cmake --preset clang-format
 $ # To just check the files without modifying them.
 $ cmake --build --preset clang-format-check
@@ -177,7 +141,7 @@ $ # To format the files.
 $ cmake --build --preset clang-format-apply
 ```
 
-These targets use clang-format to verify/apply the desired format of the code, and creates a report file in the `build-clang-format` directory (used build directory in this example), named as `clang-format-report.log`.
+These targets use clang-format to verify/apply the desired format of the code, and creates a report file in the respective build directory, named as `clang-format-report.log`.
 
 The build succeeds only if the source files are formatted accordingly to the [configuration](.clang-format) file. The project source files to be verified are configured through CMake.
 
@@ -185,27 +149,14 @@ Please consult the [code quality tools](./doc/code_quality_tools.md) documentati
 
 ## Code static analysis
 
-The project is prepared to execute code static analysis with clang-tidy.
-
-Using the standard CMake commands:
+The project is prepared to execute code static analysis with clang-tidy. Using the respective CMake Preset:
 
 ```sh
-$ cd <project-directory>
-$ mkdir build-clang-tidy
-$ cd build-clang-tidy
-$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCPROJT_ENABLE_CLANG_TIDY=ON -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
-$ cmake --build . --target clang_tidy
-```
-
-CMake Preset equivalent:
-
-```sh
-$ cd <project-directory>
 $ cmake --preset clang-tidy
 $ cmake --build --preset clang-tidy
 ```
 
-This target runs clang-tidy and generates a report with the results of the code static analysis, named as `clang-tidy-report.log` and placed inside of the build directory (`build-clang-tidy` in this example).
+This target runs clang-tidy and generates a report with the results of the code static analysis in the respective build directory, named as `clang-tidy-report.log`.
 
 The build succeeds only if no issues are found during the code static analysis, which utilizes the list of checks provided in the respective [configuration](.clang-tidy) file. The project source files to be analyzed are configured through CMake.
 
@@ -215,27 +166,15 @@ Please consult the [code quality tools](./doc/code_quality_tools.md) documentati
 
 Sanitizers are tools integrated into modern compilers that are able to catch many types of issues, such as memory errors, undefined behavior or thread race conditions.
 
-This project is prepared to easily enable the sanitizers described below. If a sanitizer detects an issue, a diagnostic report is printed containing detailed information.
+This project is prepared to easily enable the sanitizers described below. If a sanitizer detects an issue, a diagnostic report is logged containing detailed information.
 
 Please consult the [code quality tools](./doc/code_quality_tools.md) documentation to know more details about each sanitizer.
 
 ### Address sanitizer
 
-Using the standard CMake commands:
+Using the respective CMake Preset:
 
 ```sh
-$ cd <project-directory>
-$ mkdir build-sanitizer-address
-$ cd build-sanitizer-address
-$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCPROJT_BUILD_TESTS=ON -DCPROJT_ENABLE_ASAN=ON
-$ cmake --build . -j 4
-$ ctest
-```
-
-CMake Preset equivalent:
-
-```sh
-$ cd <project-directory>
 $ cmake --preset sanitizer-address
 $ cmake --build --preset sanitizer-address
 $ ctest --preset sanitizer-address
@@ -243,21 +182,9 @@ $ ctest --preset sanitizer-address
 
 ### Leak sanitizer
 
-Using the standard CMake commands:
+Using the respective CMake Preset:
 
 ```sh
-$ cd <project-directory>
-$ mkdir build-sanitizer-leak
-$ cd build-sanitizer-leak
-$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCPROJT_BUILD_TESTS=ON -DCPROJT_ENABLE_LSAN=ON
-$ cmake --build . -j 4
-$ ctest
-```
-
-CMake Preset equivalent:
-
-```sh
-$ cd <project-directory>
 $ cmake --preset sanitizer-leak
 $ cmake --build --preset sanitizer-leak
 $ ctest --preset sanitizer-leak
@@ -265,21 +192,9 @@ $ ctest --preset sanitizer-leak
 
 ### Memory sanitizer
 
-Using the standard CMake commands (with clang compiler only):
+Using the respective CMake Preset:
 
 ```sh
-$ cd <project-directory>
-$ mkdir build-sanitizer-memory
-$ cd build-sanitizer-memory
-$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCPROJT_BUILD_TESTS=ON -DCPROJT_ENABLE_MSAN=ON -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
-$ cmake --build . -j 4
-$ ctest
-```
-
-CMake Preset equivalent:
-
-```sh
-$ cd <project-directory>
 $ cmake --preset sanitizer-memory
 $ cmake --build --preset sanitizer-memory
 $ ctest --preset sanitizer-memory
@@ -287,21 +202,9 @@ $ ctest --preset sanitizer-memory
 
 ### Thread sanitizer
 
-Using the standard CMake commands:
+Using the respective CMake Preset:
 
 ```sh
-$ cd <project-directory>
-$ mkdir build-sanitizer-thread
-$ cd build-sanitizer-thread
-$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCPROJT_BUILD_TESTS=ON -DCPROJT_ENABLE_TSAN=ON
-$ cmake --build . -j 4
-$ ctest
-```
-
-CMake Preset equivalent:
-
-```sh
-$ cd <project-directory>
 $ cmake --preset sanitizer-thread
 $ cmake --build --preset sanitizer-thread
 $ ctest --preset sanitizer-thread
@@ -309,21 +212,9 @@ $ ctest --preset sanitizer-thread
 
 ### Undefined behavior sanitizer
 
-Using the standard CMake commands:
+Using the respective CMake Preset:
 
 ```sh
-$ cd <project-directory>
-$ mkdir build-sanitizer-undefined
-$ cd build-sanitizer-undefined
-$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCPROJT_BUILD_TESTS=ON -DCPROJT_ENABLE_UBSAN=ON
-$ cmake --build . -j 4
-$ ctest
-```
-
-CMake Preset equivalent:
-
-```sh
-$ cd <project-directory>
 $ cmake --preset sanitizer-undefined
 $ cmake --build --preset sanitizer-undefined
 $ ctest --preset sanitizer-undefined
@@ -331,27 +222,14 @@ $ ctest --preset sanitizer-undefined
 
 ## Source code documentation
 
-Doxygen is used to generate documentation from source code in this project.
-
-Using the standard CMake commands:
+Doxygen is used to generate documentation from source code in this project. Using the respective CMake Preset:
 
 ```sh
-$ cd <project-directory>
-$ mkdir build-doxygen
-$ cd build-doxygen
-$ cmake .. -DCPROJT_ENABLE_DOXYGEN=ON
-$ cmake --build . --target doxygen
-```
-
-CMake Preset equivalent:
-
-```sh
-$ cd <project-directory>
 $ cmake --preset doxygen
 $ cmake --build --preset doxygen
 ```
 
-This target generates documentation from the source files using doxygen, in the `build-doxygen` directory (used build directory in this example), which can be accessed from `html/index.html`. Furthermore, a report file named as `doxygen-report.log` is also created in this build directory.
+This target generates documentation from the source files using doxygen, in the respective build directory, which can be accessed from `html/index.html`. Furthermore, a report file named as `doxygen-report.log` is also created in the build directory.
 
 This target only succeeds if the source files are correctly documented. The doxygen [configuration](./doxygen/Doxyfile.in) file in this project is prepared to be automatically configured through CMake, namely the source files from which documentation should be generated, as well as other parameters related to the project.
 
@@ -361,23 +239,9 @@ Please consult the [code quality tools](./doc/code_quality_tools.md) documentati
 
 This projects follows my [CMake coding style guide](https://github.com/hugorbarbosa/cmake-style-guide), and to ensure consistency, cmake-format and cmake-lint are used to format and check the CMake code.
 
-Using the standard CMake commands for cmake-format:
+Using the respective CMake Preset for cmake-format:
 
 ```sh
-$ cd <project-directory>
-$ mkdir build-cmake-format
-$ cd build-cmake-format
-$ cmake .. -DCPROJT_ENABLE_CMAKE_FORMAT=ON
-$ # To just check the files without modifying them.
-$ cmake --build . --target cmake_format_check
-$ # To format the files.
-$ cmake --build . --target cmake_format_apply
-```
-
-CMake Preset equivalent:
-
-```sh
-$ cd <project-directory>
 $ cmake --preset cmake-format
 $ # To just check the files without modifying them.
 $ cmake --build --preset cmake-format-check
@@ -385,27 +249,16 @@ $ # To format the files.
 $ cmake --build --preset cmake-format-apply
 ```
 
-These targets use cmake-format to verify/apply the desired format of the CMake code, and create a report file in the `build-cmake-format` directory (used build directory in this example), named as `cmake-format-report.log`.
+These targets use cmake-format to verify/apply the desired format of the CMake code, and create a report file in the respective build directory, named as `cmake-format-report.log`.
 
-Relatively to cmake-lint, using the standard CMake commands:
-
-```sh
-$ cd <project-directory>
-$ mkdir build-cmake-lint
-$ cd build-cmake-lint
-$ cmake .. -DCPROJT_ENABLE_CMAKE_LINT=ON
-$ cmake --build . --target cmake_lint
-```
-
-CMake Preset equivalent:
+Relatively to cmake-lint, using the respective CMake Preset:
 
 ```sh
-$ cd <project-directory>
 $ cmake --preset cmake-lint
 $ cmake --build --preset cmake-lint
 ```
 
-The target uses cmake-lint to verify the desired lint options of the CMake code, and creates a report file in the `build-cmake-lint` directory (used build directory in this example), named as `cmake-lint-report.log`.
+The target uses cmake-lint to verify the desired lint options of the CMake code, and creates a report file in the respective build directory, named as `cmake-lint-report.log`.
 
 The builds for the cmake-format and cmake-lint targets succeed only if the CMake files are formatted accordingly to the [configuration](.cmake-format.py) file. The CMake files to be verified are configured through CMake.
 

@@ -15,37 +15,37 @@ namespace cpp_project_template {
  *
  * This is just an example of a base class.
  */
-class MyClass {
+class my_class {
 public:
     /**
      * @brief Destructor.
      */
-    virtual ~MyClass() = default;
+    virtual ~my_class() = default;
 
     /**
      * @brief Constructor.
      */
-    MyClass() = default;
+    my_class() = default;
 
     /**
      * @brief Copy constructor.
      */
-    MyClass(const MyClass&) = delete;
+    my_class(const my_class&) = delete;
 
     /**
      * @brief Copy assignment operator.
      */
-    MyClass& operator=(const MyClass&) = delete;
+    my_class& operator=(const my_class&) = delete;
 
     /**
      * @brief Move constructor.
      */
-    MyClass(MyClass&&) = delete;
+    my_class(my_class&&) = delete;
 
     /**
      * @brief Move assignment operator.
      */
-    MyClass& operator=(MyClass&&) = delete;
+    my_class& operator=(my_class&&) = delete;
 
     /**
      * @brief Set value.

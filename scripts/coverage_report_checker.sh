@@ -20,7 +20,7 @@ help() {
 # Log information message.
 #
 # Parameters:
-#   $1: Message to log.
+# - $1: Message to log.
 log() {
     echo -e "$1"
 }
@@ -28,7 +28,7 @@ log() {
 # Log error message.
 #
 # Parameters:
-#   $1: Message to log.
+# - $1: Message to log.
 log_error() {
     red_color='\033[0;31m'
     no_color='\033[0m'

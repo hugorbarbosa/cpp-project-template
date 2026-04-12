@@ -123,7 +123,7 @@ target_link_libraries(your-target PRIVATE my_library::my_library)
 You can use this library as a `git submodule` in your project. For this case, the following code shall be added to your `CMakeLists.txt` file:
 
 ```cmake
-add_subdirectory(external/my-library) # Submodule shall be placed in the "external" directory.
+add_subdirectory(my-library)
 # ...
 target_link_libraries(your-target PRIVATE my_library::my_library)
 ```

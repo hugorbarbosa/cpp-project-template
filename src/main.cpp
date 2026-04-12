@@ -3,8 +3,10 @@
  * @copyright Copyright (C) 2022 Hugo Barbosa.
  */
 
+#include <cstdlib>
 #include <iostream>
 #include <memory>
+#include <my_class.hpp>
 #include <my_concrete_class.hpp>
 #include "git_info.hpp"
 #include "version.hpp"

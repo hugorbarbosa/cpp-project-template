@@ -1,15 +1,16 @@
-project(cpp-project-template)
-
 add_subdirectory(my_class)
 add_subdirectory(version)
 
-add_executable(${PROJECT_NAME} main.cpp)
+set(target_name "cpp-project-template")
+add_executable(${target_name})
 
-target_include_git_info_directory(${PROJECT_NAME})
+target_sources(${target_name} PRIVATE main.cpp)
+
+target_include_git_info_directory(${target_name})
 
 target_link_libraries(
-    ${PROJECT_NAME} PRIVATE ${CPROJT_PROJECT_NAME}::compile_options ${CPROJT_PROJECT_NAME}::version
-                            ${CPROJT_PROJECT_NAME}::my_class
+    ${target_name} PRIVATE ${CPROJT_PROJECT_NAME}::compile_options ${CPROJT_PROJECT_NAME}::version
+                           ${CPROJT_PROJECT_NAME}::my_class
 )
 
-set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+set_target_properties(${target_name} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")

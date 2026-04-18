@@ -1,10 +1,11 @@
-project(ut_version)
+set(target_name "ut_version")
+add_executable(${target_name})
 
-add_executable(${PROJECT_NAME} ut_version.cpp)
-
-gtest_discover_tests(${PROJECT_NAME})
+target_sources(${target_name} PRIVATE ut_version.cpp)
 
 target_link_libraries(
-    ${PROJECT_NAME} PRIVATE GTest::gtest_main ${CPROJT_PROJECT_NAME}::compile_options
-                            ${CPROJT_PROJECT_NAME}::version
+    ${target_name} PRIVATE GTest::gtest_main ${CPROJT_PROJECT_NAME}::compile_options
+                           ${CPROJT_PROJECT_NAME}::version
 )
+
+gtest_discover_tests(${target_name})

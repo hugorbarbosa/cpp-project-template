@@ -1,10 +1,11 @@
-project(ut_my_class)
+set(target_name "ut_my_class")
+add_executable(${target_name})
 
-add_executable(${PROJECT_NAME} ut_my_concrete_class.cpp)
-
-gtest_discover_tests(${PROJECT_NAME})
+target_sources(${target_name} PRIVATE ut_my_concrete_class.cpp)
 
 target_link_libraries(
-    ${PROJECT_NAME} PRIVATE GTest::gtest_main ${CPROJT_PROJECT_NAME}::compile_options
-                            ${CPROJT_PROJECT_NAME}::my_class
+    ${target_name} PRIVATE GTest::gtest_main ${CPROJT_PROJECT_NAME}::compile_options
+                           ${CPROJT_PROJECT_NAME}::my_class
 )
+
+gtest_discover_tests(${target_name})

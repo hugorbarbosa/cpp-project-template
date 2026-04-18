@@ -5,7 +5,7 @@
 # ----------------------------------------------------------------------------
 # Project setup
 # ----------------------------------------------------------------------------
-cmake_minimum_required(VERSION 3.21)
+cmake_minimum_required(VERSION 3.28)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 include(ProjectVersion)
@@ -21,11 +21,6 @@ project(
 
 set(CPROJT_PROJECT_NAME ${PROJECT_NAME})
 set(CPROJT_PROJECT_VERSION ${PROJECT_VERSION_FULL})
-
-set(is_main_project OFF)
-if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
-    set(is_main_project ON)
-endif()
 
 # ----------------------------------------------------------------------------
 # Pre-requirements
@@ -46,7 +41,7 @@ generate_git_info_file(${header_template_file} ${header_out_file} ${header_guard
 # ----------------------------------------------------------------------------
 # Configuration options
 # ----------------------------------------------------------------------------
-option(CPROJT_BUILD_TESTS "Build tests" ${is_main_project})
+option(CPROJT_BUILD_TESTS "Build tests" ${PROJECT_IS_TOP_LEVEL})
 option(CPROJT_ENABLE_COVERAGE "Enable code coverage analysis" OFF)
 option(CPROJT_ENABLE_CLANG_FORMAT "Enable code formatting with clang-format" OFF)
 option(CPROJT_ENABLE_CLANG_TIDY "Enable code static analysis with clang-tidy" OFF)
@@ -66,7 +61,7 @@ endif()
 # ----------------------------------------------------------------------------
 # CMake options
 # ----------------------------------------------------------------------------
-if(is_main_project)
+if(PROJECT_IS_TOP_LEVEL)
     if(NOT CMAKE_BUILD_TYPE)
         set(default_build_type Debug)
         message(STATUS "No build type specified, setting it to '${default_build_type}'")
@@ -96,7 +91,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 include(CompilerOptions)
 
 set(compiler_options_library compile_options)
-set(compilation_warnings_as_errors ${is_main_project})
+set(compilation_warnings_as_errors ${PROJECT_IS_TOP_LEVEL})
 set_project_default_compiler_options(
     ${compiler_options_library} ${CPROJT_PROJECT_NAME} ${compilation_warnings_as_errors}
 )
@@ -210,6 +205,7 @@ message(STATUS "- CMAKE_CXX_COMPILER_ID = ${CMAKE_CXX_COMPILER_ID}")
 message(STATUS "- CMAKE_CXX_COMPILER_VERSION = ${CMAKE_CXX_COMPILER_VERSION}")
 message(STATUS "- CMAKE_CXX_STANDARD = ${CMAKE_CXX_STANDARD}")
 message(STATUS "- CMAKE_EXPORT_COMPILE_COMMANDS = ${CMAKE_EXPORT_COMPILE_COMMANDS}")
+message(STATUS "- PROJECT_IS_TOP_LEVEL = ${PROJECT_IS_TOP_LEVEL}")
 message(STATUS "- CPROJT_BUILD_TESTS = ${CPROJT_BUILD_TESTS}")
 message(STATUS "- CPROJT_ENABLE_COVERAGE = ${CPROJT_ENABLE_COVERAGE}")
 message(STATUS "- CPROJT_ENABLE_CLANG_FORMAT = ${CPROJT_ENABLE_CLANG_FORMAT}")
@@ -222,5 +218,4 @@ message(STATUS "- CPROJT_ENABLE_UBSAN = ${CPROJT_ENABLE_UBSAN}")
 message(STATUS "- CPROJT_ENABLE_DOXYGEN = ${CPROJT_ENABLE_DOXYGEN}")
 message(STATUS "- CPROJT_ENABLE_CMAKE_FORMAT = ${CPROJT_ENABLE_CMAKE_FORMAT}")
 message(STATUS "- CPROJT_ENABLE_CMAKE_LINT = ${CPROJT_ENABLE_CMAKE_LINT}")
-message(STATUS "- is_main_project = ${is_main_project}")
 message(STATUS)

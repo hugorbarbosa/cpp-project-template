@@ -1,11 +1,10 @@
-project(mock_my_class)
+set(target_name "mock_my_class")
+add_library(${target_name} INTERFACE)
+add_library(${CPROJT_PROJECT_NAME}::${target_name} ALIAS ${target_name})
 
-add_library(${PROJECT_NAME} INTERFACE)
-add_library(${CPROJT_PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
-
-target_include_directories(${PROJECT_NAME} INTERFACE .)
+target_sources(${target_name} INTERFACE FILE_SET HEADERS)
 
 target_link_libraries(
-    ${PROJECT_NAME} INTERFACE GTest::gmock ${CPROJT_PROJECT_NAME}::compile_options
-                              ${CPROJT_PROJECT_NAME}::my_class
+    ${target_name} INTERFACE GTest::gmock ${CPROJT_PROJECT_NAME}::compile_options
+                             ${CPROJT_PROJECT_NAME}::my_class
 )

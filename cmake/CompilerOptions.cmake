@@ -9,8 +9,7 @@
 # - target_name: Target name to add the compiler options.
 # - warnings_as_errors: Option to set warnings as errors.
 function(add_default_compiler_options target_name warnings_as_errors)
-    set(mscl_options
-        # ~~~
+    set(mscl_options # ~~~
         # Displays level 1 to level 4 (informational) warnings.
         # ~~~
         /W4
@@ -72,9 +71,11 @@ function(add_default_compiler_options target_name warnings_as_errors)
         list(APPEND gcc_options -Werror)
     endif()
 
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    if((CMAKE_CXX_COMPILER_ID STREQUAL "MSVC") OR (CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL
+                                                   "MSVC")
+    )
         set(compiler_options ${mscl_options})
-    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         set(compiler_options ${clang_options})
     elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         set(compiler_options ${gcc_options})

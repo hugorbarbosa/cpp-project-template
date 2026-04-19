@@ -122,14 +122,12 @@ set(source_code_dirs "${CMAKE_CURRENT_SOURCE_DIR}/examples" "${CMAKE_CURRENT_SOU
 
 if(CPROJT_ENABLE_CLANG_FORMAT)
     include(ClangFormat)
-    set(log_file "clang-format-report.log")
-    enable_clang_format("${source_code_dirs}" ${log_file})
+    enable_clang_format(DIRECTORIES "${source_code_dirs}" LOG_FILE "clang-format-report.log")
 endif()
 
 if(CPROJT_ENABLE_CLANG_TIDY)
     include(ClangTidy)
-    set(log_file "clang-tidy-report.log")
-    enable_clang_tidy("${source_code_dirs}" ${log_file})
+    enable_clang_tidy(DIRECTORIES "${source_code_dirs}" LOG_FILE "clang-tidy-report.log")
 endif()
 
 if(CPROJT_ENABLE_ASAN
@@ -166,21 +164,30 @@ if(CPROJT_ENABLE_DOXYGEN)
     )
 endif()
 
-set(cmake_dirs "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-list(APPEND cmake_dirs_to_check ${cmake_dirs})
-list(APPEND cmake_dirs_to_check ${source_code_dirs})
-set(cmake_files_to_check "${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt")
-
 if(CPROJT_ENABLE_CMAKE_FORMAT)
     include(CmakeFormat)
-    set(log_file "cmake-format-report.log")
-    enable_cmake_format("${cmake_dirs_to_check}" "${cmake_files_to_check}" ${log_file})
+    enable_cmake_format(
+        DIRECTORIES
+        "${CMAKE_CURRENT_SOURCE_DIR}/cmake"
+        "${source_code_dirs}"
+        EXTRA_FILES
+        "${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt"
+        LOG_FILE
+        "cmake-format-report.log"
+    )
 endif()
 
 if(CPROJT_ENABLE_CMAKE_LINT)
     include(CmakeLint)
-    set(log_file "cmake-lint-report.log")
-    enable_cmake_lint("${cmake_dirs_to_check}" "${cmake_files_to_check}" ${log_file})
+    enable_cmake_lint(
+        DIRECTORIES
+        "${CMAKE_CURRENT_SOURCE_DIR}/cmake"
+        "${source_code_dirs}"
+        EXTRA_FILES
+        "${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt"
+        LOG_FILE
+        "cmake-lint-report.log"
+    )
 endif()
 
 # ----------------------------------------------------------------------------

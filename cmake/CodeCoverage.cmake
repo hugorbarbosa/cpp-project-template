@@ -2,11 +2,14 @@
 # Copyright (C) 2025 Hugo Barbosa.
 #
 
+set(CODE_COVERAGE_DIR "${CMAKE_CURRENT_LIST_DIR}")
+
 # Add the compiler options for code coverage to the provided target.
 #
-# Parameters:
-#
-# - target_name: Name of the target to add coverage compiler options.
+# Usage:
+# ~~~
+#   add_coverage_compiler_options(<target>)
+# ~~~
 function(add_coverage_compiler_options target_name)
     set(gcc_coverage_options
         # Compile and link code instrumented for coverage analysis.
@@ -34,20 +37,43 @@ endfunction()
 
 # Enable code coverage for the provided target and create coverage target.
 #
-# Parameters:
+# Usage:
+# ~~~
+#   enable_coverage(<target>
+#       [EXCLUDE_PATTERNS <pattern1> [<pattern2> ...]]
+#       [MIN_LINE_COVERAGE <value>]
+#       [MIN_FUNCTION_COVERAGE <value>]
+#       [REPORT_DIR <dir>]
+#       [PARALLEL <jobs>]
+#   )
+# ~~~
 #
-# - target_name: Name of the target to add coverage compiler options.
-# - exclude_patterns: Patterns to be excluded from the coverage analysis.
-# - min_line_coverage: Minimum lines coverage value to succeed.
-# - min_function_coverage: Minimum functions coverage value to succeed.
-# - cov_check_script: Coverage report checker script path.
-function(enable_coverage target_name exclude_patterns min_line_coverage min_function_coverage
-         cov_check_script
-)
+# Arguments:
+#
+# - EXCLUDE_PATTERNS: Optional list of patterns to be excluded from the coverage analysis.
+# - MIN_LINE_COVERAGE: Optional minimum lines coverage value to succeed, in percentage. If not
+#   provided, the default value is 90.
+# - MIN_FUNCTION_COVERAGE: Optional minimum functions coverage value to succeed, in percentage. If
+# not provided, the default value is 80.
+# - REPORT_DIR: Optional report directory where the coverage analysis report will be created. If not provided,
+#   the default value is "${CMAKE_BINARY_DIR}/coverage".
+# - PARALLEL: Optional maximum number of concurrent processes to use when building. If not provided,
+# the default value is 8.
+function(enable_coverage target_name)
     message(CHECK_START "Enabling code coverage for target ${target_name}")
 
     if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
         message(WARNING "Code coverage in a non-Debug build may be misleading")
+    endif()
+
+    set(options)
+    set(one_value_args MIN_LINE_COVERAGE MIN_FUNCTION_COVERAGE REPORT_DIR PARALLEL)
+    set(multi_value_args EXCLUDE_PATTERNS)
+
+    cmake_parse_arguments(arg "${options}" "${one_value_args}" "${multi_value_args}" ${ARGN})
+
+    if(arg_UNPARSED_ARGUMENTS)
+        message(FATAL_ERROR "Unknown arguments: ${arg_UNPARSED_ARGUMENTS}")
     endif()
 
     # Requirements.
@@ -70,32 +96,57 @@ function(enable_coverage target_name exclude_patterns min_line_coverage min_func
 
     # Excludes.
     set(lcov_excludes "")
-    foreach(pattern IN LISTS exclude_patterns)
+    foreach(pattern IN LISTS arg_EXCLUDE_PATTERNS)
         message(STATUS "Excluding pattern: ${pattern}")
         list(APPEND lcov_excludes "${pattern}")
     endforeach()
     list(REMOVE_DUPLICATES lcov_excludes)
+
+    # Minimum coverage values.
+    if(NOT arg_MIN_LINE_COVERAGE)
+        set(arg_MIN_LINE_COVERAGE 90)
+        message(STATUS "Minimum lines coverage value not provided. Using default value: ${arg_MIN_LINE_COVERAGE}%")
+    endif()
+    if(NOT arg_MIN_FUNCTION_COVERAGE)
+        set(arg_MIN_FUNCTION_COVERAGE 80)
+        message(STATUS "Minimum functions coverage value not provided. Using default value: ${arg_MIN_FUNCTION_COVERAGE}%")
+    endif()
+
+    # Report directory.
+    if(NOT arg_REPORT_DIR)
+        set(arg_REPORT_DIR "${CMAKE_BINARY_DIR}/coverage")
+        message(STATUS "Report directory not provided. Using default value: ${arg_REPORT_DIR}")
+    endif()
+
+    # Parallel processes.
+    if(NOT arg_PARALLEL)
+        set(arg_PARALLEL 8)
+        message(STATUS "Number of concurrent processes not provided. Using default value: ${arg_PARALLEL}")
+    endif()
 
     # LCOV base directory.
     set(lcov_base_dir ${PROJECT_SOURCE_DIR})
 
     # Generated files.
     set(coverage_target "coverage")
-    set(base_file "${coverage_target}-base.info")
-    set(capture_file "${coverage_target}-capture.info")
-    set(total_file "${coverage_target}-total.info")
-    set(filtered_file "${coverage_target}-filtered.info")
-    set(report_dir "${coverage_target}")
-    set(report_file "${coverage_target}/index.html")
+    set(base_file "${coverage_target}_base.info")
+    set(capture_file "${coverage_target}_capture.info")
+    set(total_file "${coverage_target}_total.info")
+    set(filtered_file "${coverage_target}_filtered.info")
+    set(report_file "${arg_REPORT_DIR}/index.html")
 
-    set(jobs 4)
+    # Helper script.
+    set(coverage_check_script "${CODE_COVERAGE_DIR}/code_coverage/code_coverage_checker.sh")
+
     add_custom_target(
         ${coverage_target}
         COMMENT "Run code coverage analysis"
+        COMMAND ${CMAKE_COMMAND} -E echo "Running code coverage analysis"
+        COMMAND ${CMAKE_COMMAND} -E echo "Results will be saved in: ${report_file}"
         COMMAND ${CMAKE_COMMAND} -E echo "Cleaning coverage data"
         COMMAND ${lcov_path} --directory . -b ${lcov_base_dir} --zerocounters
-        COMMAND ${CMAKE_COMMAND} -E echo "Building project using ${jobs} jobs"
-        COMMAND ${CMAKE_COMMAND} --build . -j ${jobs}
+        COMMAND ${CMAKE_COMMAND} -E echo "Building project using ${arg_PARALLEL} jobs"
+        COMMAND ${CMAKE_COMMAND} --build . -j ${arg_PARALLEL}
         COMMAND ${CMAKE_COMMAND} -E echo "Creating coverage baseline"
         COMMAND ${lcov_path} --directory . -b ${lcov_base_dir} --capture --initial --output-file
                 ${base_file} --ignore-errors mismatch --ignore-errors unused
@@ -109,14 +160,13 @@ function(enable_coverage target_name exclude_patterns min_line_coverage min_func
         COMMAND ${lcov_path} --remove ${total_file} ${lcov_excludes} --output-file ${filtered_file}
                 --ignore-errors mismatch --ignore-errors unused
         COMMAND ${CMAKE_COMMAND} -E echo "Generating HTML code coverage report"
-        COMMAND ${genhtml_path} ${filtered_file} --output-directory ${report_dir} --legend
+        COMMAND ${genhtml_path} ${filtered_file} --output-directory ${arg_REPORT_DIR} --legend
                 --show-details
-        COMMAND ${CMAKE_COMMAND} -E echo "Coverage report: ${CMAKE_BINARY_DIR}/${report_file}"
         COMMAND ${CMAKE_COMMAND} -E echo "Checking code coverage report:"
-        COMMAND ${CMAKE_COMMAND} -E echo "- Minimum line coverage: ${min_line_coverage}"
-        COMMAND ${CMAKE_COMMAND} -E echo "- Minimum function coverage: ${min_function_coverage}"
-        COMMAND ${cov_check_script} -b ${lcov_path} -r ${filtered_file} -l ${min_line_coverage} -f
-                ${min_function_coverage}
+        COMMAND ${CMAKE_COMMAND} -E echo "- Minimum line coverage: ${arg_MIN_LINE_COVERAGE}"
+        COMMAND ${CMAKE_COMMAND} -E echo "- Minimum function coverage: ${arg_MIN_FUNCTION_COVERAGE}"
+        COMMAND ${coverage_check_script} -b ${lcov_path} -r ${filtered_file} -l ${arg_MIN_LINE_COVERAGE} -f
+                ${arg_MIN_FUNCTION_COVERAGE}
         BYPRODUCTS ${base_file} ${capture_file} ${total_file} ${filtered_file} ${report_file}
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         VERBATIM

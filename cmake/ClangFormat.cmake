@@ -22,16 +22,16 @@
 # - DIRECTORIES: List of directories to get the files to be analyzed. To make clang-format ignore
 #   certain files, .clang-format-ignore files can be created. If not present, all the available
 #   files (headers and C/C++ files) in these directories will be analyzed.
-# - LOG_FILE: Optional log file to be created with the clang-format output. This file is created in
-#   the CMAKE_BINARY_DIR. If not provided, the default value is "clang-format-report.log".
+# - LOG_FILE: Optional log file path to be created with the clang-format output. If not provided,
+#   the default value is "${CMAKE_BINARY_DIR}/clang_format_report.log".
 function(enable_clang_format)
     message(CHECK_START "Enabling code formatting with clang-format")
 
     set(options)
-    set(oneValueArgs LOG_FILE)
-    set(multiValueArgs DIRECTORIES)
+    set(one_value_args LOG_FILE)
+    set(multi_value_args DIRECTORIES)
 
-    cmake_parse_arguments(arg "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+    cmake_parse_arguments(arg "${options}" "${one_value_args}" "${multi_value_args}" ${ARGN})
 
     if(arg_UNPARSED_ARGUMENTS)
         message(FATAL_ERROR "Unknown arguments: ${arg_UNPARSED_ARGUMENTS}")
@@ -74,20 +74,19 @@ function(enable_clang_format)
 
     # Log file.
     if(NOT arg_LOG_FILE)
-        set(arg_LOG_FILE "clang-format-report.log")
+        set(arg_LOG_FILE "${CMAKE_BINARY_DIR}/clang_format_report.log")
         message(STATUS "Log file not provided. Using default value: ${arg_LOG_FILE}")
     endif()
-    set(report_file "${CMAKE_BINARY_DIR}/${arg_LOG_FILE}")
 
     if(files)
         add_custom_target(
             clang_format_check
             COMMENT "Check code formatting using clang-format"
             COMMAND ${CMAKE_COMMAND} -E echo "Running clang-format"
-            COMMAND ${CMAKE_COMMAND} -E echo "Report will be saved in: ${report_file}"
+            COMMAND ${CMAKE_COMMAND} -E echo "Results will be saved in: ${arg_LOG_FILE}"
             COMMAND ${clang_format_path} --verbose --dry-run -Werror --style=file ${files} >
-                    ${report_file} 2>&1
-            BYPRODUCTS ${report_file}
+                    ${arg_LOG_FILE} 2>&1
+            BYPRODUCTS ${arg_LOG_FILE}
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
             VERBATIM
         )
@@ -96,9 +95,9 @@ function(enable_clang_format)
             clang_format_apply
             COMMENT "Apply code formatting using clang-format"
             COMMAND ${CMAKE_COMMAND} -E echo "Running clang-format"
-            COMMAND ${CMAKE_COMMAND} -E echo "Report will be saved in: ${report_file}"
-            COMMAND ${clang_format_path} --verbose --style=file -i ${files} > ${report_file} 2>&1
-            BYPRODUCTS ${report_file}
+            COMMAND ${CMAKE_COMMAND} -E echo "Results will be saved in: ${arg_LOG_FILE}"
+            COMMAND ${clang_format_path} --verbose --style=file -i ${files} > ${arg_LOG_FILE} 2>&1
+            BYPRODUCTS ${arg_LOG_FILE}
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
             VERBATIM
         )

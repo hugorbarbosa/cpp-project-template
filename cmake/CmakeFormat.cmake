@@ -22,16 +22,16 @@
 #
 # - DIRECTORIES: List of directories to get the files to be analyzed.
 # - EXTRA_FILES: Optional list of extra files to be analyzed.
-# - LOG_FILE: Optional log file to be created with the cmake-format output. This file is created in
-#   the CMAKE_BINARY_DIR. If not provided, the default value is "cmake-format-report.log".
+# - LOG_FILE: Optional log file path to be created with the cmake-format output. If not provided,
+#   the default value is "${CMAKE_BINARY_DIR}/cmake_format_report.log".
 function(enable_cmake_format)
     message(CHECK_START "Enabling CMake code formatting with cmake-format")
 
     set(options)
-    set(oneValueArgs LOG_FILE)
-    set(multiValueArgs DIRECTORIES EXTRA_FILES)
+    set(one_value_args LOG_FILE)
+    set(multi_value_args DIRECTORIES EXTRA_FILES)
 
-    cmake_parse_arguments(arg "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+    cmake_parse_arguments(arg "${options}" "${one_value_args}" "${multi_value_args}" ${ARGN})
 
     if(arg_UNPARSED_ARGUMENTS)
         message(FATAL_ERROR "Unknown arguments: ${arg_UNPARSED_ARGUMENTS}")
@@ -53,33 +53,32 @@ function(enable_cmake_format)
     message(CHECK_PASS "done")
 
     # Files to check.
-    set(files_to_check)
+    set(files)
     foreach(dir IN LISTS arg_DIRECTORIES)
         if(EXISTS ${dir})
             # Search recursively the files.
             file(GLOB_RECURSE dir_files "${dir}/*.cmake" "${dir}/CMakeLists.txt")
-            list(APPEND files_to_check ${dir_files})
+            list(APPEND files ${dir_files})
         else()
             message(WARNING "Directory ${dir} does not exist")
         endif()
     endforeach()
-    list(APPEND files_to_check ${arg_EXTRA_FILES})
+    list(APPEND files ${arg_EXTRA_FILES})
 
     # Log file.
     if(NOT arg_LOG_FILE)
-        set(arg_LOG_FILE "cmake-format-report.log")
+        set(arg_LOG_FILE "${CMAKE_BINARY_DIR}/cmake_format_report.log")
         message(STATUS "Log file not provided. Using default value: ${arg_LOG_FILE}")
     endif()
-    set(report_file "${CMAKE_BINARY_DIR}/${arg_LOG_FILE}")
 
-    if(files_to_check)
+    if(files)
         add_custom_target(
             cmake_format_check
             COMMENT "Check CMake code formatting using cmake-format"
             COMMAND ${CMAKE_COMMAND} -E echo "Running cmake-format"
-            COMMAND ${CMAKE_COMMAND} -E echo "Report will be saved in: ${report_file}"
-            COMMAND ${cmake_format_path} --check ${files_to_check} > ${report_file} 2>&1
-            BYPRODUCTS ${report_file}
+            COMMAND ${CMAKE_COMMAND} -E echo "Results will be saved in: ${arg_LOG_FILE}"
+            COMMAND ${cmake_format_path} --check ${files} > ${arg_LOG_FILE} 2>&1
+            BYPRODUCTS ${arg_LOG_FILE}
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
             VERBATIM
         )
@@ -88,9 +87,9 @@ function(enable_cmake_format)
             cmake_format_apply
             COMMENT "Apply CMake code formatting using cmake-format"
             COMMAND ${CMAKE_COMMAND} -E echo "Running cmake-format"
-            COMMAND ${CMAKE_COMMAND} -E echo "Report will be saved in: ${report_file}"
-            COMMAND ${cmake_format_path} -i ${files_to_check} > ${report_file} 2>&1
-            BYPRODUCTS ${report_file}
+            COMMAND ${CMAKE_COMMAND} -E echo "Results will be saved in: ${arg_LOG_FILE}"
+            COMMAND ${cmake_format_path} -i ${files} > ${arg_LOG_FILE} 2>&1
+            BYPRODUCTS ${arg_LOG_FILE}
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
             VERBATIM
         )

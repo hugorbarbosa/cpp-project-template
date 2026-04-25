@@ -141,7 +141,7 @@ $ # To format the files.
 $ cmake --build --preset clang-format-apply
 ```
 
-These targets use clang-format to verify/apply the desired format of the code, and creates a report file in the respective build directory, named as `clang-format-report.log`.
+These targets use clang-format to verify/apply the desired format of the code, and creates a report file in the respective build directory, named as `clang_format_report.log`.
 
 The build succeeds only if the source files are formatted accordingly to the [configuration](.clang-format) file. The project source files to be verified are configured through CMake.
 
@@ -156,7 +156,7 @@ $ cmake --preset clang-tidy
 $ cmake --build --preset clang-tidy
 ```
 
-This target runs clang-tidy and generates a report with the results of the code static analysis in the respective build directory, named as `clang-tidy-report.log`.
+This target runs clang-tidy and generates a report with the results of the code static analysis in the respective build directory, named as `clang_tidy_report.log`.
 
 The build succeeds only if no issues are found during the code static analysis, which utilizes the list of checks provided in the respective [configuration](.clang-tidy) file. The project source files to be analyzed are configured through CMake.
 
@@ -249,7 +249,7 @@ $ # To format the files.
 $ cmake --build --preset cmake-format-apply
 ```
 
-These targets use cmake-format to verify/apply the desired format of the CMake code, and create a report file in the respective build directory, named as `cmake-format-report.log`.
+These targets use cmake-format to verify/apply the desired format of the CMake code, and create a report file in the respective build directory, named as `cmake_format_report.log`.
 
 Relatively to cmake-lint, using the respective CMake Preset:
 
@@ -258,7 +258,7 @@ $ cmake --preset cmake-lint
 $ cmake --build --preset cmake-lint
 ```
 
-The target uses cmake-lint to verify the desired lint options of the CMake code, and creates a report file in the respective build directory, named as `cmake-lint-report.log`.
+The target uses cmake-lint to verify the desired lint options of the CMake code, and creates a report file in the respective build directory, named as `cmake_lint_report.log`.
 
 The builds for the cmake-format and cmake-lint targets succeed only if the CMake files are formatted accordingly to the [configuration](.cmake-format.py) file. The CMake files to be verified are configured through CMake.
 

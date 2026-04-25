@@ -103,16 +103,13 @@ set(scripts_dir "${CMAKE_CURRENT_SOURCE_DIR}/scripts")
 
 if(CPROJT_ENABLE_COVERAGE)
     include(CodeCoverage)
-    set(coverage_exclude_patterns
-        "/usr/include/*" "/usr/local/*" "*/_deps/*" "${CMAKE_CURRENT_SOURCE_DIR}/test/*"
-        "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp"
-    )
-    set(min_line_coverage 90)
-    set(min_function_coverage 80)
-    set(coverage_check_script "${scripts_dir}/coverage_report_checker.sh")
     enable_coverage(
-        ${compiler_options_library} "${coverage_exclude_patterns}" ${min_line_coverage}
-        ${min_function_coverage} ${coverage_check_script}
+        ${compiler_options_library}
+        EXCLUDE_PATTERNS "/usr/include/*" "/usr/local/*" "*/_deps/*" "${CMAKE_CURRENT_SOURCE_DIR}/test/*" "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp"
+        MIN_LINE_COVERAGE 90
+        MIN_FUNCTION_COVERAGE 80
+        REPORT_DIR "${CMAKE_BINARY_DIR}/coverage"
+        PARALLEL 8
     )
 endif()
 
@@ -122,12 +119,16 @@ set(source_code_dirs "${CMAKE_CURRENT_SOURCE_DIR}/examples" "${CMAKE_CURRENT_SOU
 
 if(CPROJT_ENABLE_CLANG_FORMAT)
     include(ClangFormat)
-    enable_clang_format(DIRECTORIES "${source_code_dirs}" LOG_FILE "clang-format-report.log")
+    enable_clang_format(
+        DIRECTORIES "${source_code_dirs}" LOG_FILE "${CMAKE_BINARY_DIR}/clang_format_report.log"
+    )
 endif()
 
 if(CPROJT_ENABLE_CLANG_TIDY)
     include(ClangTidy)
-    enable_clang_tidy(DIRECTORIES "${source_code_dirs}" LOG_FILE "clang-tidy-report.log")
+    enable_clang_tidy(
+        DIRECTORIES "${source_code_dirs}" LOG_FILE "${CMAKE_BINARY_DIR}/clang_tidy_report.log"
+    )
 endif()
 
 if(CPROJT_ENABLE_ASAN
@@ -173,7 +174,7 @@ if(CPROJT_ENABLE_CMAKE_FORMAT)
         EXTRA_FILES
         "${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt"
         LOG_FILE
-        "cmake-format-report.log"
+        "${CMAKE_BINARY_DIR}/cmake_format_report.log"
     )
 endif()
 
@@ -186,7 +187,7 @@ if(CPROJT_ENABLE_CMAKE_LINT)
         EXTRA_FILES
         "${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt"
         LOG_FILE
-        "cmake-lint-report.log"
+        "${CMAKE_BINARY_DIR}/cmake_lint_report.log"
     )
 endif()
 

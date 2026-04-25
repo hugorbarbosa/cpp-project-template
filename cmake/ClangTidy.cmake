@@ -15,16 +15,16 @@
 # Arguments:
 #
 # - DIRECTORIES: List of directories to get the files to be analyzed.
-# - LOG_FILE: Optional log file to be created with the clang-tidy output. This file is created in
-#   the CMAKE_BINARY_DIR. If not provided, the default value is "clang-tidy-report.log".
+# - LOG_FILE: Optional log file path to be created with the clang-tidy output. If not provided, the
+#   default value is "${CMAKE_BINARY_DIR}/clang_tidy_report.log".
 function(enable_clang_tidy)
     message(CHECK_START "Enabling code static analysis with clang-tidy")
 
     set(options)
-    set(oneValueArgs LOG_FILE)
-    set(multiValueArgs DIRECTORIES)
+    set(one_value_args LOG_FILE)
+    set(multi_value_args DIRECTORIES)
 
-    cmake_parse_arguments(arg "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+    cmake_parse_arguments(arg "${options}" "${one_value_args}" "${multi_value_args}" ${ARGN})
 
     if(arg_UNPARSED_ARGUMENTS)
         message(FATAL_ERROR "Unknown arguments: ${arg_UNPARSED_ARGUMENTS}")
@@ -60,10 +60,9 @@ function(enable_clang_tidy)
 
         # Log file.
         if(NOT arg_LOG_FILE)
-            set(arg_LOG_FILE "clang-tidy-report.log")
+            set(arg_LOG_FILE "${CMAKE_BINARY_DIR}/clang_tidy_report.log")
             message(STATUS "Log file not provided. Using default value: ${arg_LOG_FILE}")
         endif()
-        set(report_file "${CMAKE_BINARY_DIR}/${arg_LOG_FILE}")
 
         if(files)
             add_custom_target(
@@ -72,9 +71,9 @@ function(enable_clang_tidy)
                 COMMAND ${CMAKE_COMMAND} -E echo "Listing clang-tidy checks"
                 COMMAND ${clang_tidy_path} --list-checks
                 COMMAND ${CMAKE_COMMAND} -E echo "Running clang-tidy"
-                COMMAND ${CMAKE_COMMAND} -E echo "Report will be saved in: ${report_file}"
-                COMMAND ${clang_tidy_path} -p ${CMAKE_BINARY_DIR} ${files} > ${report_file} 2>&1
-                BYPRODUCTS ${report_file}
+                COMMAND ${CMAKE_COMMAND} -E echo "Results will be saved in: ${arg_LOG_FILE}"
+                COMMAND ${clang_tidy_path} -p ${CMAKE_BINARY_DIR} ${files} > ${arg_LOG_FILE} 2>&1
+                BYPRODUCTS ${arg_LOG_FILE}
                 WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
                 VERBATIM
             )

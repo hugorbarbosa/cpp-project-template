@@ -18,7 +18,7 @@
 # - DIRECTORIES: List of directories to get the files to be analyzed.
 # - EXTRA_FILES: Optional list of extra files to be analyzed.
 # - LOG_FILE: Optional log file path to be created with the cmake-lint output. If not provided, the
-# default value is "${CMAKE_BINARY_DIR}/cmake_lint_report.log".
+#   default value is "${CMAKE_BINARY_DIR}/cmake_lint_report.log".
 function(enable_cmake_lint)
     message(CHECK_START "Enabling CMake lint with cmake-lint")
 

@@ -105,11 +105,20 @@ if(CPROJT_ENABLE_COVERAGE)
     include(CodeCoverage)
     enable_coverage(
         ${compiler_options_library}
-        EXCLUDE_PATTERNS "/usr/include/*" "/usr/local/*" "*/_deps/*" "${CMAKE_CURRENT_SOURCE_DIR}/test/*" "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp"
-        MIN_LINE_COVERAGE 90
-        MIN_FUNCTION_COVERAGE 80
-        REPORT_DIR "${CMAKE_BINARY_DIR}/coverage"
-        PARALLEL 8
+        EXCLUDE_PATTERNS
+        "/usr/include/*"
+        "/usr/local/*"
+        "*/_deps/*"
+        "${CMAKE_CURRENT_SOURCE_DIR}/test/*"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp"
+        MIN_LINE_COVERAGE
+        90
+        MIN_FUNCTION_COVERAGE
+        80
+        REPORT_DIR
+        "${CMAKE_BINARY_DIR}/coverage"
+        PARALLEL
+        8
     )
 endif()
 

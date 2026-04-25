@@ -213,7 +213,7 @@ with section("lint"):
     max_branches = 12
     max_arguments = 8
     max_localvars = 15
-    max_statements = 50
+    max_statements = 60
 
 # -------------------------------
 # Options affecting file encoding

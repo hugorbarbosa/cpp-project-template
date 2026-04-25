@@ -54,11 +54,11 @@ endfunction()
 # - MIN_LINE_COVERAGE: Optional minimum lines coverage value to succeed, in percentage. If not
 #   provided, the default value is 90.
 # - MIN_FUNCTION_COVERAGE: Optional minimum functions coverage value to succeed, in percentage. If
-# not provided, the default value is 80.
-# - REPORT_DIR: Optional report directory where the coverage analysis report will be created. If not provided,
-#   the default value is "${CMAKE_BINARY_DIR}/coverage".
+#   not provided, the default value is 80.
+# - REPORT_DIR: Optional report directory where the coverage analysis report will be created. If not
+#   provided, the default value is "${CMAKE_BINARY_DIR}/coverage".
 # - PARALLEL: Optional maximum number of concurrent processes to use when building. If not provided,
-# the default value is 8.
+#   the default value is 8.
 function(enable_coverage target_name)
     message(CHECK_START "Enabling code coverage for target ${target_name}")
 
@@ -105,11 +105,11 @@ function(enable_coverage target_name)
     # Minimum coverage values.
     if(NOT arg_MIN_LINE_COVERAGE)
         set(arg_MIN_LINE_COVERAGE 90)
-        message(STATUS "Minimum lines coverage value not provided. Using default value: ${arg_MIN_LINE_COVERAGE}%")
+        message(STATUS "Min line coverage not provided. Using: ${arg_MIN_LINE_COVERAGE}%")
     endif()
     if(NOT arg_MIN_FUNCTION_COVERAGE)
         set(arg_MIN_FUNCTION_COVERAGE 80)
-        message(STATUS "Minimum functions coverage value not provided. Using default value: ${arg_MIN_FUNCTION_COVERAGE}%")
+        message(STATUS "Min function coverage not provided. Using: ${arg_MIN_FUNCTION_COVERAGE}%")
     endif()
 
     # Report directory.
@@ -121,7 +121,10 @@ function(enable_coverage target_name)
     # Parallel processes.
     if(NOT arg_PARALLEL)
         set(arg_PARALLEL 8)
-        message(STATUS "Number of concurrent processes not provided. Using default value: ${arg_PARALLEL}")
+        message(
+            STATUS
+                "Number of concurrent processes not provided. Using default value: ${arg_PARALLEL}"
+        )
     endif()
 
     # LCOV base directory.
@@ -165,8 +168,8 @@ function(enable_coverage target_name)
         COMMAND ${CMAKE_COMMAND} -E echo "Checking code coverage report:"
         COMMAND ${CMAKE_COMMAND} -E echo "- Minimum line coverage: ${arg_MIN_LINE_COVERAGE}"
         COMMAND ${CMAKE_COMMAND} -E echo "- Minimum function coverage: ${arg_MIN_FUNCTION_COVERAGE}"
-        COMMAND ${coverage_check_script} -b ${lcov_path} -r ${filtered_file} -l ${arg_MIN_LINE_COVERAGE} -f
-                ${arg_MIN_FUNCTION_COVERAGE}
+        COMMAND ${coverage_check_script} -b ${lcov_path} -r ${filtered_file} -l
+                ${arg_MIN_LINE_COVERAGE} -f ${arg_MIN_FUNCTION_COVERAGE}
         BYPRODUCTS ${base_file} ${capture_file} ${total_file} ${filtered_file} ${report_file}
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         VERBATIM

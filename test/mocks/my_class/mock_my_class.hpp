@@ -15,7 +15,7 @@ namespace test {
 /**
  * @brief Mock of my class.
  */
-class mock_my_class : public my_class {
+class MockMyClass : public MyClass {
 public:
     /// Mocked function.
     MOCK_METHOD(void, set_value, (std::string), (noexcept, override));

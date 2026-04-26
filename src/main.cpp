@@ -28,8 +28,8 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
               << "- Git branch: " << cpp_project_template::project_git_branch << "\n"
               << "- Git commit hash: " << cpp_project_template::project_git_commit_hash << "\n";
 
-    std::unique_ptr<cpp_project_template::my_class> my_class{
-        std::make_unique<cpp_project_template::my_concrete_class>("Initial value")};
+    std::unique_ptr<cpp_project_template::MyClass> my_class{
+        std::make_unique<cpp_project_template::MyConcreteClass>("Initial value")};
 
     constexpr auto print_class_value
         = [](const auto& value) { std::cout << "My class value = " << value << "\n"; };

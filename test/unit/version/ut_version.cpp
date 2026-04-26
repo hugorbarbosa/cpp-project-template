@@ -9,7 +9,7 @@
 /**
  * @brief Test that the project version is correctly constructed.
  */
-TEST(ut_project_version, project_version_is_correct)
+TEST(UtProjectVersion, ProjectVersionIsCorrect)
 {
     const auto project_version = cpp_project_template::get_project_version();
     const auto expected_project_version

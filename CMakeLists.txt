@@ -99,7 +99,6 @@ set_project_default_compiler_options(
 # ----------------------------------------------------------------------------
 # Quality tools
 # ----------------------------------------------------------------------------
-set(scripts_dir "${CMAKE_CURRENT_SOURCE_DIR}/scripts")
 
 if(CPROJT_ENABLE_COVERAGE)
     include(CodeCoverage)

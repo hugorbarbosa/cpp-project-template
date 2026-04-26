@@ -15,28 +15,28 @@ namespace cpp_project_template {
  *
  * This is just an example of a derived class.
  */
-class my_concrete_class : public my_class {
+class MyConcreteClass : public MyClass {
 public:
     /**
      * @brief Constructor.
      *
      * @param value Initial value.
      */
-    explicit my_concrete_class(std::string value) noexcept;
+    explicit MyConcreteClass(std::string value) noexcept;
 
     /**
-     * @copydoc my_class::set_value
+     * @copydoc MyClass::set_value
      */
     void set_value(std::string value) noexcept override;
 
     /**
-     * @copydoc my_class::get_value
+     * @copydoc MyClass::get_value
      */
     std::string get_value() const noexcept override;
 
 private:
     /// Value.
-    std::string my_value;
+    std::string value_;
 };
 
 } // namespace cpp_project_template

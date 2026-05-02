@@ -2,7 +2,7 @@
 # Copyright (C) 2025 Hugo Barbosa.
 #
 
-# Enable CMake code formatting using cmake-format.
+# Add targets for CMake code formatting using cmake-format.
 #
 # The following targets are created:
 #
@@ -11,7 +11,7 @@
 #
 # Usage:
 # ~~~
-#   enable_cmake_format(
+#   add_cmake_format(
 #       DIRECTORIES <dir1> [<dir2> ...]
 #       [EXTRA_FILES <file1> [<file2> ...]]
 #       [LOG_FILE <file>]
@@ -24,8 +24,8 @@
 # - EXTRA_FILES: Optional list of extra files to be analyzed.
 # - LOG_FILE: Optional log file path to be created with the cmake-format output. If not provided,
 #   the default value is "${CMAKE_BINARY_DIR}/cmake_format_report.log".
-function(enable_cmake_format)
-    message(CHECK_START "Enabling CMake code formatting with cmake-format")
+function(add_cmake_format)
+    message(CHECK_START "Adding targets for CMake code formatting using cmake-format")
 
     set(options)
     set(one_value_args LOG_FILE)

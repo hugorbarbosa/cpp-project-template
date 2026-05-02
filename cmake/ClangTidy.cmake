@@ -2,11 +2,11 @@
 # Copyright (C) 2025 Hugo Barbosa.
 #
 
-# Enable code static analysis, using clang-tidy.
+# Add a target for code static analysis using clang-tidy.
 #
 # Usage:
 # ~~~
-#   enable_clang_format(
+#   add_clang_tidy(
 #       DIRECTORIES <dir1> [<dir2> ...]
 #       [LOG_FILE <file>]
 #   )
@@ -17,8 +17,8 @@
 # - DIRECTORIES: List of directories to get the files to be analyzed.
 # - LOG_FILE: Optional log file path to be created with the clang-tidy output. If not provided, the
 #   default value is "${CMAKE_BINARY_DIR}/clang_tidy_report.log".
-function(enable_clang_tidy)
-    message(CHECK_START "Enabling code static analysis with clang-tidy")
+function(add_clang_tidy)
+    message(CHECK_START "Adding target for code static analysis using clang-tidy")
 
     set(options)
     set(one_value_args LOG_FILE)

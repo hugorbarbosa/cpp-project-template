@@ -4,7 +4,7 @@
 
 set(CODE_COVERAGE_DIR "${CMAKE_CURRENT_LIST_DIR}")
 
-# Add the compiler options for code coverage to the provided target.
+# Add code coverage compiler options to the provided target.
 #
 # Usage:
 # ~~~
@@ -35,11 +35,11 @@ function(add_coverage_compiler_options target_name)
     endif()
 endfunction()
 
-# Enable code coverage for the provided target and create coverage target.
+# Add code coverage compiler options to the provided target and create coverage target.
 #
 # Usage:
 # ~~~
-#   enable_coverage(<target>
+#   add_coverage(<target>
 #       [EXCLUDE_PATTERNS <pattern1> [<pattern2> ...]]
 #       [MIN_LINE_COVERAGE <value>]
 #       [MIN_FUNCTION_COVERAGE <value>]
@@ -59,8 +59,8 @@ endfunction()
 #   provided, the default value is "${CMAKE_BINARY_DIR}/coverage".
 # - PARALLEL: Optional maximum number of concurrent processes to use when building. If not provided,
 #   the default value is 8.
-function(enable_coverage target_name)
-    message(CHECK_START "Enabling code coverage for target ${target_name}")
+function(add_coverage target_name)
+    message(CHECK_START "Adding target for code coverage")
 
     if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
         message(WARNING "Code coverage in a non-Debug build may be misleading")
@@ -90,7 +90,7 @@ function(enable_coverage target_name)
     message(CHECK_PASS "done")
 
     # Compiler options.
-    message(CHECK_START "Adding coverage compiler options")
+    message(CHECK_START "Adding coverage compiler options for target ${target_name}")
     add_coverage_compiler_options(${target_name})
     message(CHECK_PASS "done")
 

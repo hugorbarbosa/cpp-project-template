@@ -229,7 +229,7 @@ $ cmake --preset doxygen
 $ cmake --build --preset doxygen
 ```
 
-This target generates documentation from the source files using doxygen, in the respective build directory, which can be accessed from `html/index.html`. Furthermore, a report file named as `doxygen-report.log` is also created in the build directory.
+This target generates documentation from the source files using doxygen, in the respective build directory, which can be accessed from `html/index.html`. Furthermore, a report file named as `doxygen_report.log` is also created in the build directory.
 
 This target only succeeds if the source files are correctly documented. The doxygen [configuration](./doxygen/Doxyfile.in) file in this project is prepared to be automatically configured through CMake, namely the source files from which documentation should be generated, as well as other parameters related to the project.
 

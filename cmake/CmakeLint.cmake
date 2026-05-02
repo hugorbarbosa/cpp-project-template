@@ -2,11 +2,11 @@
 # Copyright (C) 2025 Hugo Barbosa.
 #
 
-# Enable CMake lint using cmake-lint.
+# Add a target for CMake lint using cmake-lint.
 
 # Usage:
 # ~~~
-#   enable_cmake_lint(
+#   add_cmake_lint(
 #       DIRECTORIES <dir1> [<dir2> ...]
 #       [EXTRA_FILES <file1> [<file2> ...]]
 #       [LOG_FILE <file>]
@@ -19,8 +19,8 @@
 # - EXTRA_FILES: Optional list of extra files to be analyzed.
 # - LOG_FILE: Optional log file path to be created with the cmake-lint output. If not provided, the
 #   default value is "${CMAKE_BINARY_DIR}/cmake_lint_report.log".
-function(enable_cmake_lint)
-    message(CHECK_START "Enabling CMake lint with cmake-lint")
+function(add_cmake_lint)
+    message(CHECK_START "Adding target for CMake lint using cmake-lint")
 
     set(options)
     set(one_value_args LOG_FILE)

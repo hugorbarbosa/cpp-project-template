@@ -9,7 +9,7 @@
 # - out_var: Output variable that will contain the extracted version.
 # - version_name: Version name (major, minor, etc).
 # - content: Content from which the version should be extracted.
-macro(EXTRACT_VERSION out_var version_name content)
+macro(extract_version out_var version_name content)
     set(regex_pattern "${version_name}[ \t]*=[ \t]*([0-9]+)")
 
     unset(CMAKE_MATCH_1)
@@ -28,7 +28,7 @@ endmacro()
 # - out_var: Output variable that will contain the extracted version.
 # - version_name: Version name (prerelease, etc).
 # - content: Content from which the version should be extracted.
-macro(EXTRACT_OPTIONAL_VERSION_STR out_var version_name content)
+macro(extract_optional_version_str out_var version_name content)
     # Match: key = "some string" or key = "".
     set(regex_pattern "${version_name}[ \t]*=[ \t]*\"([^\"]*)\"")
 

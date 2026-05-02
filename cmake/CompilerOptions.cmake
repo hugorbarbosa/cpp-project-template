@@ -2,14 +2,34 @@
 # Copyright (C) 2025 Hugo Barbosa.
 #
 
-# Add the default compiler options to the provided target.
+# Add default compiler options to the provided target.
 #
-# Parameters:
+# Usage:
+# ~~~
+#   add_default_compiler_options(<target>
+#       [WARNINGS_AS_ERRORS]
+#   )
+# ~~~
 #
-# - target_name: Target name to add the compiler options.
-# - warnings_as_errors: Option to set warnings as errors.
-function(add_default_compiler_options target_name warnings_as_errors)
-    set(mscl_options # ~~~
+# Arguments:
+#
+# - WARNINGS_AS_ERRORS: Option to treat warnings as errors. If not provided, warnings will not be
+#   treated as errors.
+function(add_default_compiler_options target_name)
+    message(CHECK_START "Adding default compiler options for target ${target_name}")
+
+    set(options WARNINGS_AS_ERRORS)
+    set(one_value_args)
+    set(multi_value_args)
+
+    cmake_parse_arguments(arg "${options}" "${one_value_args}" "${multi_value_args}" ${ARGN})
+
+    if(arg_UNPARSED_ARGUMENTS)
+        message(FATAL_ERROR "Unknown arguments: ${arg_UNPARSED_ARGUMENTS}")
+    endif()
+
+    set(mscl_options
+        # ~~~
         # Displays level 1 to level 4 (informational) warnings.
         # ~~~
         /W4
@@ -64,7 +84,7 @@ function(add_default_compiler_options target_name warnings_as_errors)
         -Wsuggest-override
     )
 
-    if(warnings_as_errors)
+    if(arg_WARNINGS_AS_ERRORS)
         message(STATUS "Compilation warnings will be treated as errors")
         list(APPEND mscl_options /WX)
         list(APPEND clang_options -Werror)
@@ -84,17 +104,4 @@ function(add_default_compiler_options target_name warnings_as_errors)
     endif()
 
     target_compile_options(${target_name} INTERFACE ${compiler_options})
-endfunction()
-
-# Set the default compiler options to the provided library, which will be created by this function.
-#
-# Parameters:
-#
-# - library_name: Name of the library to add the compiler options.
-# - namespace: Namespace for the library.
-# - warnings_as_errors: Option to set warnings as errors.
-function(set_project_default_compiler_options library_name namespace warnings_as_errors)
-    add_library(${library_name} INTERFACE)
-    add_library(${namespace}::${library_name} ALIAS ${library_name})
-    add_default_compiler_options(${library_name} ${warnings_as_errors})
 endfunction()

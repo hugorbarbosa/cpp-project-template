@@ -2,7 +2,7 @@
 # Copyright (C) 2025 Hugo Barbosa.
 #
 
-# Enable code formatting using clang-format.
+# Add targets for code formatting using clang-format.
 #
 # The following targets are created:
 #
@@ -11,7 +11,7 @@
 #
 # Usage:
 # ~~~
-#   enable_clang_format(
+#   add_clang_format(
 #       DIRECTORIES <dir1> [<dir2> ...]
 #       [LOG_FILE <file>]
 #   )
@@ -24,8 +24,8 @@
 #   files (headers and C/C++ files) in these directories will be analyzed.
 # - LOG_FILE: Optional log file path to be created with the clang-format output. If not provided,
 #   the default value is "${CMAKE_BINARY_DIR}/clang_format_report.log".
-function(enable_clang_format)
-    message(CHECK_START "Enabling code formatting with clang-format")
+function(add_clang_format)
+    message(CHECK_START "Adding targets for code formatting using clang-format")
 
     set(options)
     set(one_value_args LOG_FILE)

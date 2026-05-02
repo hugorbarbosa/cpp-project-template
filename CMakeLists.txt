@@ -90,11 +90,14 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 include(CompilerOptions)
 
-set(compiler_options_library compile_options)
-set(compilation_warnings_as_errors ${PROJECT_IS_TOP_LEVEL})
-set_project_default_compiler_options(
-    ${compiler_options_library} ${CPROJT_PROJECT_NAME} ${compilation_warnings_as_errors}
-)
+set(compiler_options_lib compile_options)
+add_library(${compiler_options_lib} INTERFACE)
+add_library(${CPROJT_PROJECT_NAME}::${compiler_options_lib} ALIAS ${compiler_options_lib})
+if(PROJECT_IS_TOP_LEVEL)
+    add_default_compiler_options(${compiler_options_lib} WARNINGS_AS_ERRORS)
+else()
+    add_default_compiler_options(${compiler_options_lib})
+endif()
 
 # ----------------------------------------------------------------------------
 # Quality tools
@@ -102,8 +105,8 @@ set_project_default_compiler_options(
 
 if(CPROJT_ENABLE_COVERAGE)
     include(CodeCoverage)
-    enable_coverage(
-        ${compiler_options_library}
+    add_coverage(
+        ${compiler_options_lib}
         EXCLUDE_PATTERNS
         "/usr/include/*"
         "/usr/local/*"
@@ -127,14 +130,14 @@ set(source_code_dirs "${CMAKE_CURRENT_SOURCE_DIR}/examples" "${CMAKE_CURRENT_SOU
 
 if(CPROJT_ENABLE_CLANG_FORMAT)
     include(ClangFormat)
-    enable_clang_format(
+    add_clang_format(
         DIRECTORIES "${source_code_dirs}" LOG_FILE "${CMAKE_BINARY_DIR}/clang_format_report.log"
     )
 endif()
 
 if(CPROJT_ENABLE_CLANG_TIDY)
     include(ClangTidy)
-    enable_clang_tidy(
+    add_clang_tidy(
         DIRECTORIES "${source_code_dirs}" LOG_FILE "${CMAKE_BINARY_DIR}/clang_tidy_report.log"
     )
 endif()
@@ -147,35 +150,34 @@ if(CPROJT_ENABLE_ASAN
 )
     include(Sanitizers)
     enable_sanitizers(
-        ${compiler_options_library} ${CPROJT_ENABLE_ASAN} ${CPROJT_ENABLE_LSAN}
-        ${CPROJT_ENABLE_MSAN} ${CPROJT_ENABLE_TSAN} ${CPROJT_ENABLE_UBSAN}
+        ${compiler_options_lib} ${CPROJT_ENABLE_ASAN} ${CPROJT_ENABLE_LSAN} ${CPROJT_ENABLE_MSAN}
+        ${CPROJT_ENABLE_TSAN} ${CPROJT_ENABLE_UBSAN}
     )
 endif()
 
 if(CPROJT_ENABLE_DOXYGEN)
     include(DoxygenDoc)
-    set(config_file "${CMAKE_CURRENT_SOURCE_DIR}/doxygen/Doxyfile.in")
-    set(doxygen_project "C++ Project Template")
-    set(doxygen_version ${CPROJT_PROJECT_VERSION})
-    set(doxygen_brief "A C++ project template using CMake")
-    set(input_list "${source_code_dirs}")
-    string(REPLACE ";" " " doxygen_input "${input_list}")
-    set(doxygen_out_dir "${CMAKE_BINARY_DIR}/doxygen")
-    set(log_file "doxygen-report.log")
-    enable_doxygen_doc(
-        ${config_file}
-        ${doxygen_project}
-        ${doxygen_version}
-        ${doxygen_brief}
-        ${doxygen_input}
-        ${doxygen_out_dir}
-        ${log_file}
+    add_doxygen(
+        DOXYFILE_IN
+        "${CMAKE_CURRENT_SOURCE_DIR}/doxygen/Doxyfile.in"
+        DOXYGEN_PROJECT_NAME
+        "C++ Project Template"
+        DOXYGEN_PROJECT_NUMBER
+        ${CPROJT_PROJECT_VERSION}
+        DOXYGEN_PROJECT_BRIEF
+        "A C++ project template using CMake"
+        DOXYGEN_INPUT
+        "${source_code_dirs}"
+        DOXYGEN_OUTPUT_DIRECTORY
+        "${CMAKE_BINARY_DIR}/doxygen"
+        LOG_FILE
+        "${CMAKE_BINARY_DIR}/doxygen_report.log"
     )
 endif()
 
 if(CPROJT_ENABLE_CMAKE_FORMAT)
     include(CmakeFormat)
-    enable_cmake_format(
+    add_cmake_format(
         DIRECTORIES
         "${CMAKE_CURRENT_SOURCE_DIR}/cmake"
         "${source_code_dirs}"
@@ -188,7 +190,7 @@ endif()
 
 if(CPROJT_ENABLE_CMAKE_LINT)
     include(CmakeLint)
-    enable_cmake_lint(
+    add_cmake_lint(
         DIRECTORIES
         "${CMAKE_CURRENT_SOURCE_DIR}/cmake"
         "${source_code_dirs}"

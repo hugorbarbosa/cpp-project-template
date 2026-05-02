@@ -78,15 +78,15 @@ function(add_coverage target_name)
 
     # Requirements.
     message(CHECK_START "Checking needed tools")
-    find_program(gcov_path gcov REQUIRED)
-    find_program(lcov_path lcov REQUIRED)
+    find_program(gcov_executable gcov REQUIRED)
+    find_program(lcov_executable lcov REQUIRED)
     execute_process(
-        COMMAND ${lcov_path} --version
+        COMMAND ${lcov_executable} --version
         OUTPUT_VARIABLE lcov_version
         ERROR_VARIABLE lcov_version
     )
     message(STATUS "LCOV: ${lcov_version}")
-    find_program(genhtml_path genhtml REQUIRED)
+    find_program(genhtml_executable genhtml REQUIRED)
     message(CHECK_PASS "done")
 
     # Compiler options.
@@ -147,28 +147,28 @@ function(add_coverage target_name)
         COMMAND ${CMAKE_COMMAND} -E echo "Running code coverage analysis"
         COMMAND ${CMAKE_COMMAND} -E echo "Results will be saved in: ${report_file}"
         COMMAND ${CMAKE_COMMAND} -E echo "Cleaning coverage data"
-        COMMAND ${lcov_path} --directory . -b ${lcov_base_dir} --zerocounters
+        COMMAND ${lcov_executable} --directory . -b ${lcov_base_dir} --zerocounters
         COMMAND ${CMAKE_COMMAND} -E echo "Building project using ${arg_PARALLEL} jobs"
         COMMAND ${CMAKE_COMMAND} --build . -j ${arg_PARALLEL}
         COMMAND ${CMAKE_COMMAND} -E echo "Creating coverage baseline"
-        COMMAND ${lcov_path} --directory . -b ${lcov_base_dir} --capture --initial --output-file
-                ${base_file} --ignore-errors mismatch --ignore-errors unused
+        COMMAND ${lcov_executable} --directory . -b ${lcov_base_dir} --capture --initial
+                --output-file ${base_file} --ignore-errors mismatch --ignore-errors unused
         COMMAND ${CMAKE_COMMAND} -E echo "Running tests"
         COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
         COMMAND ${CMAKE_COMMAND} -E echo "Generating code coverage information"
-        COMMAND ${lcov_path} --directory . -b ${lcov_base_dir} --capture --output-file
+        COMMAND ${lcov_executable} --directory . -b ${lcov_base_dir} --capture --output-file
                 ${capture_file} --ignore-errors mismatch --ignore-errors unused
-        COMMAND ${lcov_path} --add-tracefile ${base_file} --add-tracefile ${capture_file}
+        COMMAND ${lcov_executable} --add-tracefile ${base_file} --add-tracefile ${capture_file}
                 --output-file ${total_file}
-        COMMAND ${lcov_path} --remove ${total_file} ${lcov_excludes} --output-file ${filtered_file}
-                --ignore-errors mismatch --ignore-errors unused
+        COMMAND ${lcov_executable} --remove ${total_file} ${lcov_excludes} --output-file
+                ${filtered_file} --ignore-errors mismatch --ignore-errors unused
         COMMAND ${CMAKE_COMMAND} -E echo "Generating HTML code coverage report"
-        COMMAND ${genhtml_path} ${filtered_file} --output-directory ${arg_REPORT_DIR} --legend
+        COMMAND ${genhtml_executable} ${filtered_file} --output-directory ${arg_REPORT_DIR} --legend
                 --show-details
         COMMAND ${CMAKE_COMMAND} -E echo "Checking code coverage report:"
         COMMAND ${CMAKE_COMMAND} -E echo "- Minimum line coverage: ${arg_MIN_LINE_COVERAGE}"
         COMMAND ${CMAKE_COMMAND} -E echo "- Minimum function coverage: ${arg_MIN_FUNCTION_COVERAGE}"
-        COMMAND ${coverage_check_script} -b ${lcov_path} -r ${filtered_file} -l
+        COMMAND ${coverage_check_script} -b ${lcov_executable} -r ${filtered_file} -l
                 ${arg_MIN_LINE_COVERAGE} -f ${arg_MIN_FUNCTION_COVERAGE}
         BYPRODUCTS ${base_file} ${capture_file} ${total_file} ${filtered_file} ${report_file}
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}

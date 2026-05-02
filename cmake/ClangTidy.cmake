@@ -36,9 +36,9 @@ function(add_clang_tidy)
 
     # Requirements.
     message(CHECK_START "Checking needed tools")
-    find_program(clang_tidy_path clang-tidy REQUIRED)
+    find_program(clang_tidy_executable clang-tidy REQUIRED)
     execute_process(
-        COMMAND ${clang_tidy_path} --version
+        COMMAND ${clang_tidy_executable} --version
         OUTPUT_VARIABLE clang_tidy_version
         ERROR_VARIABLE clang_tidy_version
     )
@@ -69,10 +69,11 @@ function(add_clang_tidy)
                 clang_tidy
                 COMMENT "Run code static analysis using clang-tidy"
                 COMMAND ${CMAKE_COMMAND} -E echo "Listing clang-tidy checks"
-                COMMAND ${clang_tidy_path} --list-checks
+                COMMAND ${clang_tidy_executable} --list-checks
                 COMMAND ${CMAKE_COMMAND} -E echo "Running clang-tidy"
                 COMMAND ${CMAKE_COMMAND} -E echo "Results will be saved in: ${arg_LOG_FILE}"
-                COMMAND ${clang_tidy_path} -p ${CMAKE_BINARY_DIR} ${files} > ${arg_LOG_FILE} 2>&1
+                COMMAND ${clang_tidy_executable} -p ${CMAKE_BINARY_DIR} ${files} > ${arg_LOG_FILE}
+                        2>&1
                 BYPRODUCTS ${arg_LOG_FILE}
                 WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
                 VERBATIM

@@ -29,14 +29,22 @@ include(SourceBuilds)
 validate_build_directory()
 
 # ----------------------------------------------------------------------------
-# Project information
+# Git information
 # ----------------------------------------------------------------------------
-include(ProjectGitInfo)
-set(header_template_file "${CMAKE_CURRENT_SOURCE_DIR}/cmake/project_git_info.hpp.in")
-set(header_out_file "git_info.hpp")
-set(header_guard "CPP_PROJECT_TEMPLATE_GIT_INFO_HPP")
-set(namespace "cpp_project_template")
-generate_git_info_file(${header_template_file} ${header_out_file} ${header_guard} ${namespace})
+include(GitInfo)
+get_git_info("GIT_INFO")
+generate_git_info_file(
+    GIT_BRANCH
+    ${GIT_INFO_BRANCH}
+    GIT_COMMIT_HASH
+    ${GIT_INFO_COMMIT_HASH}
+    HEADER_FILE_NAME
+    "git_info.hpp"
+    HEADER_GUARD
+    "CPP_PROJECT_TEMPLATE_GIT_INFO_HPP"
+    HEADER_NAMESPACE
+    "cpp_project_template"
+)
 
 # ----------------------------------------------------------------------------
 # Configuration options

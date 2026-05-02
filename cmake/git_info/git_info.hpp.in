@@ -1,0 +1,19 @@
+/**
+ * @file
+ */
+
+#ifndef @git_info_header_guard@
+#define @git_info_header_guard@
+
+#include <string_view>
+
+namespace @git_info_namespace@ {
+
+/// Project git branch.
+inline constexpr std::string_view project_git_branch{"@git_info_branch@"};
+/// Project git commit hash.
+inline constexpr std::string_view project_git_commit_hash{"@git_info_commit_hash@"};
+
+} // namespace @git_info_namespace@
+
+#endif // @git_info_header_guard@

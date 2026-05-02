@@ -43,9 +43,9 @@ function(add_cmake_format)
 
     # Requirements.
     message(CHECK_START "Checking needed tools")
-    find_program(cmake_format_path cmake-format REQUIRED)
+    find_program(cmake_format_executable cmake-format REQUIRED)
     execute_process(
-        COMMAND ${cmake_format_path} --version
+        COMMAND ${cmake_format_executable} --version
         OUTPUT_VARIABLE cmake_format_version
         ERROR_VARIABLE cmake_format_version
     )
@@ -77,7 +77,7 @@ function(add_cmake_format)
             COMMENT "Check CMake code formatting using cmake-format"
             COMMAND ${CMAKE_COMMAND} -E echo "Running cmake-format"
             COMMAND ${CMAKE_COMMAND} -E echo "Results will be saved in: ${arg_LOG_FILE}"
-            COMMAND ${cmake_format_path} --check ${files} > ${arg_LOG_FILE} 2>&1
+            COMMAND ${cmake_format_executable} --check ${files} > ${arg_LOG_FILE} 2>&1
             BYPRODUCTS ${arg_LOG_FILE}
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
             VERBATIM
@@ -88,7 +88,7 @@ function(add_cmake_format)
             COMMENT "Apply CMake code formatting using cmake-format"
             COMMAND ${CMAKE_COMMAND} -E echo "Running cmake-format"
             COMMAND ${CMAKE_COMMAND} -E echo "Results will be saved in: ${arg_LOG_FILE}"
-            COMMAND ${cmake_format_path} -i ${files} > ${arg_LOG_FILE} 2>&1
+            COMMAND ${cmake_format_executable} -i ${files} > ${arg_LOG_FILE} 2>&1
             BYPRODUCTS ${arg_LOG_FILE}
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
             VERBATIM

@@ -38,9 +38,9 @@ function(add_cmake_lint)
 
     # Requirements.
     message(CHECK_START "Checking needed tools")
-    find_program(cmake_lint_path cmake-lint REQUIRED)
+    find_program(cmake_lint_executable cmake-lint REQUIRED)
     execute_process(
-        COMMAND ${cmake_lint_path} --version
+        COMMAND ${cmake_lint_executable} --version
         OUTPUT_VARIABLE cmake_lint_version
         ERROR_VARIABLE cmake_lint_version
     )
@@ -72,7 +72,7 @@ function(add_cmake_lint)
             COMMENT "Check CMake code using cmake-lint"
             COMMAND ${CMAKE_COMMAND} -E echo "Running cmake-lint"
             COMMAND ${CMAKE_COMMAND} -E echo "Results will be saved in: ${arg_LOG_FILE}"
-            COMMAND ${cmake_lint_path} ${files} -o ${arg_LOG_FILE} 2>&1
+            COMMAND ${cmake_lint_executable} ${files} -o ${arg_LOG_FILE} 2>&1
             BYPRODUCTS ${arg_LOG_FILE}
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
             VERBATIM

@@ -21,11 +21,7 @@ function(fetch_googletest)
     message(CHECK_PASS "done")
 endfunction()
 
-# Fetch project dependencies.
-#
-# Parameters:
-#
-# - fetch_tests_deps: Flag to indicate if it should fetch also dependencies that are only for tests.
+# Fetch project dependencies, indicating if the dependencies for tests should also be fetched.
 function(fetch_project_dependencies fetch_tests_deps)
     message(CHECK_START "Fetching project dependencies")
     if(fetch_tests_deps)

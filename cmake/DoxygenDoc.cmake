@@ -41,8 +41,8 @@ endmacro()
 # Arguments:
 #
 # - DOXYFILE_IN: Doxygen configuration file to be configured.
-# - DOXYFILE_OUT: Doxygen configuration file that will be generated with the configured parameters.
-#   If not provided, the default value is "${CMAKE_BINARY_DIR}/Doxyfile".
+# - DOXYFILE_OUT: Optional doxygen configuration file that will be generated with the configured
+#   parameters. If not provided, the default value is "${CMAKE_BINARY_DIR}/Doxyfile".
 # - DOXYGEN_PROJECT_NAME: Project name used to update the respective option in the Doxyfile.
 # - DOXYGEN_PROJECT_NUMBER: Project number used to update the respective option in the Doxyfile.
 # - DOXYGEN_PROJECT_BRIEF: Project brief used to update the respective option in the Doxyfile.
@@ -81,9 +81,9 @@ function(add_doxygen)
 
     # Requirements.
     message(CHECK_START "Checking needed tools")
-    find_program(doxygen_path doxygen REQUIRED)
+    find_program(doxygen_executable doxygen REQUIRED)
     execute_process(
-        COMMAND ${doxygen_path} --version
+        COMMAND ${doxygen_executable} --version
         OUTPUT_VARIABLE doxygen_version
         ERROR_VARIABLE doxygen_version
     )
@@ -119,7 +119,7 @@ function(add_doxygen)
         COMMAND ${CMAKE_COMMAND} -E echo "Running doxygen"
         COMMAND ${CMAKE_COMMAND} -E echo "Results will be saved in: ${arg_LOG_FILE}"
         COMMAND ${CMAKE_COMMAND} -E echo "Doc index will be saved in: ${doxygen_index_file}"
-        COMMAND ${doxygen_path} ${arg_DOXYFILE_OUT} > ${arg_LOG_FILE} 2>&1
+        COMMAND ${doxygen_executable} ${arg_DOXYFILE_OUT} > ${arg_LOG_FILE} 2>&1
         BYPRODUCTS ${arg_LOG_FILE} ${doxygen_index_file} ${arg_DOXYFILE_OUT}
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         VERBATIM

@@ -43,9 +43,9 @@ function(add_clang_format)
 
     # Requirements.
     message(CHECK_START "Checking needed tools")
-    find_program(clang_format_path clang-format REQUIRED)
+    find_program(clang_format_executable clang-format REQUIRED)
     execute_process(
-        COMMAND ${clang_format_path} --version
+        COMMAND ${clang_format_executable} --version
         OUTPUT_VARIABLE clang_format_version
         ERROR_VARIABLE clang_format_version
     )
@@ -84,7 +84,7 @@ function(add_clang_format)
             COMMENT "Check code formatting using clang-format"
             COMMAND ${CMAKE_COMMAND} -E echo "Running clang-format"
             COMMAND ${CMAKE_COMMAND} -E echo "Results will be saved in: ${arg_LOG_FILE}"
-            COMMAND ${clang_format_path} --verbose --dry-run -Werror --style=file ${files} >
+            COMMAND ${clang_format_executable} --verbose --dry-run -Werror --style=file ${files} >
                     ${arg_LOG_FILE} 2>&1
             BYPRODUCTS ${arg_LOG_FILE}
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
@@ -96,7 +96,8 @@ function(add_clang_format)
             COMMENT "Apply code formatting using clang-format"
             COMMAND ${CMAKE_COMMAND} -E echo "Running clang-format"
             COMMAND ${CMAKE_COMMAND} -E echo "Results will be saved in: ${arg_LOG_FILE}"
-            COMMAND ${clang_format_path} --verbose --style=file -i ${files} > ${arg_LOG_FILE} 2>&1
+            COMMAND ${clang_format_executable} --verbose --style=file -i ${files} > ${arg_LOG_FILE}
+                    2>&1
             BYPRODUCTS ${arg_LOG_FILE}
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
             VERBATIM

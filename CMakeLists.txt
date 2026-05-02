@@ -158,9 +158,18 @@ if(CPROJT_ENABLE_ASAN
    OR CPROJT_ENABLE_UBSAN
 )
     include(Sanitizers)
-    enable_sanitizers(
-        ${compiler_options_lib} ${CPROJT_ENABLE_ASAN} ${CPROJT_ENABLE_LSAN} ${CPROJT_ENABLE_MSAN}
-        ${CPROJT_ENABLE_TSAN} ${CPROJT_ENABLE_UBSAN}
+    add_sanitizers(
+        ${compiler_options_lib}
+        ASAN
+        ${CPROJT_ENABLE_ASAN}
+        LSAN
+        ${CPROJT_ENABLE_LSAN}
+        MSAN
+        ${CPROJT_ENABLE_MSAN}
+        TSAN
+        ${CPROJT_ENABLE_TSAN}
+        UBSAN
+        ${CPROJT_ENABLE_UBSAN}
     )
 endif()
 

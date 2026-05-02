@@ -174,7 +174,7 @@ if(CPROJT_ENABLE_ASAN
 endif()
 
 if(CPROJT_ENABLE_DOXYGEN)
-    include(DoxygenDoc)
+    include(Doxygen)
     add_doxygen(
         DOXYFILE_IN
         "${CMAKE_CURRENT_SOURCE_DIR}/doxygen/Doxyfile.in"

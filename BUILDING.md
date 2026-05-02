@@ -26,7 +26,7 @@ This guide provides detailed instructions to build the project, namely how to co
 These tools are required to configure and build the project:
 
 - CMake >= 3.21.
-- C++ compiler: this project can be successfully built using the following compilers (it might also succeed using another one):
+- C++ compiler: this project can be successfully built using the following compilers (it might also succeed using another):
     - Clang 18.1.3.
     - GCC 13.3.0.
     - Microsoft Visual C++ 2022 / Build Tools 19.43.34808.0.
@@ -229,7 +229,7 @@ $ cmake --preset doxygen
 $ cmake --build --preset doxygen
 ```
 
-This target generates documentation from the source files using doxygen, in the respective build directory, which can be accessed from `html/index.html`. Furthermore, a report file named as `doxygen_report.log` is also created in the build directory.
+This target generates documentation from the source files using doxygen, in the respective build directory, which can be accessed from `doxygen/html/index.html`. Furthermore, a report file named as `doxygen_report.log` is also created in the build directory.
 
 This target only succeeds if the source files are correctly documented. The doxygen [configuration](./doxygen/Doxyfile.in) file in this project is prepared to be automatically configured through CMake, namely the source files from which documentation should be generated, as well as other parameters related to the project.
 
@@ -251,7 +251,7 @@ $ cmake --build --preset cmake-format-apply
 
 These targets use cmake-format to verify/apply the desired format of the CMake code, and create a report file in the respective build directory, named as `cmake_format_report.log`.
 
-Relatively to cmake-lint, using the respective CMake Preset:
+Regarding cmake-lint, using the respective CMake Preset:
 
 ```sh
 $ cmake --preset cmake-lint

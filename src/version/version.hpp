@@ -11,20 +11,20 @@
 namespace cpp_project_template {
 
 /// Major version.
-inline constexpr auto project_version_major = 1;
+inline constexpr int project_version_major{1};
 /// Minor version.
-inline constexpr auto project_version_minor = 0;
+inline constexpr int project_version_minor{0};
 /// Patch version.
-inline constexpr auto project_version_patch = 0;
+inline constexpr int project_version_patch{0};
 /// Optional prerelease version (set as "" if not needed).
-inline constexpr std::string_view project_version_prerelease = "rc1";
+inline constexpr std::string_view project_version_prerelease{"rc1"};
 
 /**
  * @brief Get the project version as string.
  *
  * @return Project version.
  */
-inline auto get_project_version() noexcept
+inline std::string get_project_version() noexcept
 {
     auto version = std::to_string(project_version_major) + '.'
                    + std::to_string(project_version_minor) + '.'

@@ -9,18 +9,19 @@ cmake_minimum_required(VERSION 3.28)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 include(ProjectVersion)
-set(version_file ${CMAKE_CURRENT_SOURCE_DIR}/src/version/version.hpp)
-parse_project_version(${version_file})
+get_project_version(
+    VERSION_FILE ${CMAKE_CURRENT_SOURCE_DIR}/src/version/version.hpp PREFIX_OUT "CPROJT"
+)
 
 project(
     cpp_project_template
-    VERSION ${PROJECT_VERSION_BASE}
+    VERSION ${CPROJT_VERSION_BASE}
     LANGUAGES CXX
     DESCRIPTION "A C++ project template."
 )
 
 set(CPROJT_PROJECT_NAME ${PROJECT_NAME})
-set(CPROJT_PROJECT_VERSION ${PROJECT_VERSION_FULL})
+set(CPROJT_PROJECT_VERSION ${CPROJT_VERSION_FULL})
 
 # ----------------------------------------------------------------------------
 # Pre-requirements

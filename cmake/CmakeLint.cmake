@@ -9,6 +9,7 @@
 #   add_cmake_lint(
 #       DIRECTORIES <dir1> [<dir2> ...]
 #       [EXTRA_FILES <file1> [<file2> ...]]
+#       [CONFIG_FILE <file>]
 #       [LOG_FILE <file>]
 #   )
 # ~~~
@@ -17,13 +18,15 @@
 #
 # - DIRECTORIES: List of directories to get the files to be analyzed.
 # - EXTRA_FILES: Optional list of extra files to be analyzed.
+# - CONFIG_FILE: Optional cmake-lint configuration file to be used. If not provided, it is used the
+#   default cmake-lint configuration file discovery mechanism.
 # - LOG_FILE: Optional log file path to be created with the cmake-lint output. If not provided, the
 #   default value is "${CMAKE_BINARY_DIR}/cmake_lint_report.log".
 function(add_cmake_lint)
     message(CHECK_START "Adding target for CMake lint using cmake-lint")
 
     set(options)
-    set(one_value_args LOG_FILE)
+    set(one_value_args LOG_FILE CONFIG_FILE)
     set(multi_value_args DIRECTORIES EXTRA_FILES)
 
     cmake_parse_arguments(arg "${options}" "${one_value_args}" "${multi_value_args}" ${ARGN})
@@ -66,13 +69,25 @@ function(add_cmake_lint)
         message(STATUS "Log file not provided. Using default value: ${arg_LOG_FILE}")
     endif()
 
+    # Configuration.
+    set(config_file)
+    if(arg_CONFIG_FILE)
+        if(NOT EXISTS "${arg_CONFIG_FILE}")
+            message(FATAL_ERROR "Configuration file does not exist: ${arg_CONFIG_FILE}")
+        endif()
+        set(config_file --config-files "${arg_CONFIG_FILE}")
+        message(STATUS "Using cmake-lint configuration file: ${arg_CONFIG_FILE}")
+    else()
+        message(STATUS "Using default cmake-lint configuration file discovery mechanism")
+    endif()
+
     if(files)
         add_custom_target(
             cmake_lint
             COMMENT "Check CMake code using cmake-lint"
             COMMAND ${CMAKE_COMMAND} -E echo "Running cmake-lint"
             COMMAND ${CMAKE_COMMAND} -E echo "Results will be saved in: ${arg_LOG_FILE}"
-            COMMAND ${cmake_lint_executable} ${files} -o ${arg_LOG_FILE} 2>&1
+            COMMAND ${cmake_lint_executable} ${files} -o ${arg_LOG_FILE} ${config_file} 2>&1
             BYPRODUCTS ${arg_LOG_FILE}
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
             VERBATIM

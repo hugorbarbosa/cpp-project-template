@@ -102,9 +102,9 @@ The content of this section available in this project is just an example, and co
 
 This library creates a CMake target that can be linked in your project, and there are many ways to make this library available for that.
 
-### Using CMake `FetchContent` module
+### Using CMake `FetchContent` feature
 
-CMake `FetchContent` module can be used to automatically download this library as a dependency when configuring your project. For that, you just need to place this code in your `CMakeLists.txt` file:
+CMake `FetchContent` feature can be used to automatically download this library as a dependency when configuring your project. For that, you just need to place this code in your `CMakeLists.txt` file:
 
 ```cmake
 include(FetchContent)
@@ -120,17 +120,31 @@ target_link_libraries(your-target PRIVATE my_library::my_library)
 
 ### Using as `git submodule`
 
-You can use this library as a `git submodule` in your project. For this case, the following code shall be added to your `CMakeLists.txt` file:
+You can use this library as a `git submodule` in your project. For this case, you need to configure the submodule as follows (the example places the library in the `external` directory inside of your project):
+
+```sh
+git submodule add <repository_url> external/my_library
+```
+
+With the previous command, a `.gitmodules` file is created and the library is available in your project. You can select a specific tag, branch or commit hash of the library that you want to use from its directory.
+
+With this option, you need to update the submodule for setting up your project:
+
+```sh
+git submodule update --init --recursive
+```
+
+Additionally, the following code shall be added to your `CMakeLists.txt` file to use the library:
 
 ```cmake
-add_subdirectory(my-library)
+add_subdirectory(external/my-library)
 # ...
 target_link_libraries(your-target PRIVATE my_library::my_library)
 ```
 
 ### Copying the entire project
 
-You can also copy the entire project source tree into your project. For this case, the CMake code needed is the same as the one demonstrated for when the library is used as a `git submodule`.
+You can also copy the entire project source tree into your project. For this case, the code to be added to your `CMakeLists.txt` file is the same as the one demonstrated for when the library is used as a `git submodule`.
 
 ## Contributing to the project
 

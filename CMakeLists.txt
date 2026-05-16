@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------
 cmake_minimum_required(VERSION 3.28)
 
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(ProjectVersion)
 get_project_version(
     VERSION_FILE ${CMAKE_CURRENT_SOURCE_DIR}/src/version/version.hpp PREFIX_OUT "CPROJT"
@@ -141,6 +141,7 @@ if(CPROJT_ENABLE_CLANG_FORMAT)
     include(ClangFormat)
     add_clang_format(
         DIRECTORIES "${source_code_dirs}" LOG_FILE "${CMAKE_BINARY_DIR}/clang_format_report.log"
+        CONFIG_FILE "${CMAKE_CURRENT_SOURCE_DIR}/.clang-format"
     )
 endif()
 
@@ -148,6 +149,7 @@ if(CPROJT_ENABLE_CLANG_TIDY)
     include(ClangTidy)
     add_clang_tidy(
         DIRECTORIES "${source_code_dirs}" LOG_FILE "${CMAKE_BINARY_DIR}/clang_tidy_report.log"
+        CONFIG_FILE "${CMAKE_CURRENT_SOURCE_DIR}/.clang-tidy"
     )
 endif()
 
@@ -203,6 +205,8 @@ if(CPROJT_ENABLE_CMAKE_FORMAT)
         "${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt"
         LOG_FILE
         "${CMAKE_BINARY_DIR}/cmake_format_report.log"
+        CONFIG_FILE
+        "${CMAKE_CURRENT_SOURCE_DIR}/.cmake-format.py"
     )
 endif()
 
@@ -216,6 +220,8 @@ if(CPROJT_ENABLE_CMAKE_LINT)
         "${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt"
         LOG_FILE
         "${CMAKE_BINARY_DIR}/cmake_lint_report.log"
+        CONFIG_FILE
+        "${CMAKE_CURRENT_SOURCE_DIR}/.cmake-format.py"
     )
 endif()
 

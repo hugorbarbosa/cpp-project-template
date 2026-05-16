@@ -8,6 +8,7 @@
 # ~~~
 #   add_clang_tidy(
 #       DIRECTORIES <dir1> [<dir2> ...]
+#       [CONFIG_FILE <file>]
 #       [LOG_FILE <file>]
 #   )
 # ~~~
@@ -15,13 +16,15 @@
 # Arguments:
 #
 # - DIRECTORIES: List of directories to get the files to be analyzed.
+# - CONFIG_FILE: Optional clang-tidy configuration file to be used. If not provided, it is used the
+#   default clang-tidy configuration file discovery mechanism.
 # - LOG_FILE: Optional log file path to be created with the clang-tidy output. If not provided, the
 #   default value is "${CMAKE_BINARY_DIR}/clang_tidy_report.log".
 function(add_clang_tidy)
     message(CHECK_START "Adding target for code static analysis using clang-tidy")
 
     set(options)
-    set(one_value_args LOG_FILE)
+    set(one_value_args LOG_FILE CONFIG_FILE)
     set(multi_value_args DIRECTORIES)
 
     cmake_parse_arguments(arg "${options}" "${one_value_args}" "${multi_value_args}" ${ARGN})
@@ -64,16 +67,28 @@ function(add_clang_tidy)
             message(STATUS "Log file not provided. Using default value: ${arg_LOG_FILE}")
         endif()
 
+        # Configuration.
+        set(config_file)
+        if(arg_CONFIG_FILE)
+            if(NOT EXISTS "${arg_CONFIG_FILE}")
+                message(FATAL_ERROR "Configuration file does not exist: ${arg_CONFIG_FILE}")
+            endif()
+            set(config_file "--config-file=${arg_CONFIG_FILE}")
+            message(STATUS "Using clang-tidy configuration file: ${arg_CONFIG_FILE}")
+        else()
+            message(STATUS "Using default clang-tidy configuration file discovery mechanism")
+        endif()
+
         if(files)
             add_custom_target(
                 clang_tidy
                 COMMENT "Run code static analysis using clang-tidy"
                 COMMAND ${CMAKE_COMMAND} -E echo "Listing clang-tidy checks"
-                COMMAND ${clang_tidy_executable} --list-checks
+                COMMAND ${clang_tidy_executable} ${config_file} --list-checks
                 COMMAND ${CMAKE_COMMAND} -E echo "Running clang-tidy"
                 COMMAND ${CMAKE_COMMAND} -E echo "Results will be saved in: ${arg_LOG_FILE}"
-                COMMAND ${clang_tidy_executable} -p ${CMAKE_BINARY_DIR} ${files} > ${arg_LOG_FILE}
-                        2>&1
+                COMMAND ${clang_tidy_executable} ${config_file} -p ${CMAKE_BINARY_DIR} ${files} >
+                        ${arg_LOG_FILE} 2>&1
                 BYPRODUCTS ${arg_LOG_FILE}
                 WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
                 VERBATIM

@@ -25,7 +25,7 @@ This guide provides detailed instructions to build the project, namely how to co
 
 These tools are required to configure and build the project:
 
-- CMake >= 3.21.
+- CMake >= 3.28.
 - C++ compiler: this project can be successfully built using the following compilers (it might also succeed using another):
     - Clang 18.1.3.
     - GCC 13.3.0.

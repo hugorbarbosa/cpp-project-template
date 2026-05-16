@@ -156,9 +156,11 @@ This project contains this [CONTRIBUTING](./CONTRIBUTING.md) file, just for demo
 
 ## Future work
 
+- CMake:
+    - Add CMake install feature.
 - Code quality tools:
-    - Add cppcheck (code static analysis).
-    - Add valgrind (memory checker).
+    - Use cppcheck for code static analysis.
+    - Use valgrind for memory checking.
 
 ## License
 

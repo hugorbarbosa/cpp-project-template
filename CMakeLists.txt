@@ -7,7 +7,9 @@
 # ----------------------------------------------------------------------------
 cmake_minimum_required(VERSION 3.28)
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake"
+     "${CMAKE_CURRENT_SOURCE_DIR}/external/cmake-modules/modules"
+)
 include(ProjectVersion)
 get_project_version(
     VERSION_FILE ${CMAKE_CURRENT_SOURCE_DIR}/src/version/version.hpp PREFIX_OUT "CPROJT"

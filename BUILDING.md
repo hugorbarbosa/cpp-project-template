@@ -23,6 +23,12 @@ This guide provides detailed instructions to build the project, namely how to co
 
 ## Requirements
 
+This project uses `git submodules`, so it is necessary to update them using the following command:
+
+```sh
+git submodule update --init --recursive
+```
+
 These tools are required to configure and build the project:
 
 - CMake >= 3.28.

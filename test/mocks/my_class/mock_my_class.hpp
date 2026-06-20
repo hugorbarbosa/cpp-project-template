@@ -17,11 +17,17 @@ namespace test {
  */
 class MockMyClass : public MyClass {
 public:
+    // Clang-tidy suppression.
+    // Rationale: The exception warning is related to GoogleTest macro expansion code.
+    // NOLINTBEGIN(bugprone-exception-escape)
+
     /// Mocked function.
     MOCK_METHOD(void, set_value, (std::string), (noexcept, override));
 
     /// Mocked function.
     MOCK_METHOD(std::string, get_value, (), (const, noexcept, override));
+
+    // NOLINTEND(bugprone-exception-escape)
 };
 
 } // namespace test

@@ -37,7 +37,7 @@ It offers a clear project structure, essential configurations, and integrates co
 - CI setup, using GitHub Actions, to build the project and run the tests on different operating systems and with different compilers. Additionally, the code quality tools used by this project are also executed in CI.
 - Automatic dependency fetching, using CMake, for easy integration of third-party libraries.
 - Templates for README, BUILDING and CONTRIBUTING documents.
-- Example of a Dockerfile and how to use it.
+- Example of configuration of a development container, including a `Dockerfile` and a guide of how to use it.
 
 ## Getting started
 
@@ -54,15 +54,16 @@ The following procedure will help you to get started with this template:
 - Replace the license file with the one specific to your project.
 - Adjust clang-format, clang-tidy, doxygen and cmake-format/cmake-lint configuration files, as well as some of its parameters automatically configured by CMake.
 - Update the `CMakePresets.json` file (e.g., CMake variables defined there).
-- `Dockerfile` might be adjusted to your needs.
+- Dev container configuration and `Dockerfile` might be adjusted to your needs.
 - Update this README to have only the sections that make sense for your project.
 - Adjust the BUILDING and CONTRIBUTING guides to your needs.
 
 ## Project structure
 
+- `.devcontainer`: configuration example of a development container, containing a `Dockerfile` and a guide.
+- `.github`: example of CI configuration and Pull Request template.
 - `cmake`: useful CMake files.
 - `doc`: project documentation.
-- `docker`: `Dockerfile` example and a guide.
 - `doxygen`: configuration used to build documentation from the source code using Doxygen.
 - `examples`: examples of how to use the library.
 - `external`: external dependencies of the project.

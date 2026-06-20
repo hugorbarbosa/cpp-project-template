@@ -1,21 +1,26 @@
 {
+    // Editor
     "editor.rulers": [
         100
     ],
     "editor.formatOnSave": true,
     "files.insertFinalNewline": true,
+    // CMake
     "cmake.configureOnEdit": false,
     "cmake.useCMakePresets": "always",
+    // C++ code analysis
     "C_Cpp.codeAnalysis.clangTidy.enabled": false,
     "C_Cpp.codeAnalysis.exclude": {
-        "**/build*": true
+        "build/": true,
+        "external/": true
     },
+    "cmake.copyCompileCommands": "${workspaceFolder}/build/compile_commands.json",
+    "C_Cpp.default.compileCommands": "${workspaceFolder}/build/compile_commands.json",
+    "C_Cpp.codeAnalysis.clangTidy.useBuildPath": true,
+    // Code spell checker
     "cSpell.enabled": true,
     "cSpell.enabledFileTypes": {
-        "*": true,
-        "cmake": true,
-        "shellscript": true,
-        "markdown": true
+        "*": true
     },
     "cSpell.words": [
         "MSVC"

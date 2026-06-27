@@ -47,7 +47,7 @@ The following are the code quality tools used by the project (only required for 
 - cmake-format: CMake code formatting.
 - cmake-lint: CMake code linting.
 
-Please consult the [code quality tools](./doc/code_quality_tools.md) documentation to know more details about some of those tools.
+Please consult the [C++ development tooling](https://github.com/hugorbarbosa/cpp-learning/blob/main/topics/development_tooling/cpp_development_tooling.md) guide to know more details about some of those tools.
 
 ### Development container
 
@@ -151,8 +151,6 @@ These targets use clang-format to verify/apply the desired format of the code, a
 
 The build succeeds only if the source files are formatted accordingly to the [configuration](.clang-format) file. The project source files to be verified are configured through CMake.
 
-Please consult the [code quality tools](./doc/code_quality_tools.md) documentation to know more details about clang-format.
-
 ## Code static analysis
 
 The project is prepared to execute code static analysis with clang-tidy. Using the respective CMake Preset:
@@ -166,15 +164,11 @@ This target runs clang-tidy and generates a report with the results of the code 
 
 The build succeeds only if no issues are found during the code static analysis, which utilizes the list of checks provided in the respective [configuration](.clang-tidy) file. The project source files to be analyzed are configured through CMake.
 
-Please consult the [code quality tools](./doc/code_quality_tools.md) documentation to know more details about clang-tidy.
-
 ## Sanitizers
 
 Sanitizers are tools integrated into modern compilers that are able to catch many types of issues, such as memory errors, undefined behavior or thread race conditions.
 
 This project is prepared to easily enable the sanitizers described below. If a sanitizer detects an issue, a diagnostic report is logged containing detailed information.
-
-Please consult the [code quality tools](./doc/code_quality_tools.md) documentation to know more details about each sanitizer.
 
 ### Address sanitizer
 
@@ -239,8 +233,6 @@ This target generates documentation from the source files using doxygen, in the 
 
 This target only succeeds if the source files are correctly documented. The doxygen [configuration](./doxygen/Doxyfile.in) file in this project is prepared to be automatically configured through CMake, namely the source files from which documentation should be generated, as well as other parameters related to the project.
 
-Please consult the [code quality tools](./doc/code_quality_tools.md) documentation to know more details about doxygen.
-
 ## CMake coding style and format
 
 This projects follows my [CMake coding style guide](https://github.com/hugorbarbosa/cmake-style-guide), and to ensure consistency, cmake-format and cmake-lint are used to format and check the CMake code.
@@ -267,5 +259,3 @@ $ cmake --build --preset cmake-lint
 The target uses cmake-lint to verify the desired lint options of the CMake code, and creates a report file in the respective build directory, named as `cmake_lint_report.log`.
 
 The builds for the cmake-format and cmake-lint targets succeed only if the CMake files are formatted accordingly to the [configuration](.cmake-format.py) file. The CMake files to be verified are configured through CMake.
-
-Please consult the [code quality tools](./doc/code_quality_tools.md) documentation to know more details about cmake-format and cmake-lint.
